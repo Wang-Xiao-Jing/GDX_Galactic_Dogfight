@@ -1,0 +1,8 @@
+{
+  // 位图字体
+  BitmapFont: {
+    default: {
+      file: fonts/silver/silver.fnt
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  BitmapFont: {
+    default: {
+      file: ../../../fonts/silver/silver.fnt
+    }
+  }
+
+  LabelStyle: {
+    default: {
+      font: default
+    }
+  }
+
+  WindowStyle: {
+    default: {
+      titleFont: default
+      background: background
+    }
+    config_default: {
+      titleFont: default
+      background: background
+    }
+  }
+
+  TextureRegionDrawable: {
+    config_default: {
+      region: background
+    }
+    config_default1: {
+      region: background-1
+    }
+  }
+}

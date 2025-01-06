@@ -1,0 +1,49 @@
+{
+  BitmapFont: {
+    default: {
+      file: ../../../fonts/silver/silver.fnt
+    },
+    silver: {
+      file: ../../../fonts/silver/silver.fnt
+    }
+  }
+
+  Color: {
+    white: { hex: #ffffffff }
+    font: white
+
+    fontWindow: white
+  }
+
+  TintedDrawable: {
+    window: {
+      name: window,
+      color: white
+    }
+
+  }
+
+//  NinePatch: {
+//
+//  }
+//
+//  TextureRegion: {
+//
+//  }
+//
+//  Texture: {
+//
+//  }
+//
+//  Drawable: {
+//
+//  }
+
+  WindowStyle: {
+    default: {
+      background: window
+      titleFont: silver
+      titleFontColor: fontWindow
+    }
+  }
+}
