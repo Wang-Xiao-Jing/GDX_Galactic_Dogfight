@@ -1,4 +1,4 @@
-package xiaojing.galactic_dogfight.resources;
+package xiaojing.galactic_dogfight.client.resources;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,5 +14,5 @@ public class Texture {
     // 模板
     public Skin templateRootUI= new Skin(Gdx.files.internal("ui/uiskin.json"));// 模板根UI
     public String titleTexture = "ui/title.png";
-    public String backgroundTexture = "texture/gui/background.jpg";
+    public String backgroundTexture = "texture/screen/background.jpg";
 }

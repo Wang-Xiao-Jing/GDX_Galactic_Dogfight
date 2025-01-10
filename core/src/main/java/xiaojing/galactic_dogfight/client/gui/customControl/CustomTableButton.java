@@ -1,9 +1,7 @@
-package xiaojing.galactic_dogfight.gui.widget;
+package xiaojing.galactic_dogfight.client.gui.customControl;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,8 +12,8 @@ import java.util.Optional;
 /**
  * 自定义文本按钮类
  */
-public class XjkzTableButton extends XjkzButton {
-
+public class CustomTableButton extends CustomButton {
+    private Label label;
     // 默认字体
     private final BitmapFont bitmapFont = xiaojing.galactic_dogfight.Main.bitmapFont;
 
@@ -28,8 +26,9 @@ public class XjkzTableButton extends XjkzButton {
     /**
      * 构造带有文本的按钮
      */
-    public XjkzTableButton() {
-        add(new Label("", labelStyleDefault));
+    public CustomTableButton() {
+        label = new Label("", labelStyleDefault);
+        add(label);
     }
 
     /**
@@ -37,7 +36,7 @@ public class XjkzTableButton extends XjkzButton {
      *
      * @param text 按钮显示的文本
      */
-    public XjkzTableButton(CharSequence text) {
+    public CustomTableButton(CharSequence text) {
         this();
         setText(text);
     }
@@ -47,7 +46,7 @@ public class XjkzTableButton extends XjkzButton {
      *
      * @param scale 字体缩放比例
      */
-    public XjkzTableButton(float scale) {
+    public CustomTableButton(float scale) {
         this();
         setTextScale(scale);
     }
@@ -58,7 +57,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param label 标签对象
      * @param scale 字体缩放比例
      */
-    public XjkzTableButton(Label label, float scale) {
+    public CustomTableButton(Label label, float scale) {
         add(label);
         label.setScale(scale);
     }
@@ -68,7 +67,7 @@ public class XjkzTableButton extends XjkzButton {
      *
      * @param skin  皮肤对象
      */
-    public XjkzTableButton(Skin skin) {
+    public CustomTableButton(Skin skin) {
         this("", skin);
     }
 
@@ -78,7 +77,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param text  按钮显示的文本
      * @param skin  皮肤对象
      */
-    public XjkzTableButton(CharSequence text, Skin skin) {
+    public CustomTableButton(CharSequence text, Skin skin) {
         this(text, skin, 1);
     }
 
@@ -89,7 +88,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param skin  皮肤对象
      * @param scale 字体缩放比例
      */
-    public XjkzTableButton(CharSequence text, Skin skin, float scale) {
+    public CustomTableButton(CharSequence text, Skin skin, float scale) {
         this(new Label(text, skin), scale);
     }
 
@@ -99,7 +98,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param text  按钮显示的文本
      * @param scale 字体缩放比例
      */
-    public XjkzTableButton(CharSequence text, float scale) {
+    public CustomTableButton(CharSequence text, float scale) {
         this(text);
         setTextScale(scale);
     }
@@ -109,8 +108,8 @@ public class XjkzTableButton extends XjkzButton {
      *
      * @param bitmapFont 按钮使用的字体
      */
-    public XjkzTableButton(BitmapFont bitmapFont) {
-        getSon().getStyle().font = bitmapFont;
+    public CustomTableButton(BitmapFont bitmapFont) {
+        getSonLabel().getStyle().font = bitmapFont;
     }
     // endregion
 
@@ -121,7 +120,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param text 文本
      */
     public void setText(CharSequence text){
-        getSon().setText(text);
+        getSonLabel().setText(text);
     }
 
     /**
@@ -130,7 +129,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param scale 缩放比例
      */
     public void setTextScale(float scale){
-        getSon().setFontScale(scale);
+        getSonLabel().setFontScale(scale);
     }
 
     /**
@@ -151,9 +150,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param bitmapFont 字体
      */
     public void setLabelTextFont(State state, BitmapFont bitmapFont) {
-        getStyle(state).ifPresent(style -> {
-            style.font = bitmapFont;
-        });
+        getLabelStyle(state).ifPresent(style -> style.font = bitmapFont);
     }
 
     /**
@@ -163,7 +160,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param settings  样式
      */
     public void setFontStyle(State state, LabelStyle settings) {
-        getStyle(state).ifPresent(style -> {
+        getLabelStyle(state).ifPresent(style -> {
             style.fontColor = settings.fontColor;
             style.font = settings.font;
             style.background = settings.background;
@@ -171,15 +168,15 @@ public class XjkzTableButton extends XjkzButton {
     }
 
     /**
-     * 修改所有状态的样式
+     * 修改所有状态的字体样式
      *
      * @param settings  样式
      */
     public void setAllFontStyle(LabelStyle settings) {
-        labelStyleDefault.font = bitmapFont;
-        labelStyleOver.font = bitmapFont;
-        labelStyleDisabled.font = bitmapFont;
-        labelStylePressed.font = bitmapFont;
+        labelStyleDefault.font = settings.font;
+        labelStyleOver.font = settings.font;
+        labelStyleDisabled.font = settings.font;
+        labelStylePressed.font = settings.font;
     }
 
     /**
@@ -235,29 +232,33 @@ public class XjkzTableButton extends XjkzButton {
     /**
      * 切换到默认状态
      */
+    @Override
     public void defaultState() {
-        getSon().setStyle(labelStyleDefault);
+        getSonLabel().setStyle(labelStyleDefault);
     }
 
     /**
      * 切换到悬停状态
      */
+    @Override
     public void overState() {
-        getSon().setStyle(labelStyleOver);
+        getSonLabel().setStyle(labelStyleOver);
     }
 
     /**
      * 切换到禁用状态
      */
+    @Override
     public void disabledState() {
-        getSon().setStyle(labelStyleDisabled);
+        getSonLabel().setStyle(labelStyleDisabled);
     }
 
     /**
      * 切换到按下状态
      */
+    @Override
     public void pressedState() {
-        getSon().setStyle(labelStylePressed);
+        getSonLabel().setStyle(labelStylePressed);
     }
     // endregion
 
@@ -267,7 +268,7 @@ public class XjkzTableButton extends XjkzButton {
      *
      * @return 子控件（Label）
      */
-    public Label getSon() {
+    public Label getSonLabel() {
         return (Label) getChildren().first();
     }
 
@@ -277,7 +278,7 @@ public class XjkzTableButton extends XjkzButton {
      * @param state 状态名
      * @return 字体样式
      */
-    public Optional<LabelStyle> getStyle(State state) {
+    protected Optional<LabelStyle> getLabelStyle(State state) {
         return switch (state) {
             case DEFAULT -> Optional.ofNullable(labelStyleDefault);
             case OVER -> Optional.ofNullable(labelStyleOver);
@@ -288,58 +289,21 @@ public class XjkzTableButton extends XjkzButton {
     // endregion
 
     // region 私有方法
-    /**
-     * 更新所有标签样式的字体
-     */
-    private void updateLabelStyles() {
-        labelStyleDefault.font = bitmapFont;
-        labelStyleOver.font = bitmapFont;
-        labelStyleDisabled.font = bitmapFont;
-        labelStylePressed.font = bitmapFont;
-    }
-
+    /** 设置标签样式 */
     private void setLabelStyle(LabelStyle style0, LabelStyle style1) {
         style0.fontColor = style1.fontColor;
         style0.font = style1.font;
         style0.background = style1.background;
     }
-
     private void setLabelStyle(LabelStyle style, Color fontColor) {
         style.fontColor = fontColor;
     }
-
     private void setLabelStyle(LabelStyle style, BitmapFont font) {
         style.font = font;
     }
-
     private void setLabelStyle(LabelStyle style, Drawable background) {
         style.background = background;
     }
     // endregion
-
-    /**
-     * 添加监听器
-     */
-    public void addLabelListener() {
-        addButtonListener();
-        addListener(new InputListener() {
-            @Override
-            public boolean handle(Event e) {
-                if (isDisabled()) {
-                    disabledState();
-                }
-                else if (isPressed()&&isOver()) {
-                    pressedState();
-                }
-                else if (!isPressed()&&isOver()) {
-                    overState();
-                }
-                else {
-                    defaultState();
-                }
-                return true;
-            }
-        });
-    }
 
 }

@@ -1,4 +1,4 @@
-package xiaojing.galactic_dogfight.resources;
+package xiaojing.galactic_dogfight.client.resources;
 
 /**
  * @Author: 尽

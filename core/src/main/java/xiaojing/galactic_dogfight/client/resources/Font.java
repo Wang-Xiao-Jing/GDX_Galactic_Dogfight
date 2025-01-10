@@ -1,4 +1,4 @@
-package xiaojing.galactic_dogfight.resources;
+package xiaojing.galactic_dogfight.client.resources;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

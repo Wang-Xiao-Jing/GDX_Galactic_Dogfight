@@ -1,9 +1,6 @@
-package xiaojing.galactic_dogfight.gui.widget;
+package xiaojing.galactic_dogfight.client.gui.customControl;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
 import java.util.Optional;
 
@@ -11,34 +8,79 @@ import java.util.Optional;
  * @Author: 尽
  * @Description:
  * @name: Galactic Dogfight
- * @Date: 2024/12/31
+ * @Date: 2025/1/10
  */
-public class XjkzButton extends Button {
-    private ButtonStyle styleDefault = new ButtonStyle(); // 默认样式
-    private ButtonStyle styleOver = new ButtonStyle();    // 触摸样式
-    private ButtonStyle styleDisabled = new ButtonStyle();  // 禁用样式
-    private ButtonStyle stylePressed = new ButtonStyle(); // 按下样式
+public class CustomButton extends CustomStateButton{
+    private final ButtonStyle styleDefault = new ButtonStyle(); // 默认样式
+    private final ButtonStyle styleOver = new ButtonStyle();    // 触摸样式
+    private final ButtonStyle styleDisabled = new ButtonStyle();  // 禁用样式
+    private final ButtonStyle stylePressed = new ButtonStyle(); // 按下样式\
 
-    public XjkzButton(){
+    public CustomButton(){
         setStyle(styleDefault);
     }
 
-    /** 按钮状态枚举。 */
-    public enum State {
-        /** 默认状态 */
-        DEFAULT,
-        /** 鼠标悬停状态 */
-        OVER,
-        /** 禁用状态 */
-        DISABLED,
-        /** 按下状态 */
-        PRESSED
+    // region 状态切换
+
+    /**
+     * 切换到默认状态
+     */
+    @Override
+    public void defaultState() {
+        setStyle(styleDefault);
     }
+
+    /**
+     * 切换到悬停状态
+     */
+    @Override
+    public void overState() {
+        setStyle(styleDefault);
+    }
+
+    /**
+     * 切换到禁用状态
+     */
+    @Override
+    public void disabledState() {
+        setStyle(styleDefault);
+    }
+
+    /**
+     * 切换到按下状态
+     */
+    @Override
+    public void pressedState() {
+        setStyle(styleDefault);
+    }
+    // endregion
+
+    /** 样式状态切换 */
+    @Override
+    public void replaceStyle(){
+        replaceState();
+        if (disabledState){
+            disabledState();
+            return;
+        }else {
+            if(overState){
+                if (pressedState){
+                    pressedState();
+                }
+                else{
+                    overState();
+                }
+                return;
+            }
+        }
+        defaultState();
+    };
 
     /**
      * 获取按钮子控件。
      * @return 按钮子控件。
      */
+    @Override
     public Actor getSon() {
         return getChildren().first();
     }
@@ -49,6 +91,7 @@ public class XjkzButton extends Button {
      * @param state       样式状态
      * @param settings    样式设置
      */
+    @Override
     public void setFontStyle(State state, ButtonStyle settings) {
         getStyle(state).ifPresent(style -> {
             style.up = settings.up;
@@ -72,28 +115,13 @@ public class XjkzButton extends Button {
     }
 
     /** 获取指定状态的样式。 */
-    private Optional<ButtonStyle> getStyle(State state) {
+    @Override
+    protected Optional<ButtonStyle> getStyle(State state) {
         return switch (state) {
             case DEFAULT -> Optional.ofNullable(styleDefault);
             case OVER -> Optional.ofNullable(styleOver);
             case DISABLED -> Optional.ofNullable(styleDisabled);
             case PRESSED -> Optional.ofNullable(stylePressed);
         };
-    }
-
-    /**
-     * 添加监听器
-     */
-    public void addButtonListener() {
-        addListener(new InputListener() {
-            @Override
-            public boolean handle(Event e){
-                if(isDisabled()) setStyle(styleDisabled);
-                else if(isOver()&&isPressed()) setStyle(stylePressed);
-                else if (isOver()) setStyle(styleOver);
-                else setStyle(styleDefault);
-                return true;
-            }
-        });
     }
 }

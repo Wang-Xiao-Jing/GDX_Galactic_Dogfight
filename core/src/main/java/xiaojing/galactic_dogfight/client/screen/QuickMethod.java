@@ -1,13 +1,8 @@
-package xiaojing.galactic_dogfight.gui;
+package xiaojing.galactic_dogfight.client.screen;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import java.util.Optional;
-
-import static com.badlogic.gdx.utils.Align.center;
 
 /**
  * @Author: 尽
@@ -23,7 +18,7 @@ public class QuickMethod {
     }
 
     public String getPixel(){
-        return "texture/gui/pixel.png";
+        return "texture/screen/pixel.png";
     }
 
     /** 居中 */

@@ -1,7 +1,8 @@
-package xiaojing.galactic_dogfight.gui.mainMenu;
+package xiaojing.galactic_dogfight.client.screen.mainMenuScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import xiaojing.galactic_dogfight.Main;
-import xiaojing.galactic_dogfight.gui.QuickMethod;
+import xiaojing.galactic_dogfight.client.screen.QuickMethod;
 
 
 /**
@@ -22,7 +23,8 @@ import xiaojing.galactic_dogfight.gui.QuickMethod;
  * @Date: 2024/12/28
  */
 public class MainMenuScreen implements Screen {
-    private final Main GAME;                        // 游戏实例
+    AssetManager manager; // 资源管理器
+    final Main GAME;                                // 游戏实例
     FitViewport viewport;                           // 视口实例
     final SpriteBatch BATCH;                        // 用于绘制的SpriteBatch实例
     final Stage MAIN_STAGE;                         // 总舞台
@@ -43,17 +45,17 @@ public class MainMenuScreen implements Screen {
         this.GAME = GAME;
         this.viewport = this.GAME.viewport;
         this.BATCH = this.GAME.batch;
+        this.manager = this.GAME.manager;
         QuickMethod quickMethod = new QuickMethod(viewport);// 便捷方法
         this.MAIN_STAGE = new Stage(viewport);
         Gdx.input.setInputProcessor(MAIN_STAGE);
-        BACKGROUND_CONTAINER = new Container<>(new Image(new Texture("texture/gui/background.jpg")));
+        BACKGROUND_CONTAINER = new Container<>(new Image(manager.get("texture/gui/background.jpg", Texture.class)));
         GUI_CONTAINER = new Container<>();
-
         // 初始基本部分
         BACKGROUND_CONTAINER.setFillParent(true);
         GUI_CONTAINER.setSize(
-            viewport.getWorldWidth()-guiMarginsLeft-guiMarginsRight,
-            viewport.getWorldHeight()-guiMarginsTop-guiMarginsBottom
+            viewport.getWorldWidth() - guiMarginsLeft - guiMarginsRight,
+            viewport.getWorldHeight() - guiMarginsTop - guiMarginsBottom
         );
         GUI_CONTAINER.setFillParent(true);
         // 显示调试信息
@@ -63,30 +65,6 @@ public class MainMenuScreen implements Screen {
         mainMenuActor = new MainMenuActor(this, GUI_CONTAINER);
         configActor = new ConfigActor(this, GUI_CONTAINER);
         GUI_CONTAINER.setActor(mainMenuActor);
-        listener();
-    }
-
-    /**
-     * 监听器
-     */
-    private void listener() {
-        if (GUI_CONTAINER.getChild(0) instanceof MainMenuActor mainMenuActor){
-            mainMenuActor.listener(this, GUI_CONTAINER);
-        }
-
-    }
-
-    /**
-     * 当此屏幕成为游戏的当前屏幕时调用。
-     */
-    @Override
-    public void show() {
-
-    }
-
-    /** 获取自身 */
-    public MainMenuScreen getSelf(){
-        return this;
     }
 
     /**
@@ -94,8 +72,6 @@ public class MainMenuScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
-        ScreenUtils.clear(new Color( 0x3C5470)); // 清屏
         BATCH.setProjectionMatrix(viewport.getCamera().combined); // 设置投影矩阵
         viewport.apply();   // 应用视口
         MAIN_STAGE.draw();
@@ -104,12 +80,22 @@ public class MainMenuScreen implements Screen {
         BATCH.end();// 结束绘制
     }
 
+    /** 交互 */
+    public void interactive() {
+        if (GUI_CONTAINER.getChild(0) instanceof MainMenuActor actor){
+            actor.interactive();
+        }
+        if (GUI_CONTAINER.getChild(0) instanceof ConfigActor actor) {
+            actor.interactive();
+        }
+    }
+
     /**
-     * 调整应用程序大小时调用。这可以在非暂停状态下的任何时候发生，但在调用create（）之前永远不会发生。
+     * 当此屏幕成为游戏的当前屏幕时调用。
      */
     @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height, false);
+    public void show() {
+
     }
 
     /**
@@ -137,10 +123,34 @@ public class MainMenuScreen implements Screen {
     }
 
     /**
+     * 调整应用程序大小时调用。这可以在非暂停状态下的任何时候发生，但在调用create（）之前永远不会发生。
+     */
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, false);
+    }
+
+    /**
+     * 监听器
+     */
+    public void listener() {
+        if (GUI_CONTAINER.getChild(0) instanceof MainMenuActor actor){
+            actor.listener(this, GUI_CONTAINER);
+        }
+        if (GUI_CONTAINER.getChild(0) instanceof ConfigActor actor) {
+            actor.listener(this, GUI_CONTAINER);
+        }
+    }
+
+    /**
      * 当此屏幕应释放所有资源时调用。
      */
     @Override
     public void dispose() {
         MAIN_STAGE.dispose();
+    }
+
+    public void switchPages(){
+        listener();
     }
 }
