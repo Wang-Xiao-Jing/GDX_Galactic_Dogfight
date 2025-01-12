@@ -17,9 +17,7 @@ import static xiaojing.galactic_dogfight.client.gui.customControl.CustomStateBut
 
 /**
  * @Author: 尽
- * @Description:
- * @name: Galactic Dogfight
- * @Date: 2025/1/2
+ * @Description: 菜单配置界面
  */
 public class ConfigActor extends Group {
     final MainMenuScreen SCREEN;         // 父屏幕
@@ -44,14 +42,9 @@ public class ConfigActor extends Group {
         MANAGER = SCREEN.GAME.manager;
         setSize(this.POSITION.getWidth(), this.POSITION.getHeight());
         test = MANAGER.get("texture/gui/test/test.json", Skin.class);
-        {
-            NinePatch ninePatch = test.get("background", NinePatch.class);
-            background = new Image(ninePatch);
-        }
-        {
-            ninePatch = new NinePatchDrawable(test.get("no", NinePatch.class));
-            ninePatchHang = new NinePatchDrawable(test.get("no-hang", NinePatch.class));
-        }
+        background = new Image(test.get("background", NinePatch.class));
+        ninePatch = new NinePatchDrawable(test.get("no", NinePatch.class));
+        ninePatchHang = new NinePatchDrawable(test.get("no-hang", NinePatch.class));
         title = new CustomLabel("设置", test, 1f);
         titleBox = new Container<>(title);
         closeButton = new CustomImageButton(ninePatch);

@@ -10,7 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import java.util.Optional;
 
 /**
- * 自定义文本按钮类
+ * @Author: 尽
+ * @Description: 自定义文本按钮
  */
 public class CustomTableButton extends CustomButton {
     private Label label;

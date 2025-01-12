@@ -17,9 +17,7 @@ import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 
 /**
  * @Author: 尽
- * @Description:
- * @name: Galactic Dogfight
- * @Date: 2025/1/5
+ * @Description: 加载画面界面
  */
 public class StartLoadingScreen extends ScreenAdapter {
     private float DURATION = 0.8f; // 过度时间
@@ -27,7 +25,7 @@ public class StartLoadingScreen extends ScreenAdapter {
     private final FitViewport viewport;     // 视口实例
     private final Stage MAIN_STAGE;         // 总舞台
     private final AssetManager MANAGER;     // 资源管理器
-    private CustomLabel loadingLabel;         // 加载提示标签
+    private CustomLabel loadingLabel;       // 加载提示标签
     private Image progressBar;              // 进度条
     private Image background;               // 背景
     private float progressValue;            // 进度条值

@@ -14,9 +14,7 @@ import xiaojing.galactic_dogfight.client.gui.customControl.CustomTableButton;
 
 /**
  * @Author: 尽
- * @Description:
- * @name: Galactic Dogfight
- * @Date: 2025/1/2
+ * @Description: 主菜单界面
  */
 public class MainMenuActor extends Group {
     private MainMenuScreen SCREEN;
@@ -48,7 +46,7 @@ public class MainMenuActor extends Group {
     // 标题
     private void title() {
         float titleImageScale = 3;
-        titleImage = new Image(SCREEN.GAME.manager.get("ui/title.png", Texture.class));
+        titleImage = new Image(SCREEN.GAME.manager.get("texture/gui/homepage/title.png", Texture.class));
         titleImage.setScale(titleImageScale);
         titleImage.setY(getHeight()-titleImage.getHeight()*titleImage.getScaleY());
     }

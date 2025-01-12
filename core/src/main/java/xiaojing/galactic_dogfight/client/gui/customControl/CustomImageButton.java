@@ -1,18 +1,13 @@
 package xiaojing.galactic_dogfight.client.gui.customControl;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import xiaojing.galactic_dogfight.client.resources.Texture;
 
 import java.util.Optional;
 
 /**
  * @Author: 尽
- * @Description:
- * @name: Galactic Dogfight
- * @Date: 2025/1/9
+ * @Description: 自定义图片按钮
  */
 public class CustomImageButton extends CustomButton {
     Image image;

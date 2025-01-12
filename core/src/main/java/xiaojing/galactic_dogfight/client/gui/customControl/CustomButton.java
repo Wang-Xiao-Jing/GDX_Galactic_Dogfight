@@ -6,9 +6,7 @@ import java.util.Optional;
 
 /**
  * @Author: 尽
- * @Description:
- * @name: Galactic Dogfight
- * @Date: 2025/1/10
+ * @Description: 自定义按钮
  */
 public class CustomButton extends CustomStateButton{
     private final ButtonStyle styleDefault = new ButtonStyle(); // 默认样式

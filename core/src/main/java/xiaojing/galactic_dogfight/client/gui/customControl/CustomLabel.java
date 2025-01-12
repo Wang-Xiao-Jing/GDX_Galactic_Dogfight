@@ -7,9 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * @Author: 尽
- * @Description:
- * @name: Galactic Dogfight
- * @Date: 2025/1/5
+ * @Description: 自定义标签
  */
 public class CustomLabel extends Label {
 

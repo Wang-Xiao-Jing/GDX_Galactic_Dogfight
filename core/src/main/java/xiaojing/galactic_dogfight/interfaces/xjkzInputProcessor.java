@@ -5,9 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 
 /**
  * @Author: 尽
- * @Description:
- * @name: Galactic Dogfight
- * @Date: 2025/1/2
+ * @Description: 输入处理
  */
 public class xjkzInputProcessor extends InputAdapter implements InputProcessor {
 

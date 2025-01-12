@@ -18,44 +18,36 @@ import xiaojing.galactic_dogfight.client.screen.QuickMethod;
 
 /**
  * @Author: 尽
- * @Description: 主菜单屏幕类
- * @name: Galactic Dogfight
- * @Date: 2024/12/28
+ * @Description: 主菜单屏幕
  */
 public class MainMenuScreen implements Screen {
-    AssetManager manager; // 资源管理器
+    AssetManager manager;                           // 资源管理器
     final Main GAME;                                // 游戏实例
     FitViewport viewport;                           // 视口实例
     final SpriteBatch BATCH;                        // 用于绘制的SpriteBatch实例
     final Stage MAIN_STAGE;                         // 总舞台
     final Container<Actor> BACKGROUND_CONTAINER;    // 背景容器
     final Container<Actor> GUI_CONTAINER;           // GUI容器
-    ConfigActor configActor;
-    MainMenuActor mainMenuActor;
-    // 边距
-    float guiMarginsTop = 20f;
-    float guiMarginsBottom = 20f;
-    float guiMarginsLeft = 20f;
-    float guiMarginsRight = 20f;
+    ConfigActor configActor;                        // 配置界面
+    MainMenuActor mainMenuActor;                    // 主菜单界面
 
     /**
-     * 构造函数
+     * 构造方法
      */
     public MainMenuScreen(final Main GAME) {
         this.GAME = GAME;
         this.viewport = this.GAME.viewport;
         this.BATCH = this.GAME.batch;
         this.manager = this.GAME.manager;
-        QuickMethod quickMethod = new QuickMethod(viewport);// 便捷方法
         this.MAIN_STAGE = new Stage(viewport);
         Gdx.input.setInputProcessor(MAIN_STAGE);
-        BACKGROUND_CONTAINER = new Container<>(new Image(manager.get("texture/gui/background.jpg", Texture.class)));
+        BACKGROUND_CONTAINER = new Container<>(new Image(manager.get("texture/gui/homepage/background.jpg", Texture.class)));
         GUI_CONTAINER = new Container<>();
         // 初始基本部分
         BACKGROUND_CONTAINER.setFillParent(true);
         GUI_CONTAINER.setSize(
-            viewport.getWorldWidth() - guiMarginsLeft - guiMarginsRight,
-            viewport.getWorldHeight() - guiMarginsTop - guiMarginsBottom
+            viewport.getWorldWidth() - this.GAME.guiMarginsLeft - this.GAME.guiMarginsRight,
+            viewport.getWorldHeight() - this.GAME.guiMarginsTop - this.GAME.guiMarginsBottom
         );
         GUI_CONTAINER.setFillParent(true);
         // 显示调试信息

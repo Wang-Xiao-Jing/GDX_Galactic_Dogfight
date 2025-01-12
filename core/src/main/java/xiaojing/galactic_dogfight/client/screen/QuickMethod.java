@@ -6,9 +6,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * @Author: 尽
- * @Description: 此类定义一些便捷方法
- * @name: Galactic Dogfight
- * @Date: 2024/12/29
+ * @Description: 便捷方法类
  */
 public class QuickMethod {
     private Viewport viewport;
