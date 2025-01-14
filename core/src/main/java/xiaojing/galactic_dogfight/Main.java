@@ -22,11 +22,11 @@ import xiaojing.galactic_dogfight.client.screen.mainMenuScreen.MainMenuScreen;
 import xiaojing.galactic_dogfight.interfaces.xjkzInputProcessor;
 
 /**
- * @Author: 尽
- * @Description: 主类
+ * @author 尽
+ * @apiNote 主类
  */
 public class Main extends Game {
-    public static Texture EMPTY_TEXTURE = new Texture("texture/empty_texture.png");
+    public static Texture EMPTY_TEXTURE;
 
     private boolean resourcesLoaded = false;            // 资源是否已加载完成
     private float loadingDelta = 0;                     // 加载的时间计数
@@ -66,6 +66,7 @@ public class Main extends Game {
 
     /** 资源载入 */
     private void manager() {
+        EMPTY_TEXTURE = new Texture("texture/empty_texture.png");
         manager = new AssetManager();
         FileHandleResolver resolver = new InternalFileHandleResolver();
         manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));

@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import java.util.Optional;
 
 /**
- * @Author: 尽
- * @Description: 自定义按钮抽象类
+ * @author 尽
+ * @apiNote 自定义按钮抽象类
  */
 public abstract class CustomStateButton extends Button {
     private final ButtonStyle styleDefault = new ButtonStyle(); // 默认样式

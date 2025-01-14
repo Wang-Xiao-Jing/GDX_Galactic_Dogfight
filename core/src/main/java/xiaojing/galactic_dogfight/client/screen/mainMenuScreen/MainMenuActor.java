@@ -13,8 +13,8 @@ import xiaojing.galactic_dogfight.client.screen.QuickMethod;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomTableButton;
 
 /**
- * @Author: 尽
- * @Description: 主菜单界面
+ * @author 尽
+ * @apiNote 主菜单界面
  */
 public class MainMenuActor extends Group {
     private MainMenuScreen SCREEN;

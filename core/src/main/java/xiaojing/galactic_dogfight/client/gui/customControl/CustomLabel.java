@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
- * @Author: 尽
- * @Description: 自定义标签
+ * @author 尽
+ * @apiNote 自定义标签
  */
 public class CustomLabel extends Label {
 

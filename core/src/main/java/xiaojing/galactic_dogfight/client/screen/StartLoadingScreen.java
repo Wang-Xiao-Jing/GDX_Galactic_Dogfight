@@ -16,8 +16,8 @@ import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 
 /**
- * @Author: 尽
- * @Description: 加载画面界面
+ * @author 尽
+ * @apiNote 加载画面界面
  */
 public class StartLoadingScreen extends ScreenAdapter {
     private float DURATION = 0.8f; // 过度时间

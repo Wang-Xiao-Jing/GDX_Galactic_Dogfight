@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * @Author: 尽
- * @Description: 便捷方法类
+ * @author 尽
+ * @apiNote 便捷函数类
  */
 public class QuickMethod {
     private Viewport viewport;

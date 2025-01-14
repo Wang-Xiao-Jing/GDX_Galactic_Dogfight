@@ -17,8 +17,8 @@ import xiaojing.galactic_dogfight.client.screen.QuickMethod;
 
 
 /**
- * @Author: 尽
- * @Description: 主菜单屏幕
+ * @author 尽
+ * @apiNote 主菜单屏幕
  */
 public class MainMenuScreen implements Screen {
     AssetManager manager;                           // 资源管理器
@@ -32,7 +32,7 @@ public class MainMenuScreen implements Screen {
     MainMenuActor mainMenuActor;                    // 主菜单界面
 
     /**
-     * 构造方法
+     * 构造函数
      */
     public MainMenuScreen(final Main GAME) {
         this.GAME = GAME;

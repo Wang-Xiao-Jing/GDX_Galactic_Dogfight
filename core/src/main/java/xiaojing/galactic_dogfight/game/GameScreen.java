@@ -14,8 +14,8 @@ import xiaojing.galactic_dogfight.client.screen.mainMenuScreen.MainMenuActor;
 import xiaojing.galactic_dogfight.server.player.Player;
 
 /**
- * @Author: 尽
- * @Description: 游戏界面
+ * @author 尽
+ * @apiNote 游戏界面
  */
 public class GameScreen implements Screen {
     AssetManager manager; // 资源管理器
@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
     Stage mainStage;                                // 总舞台
     Container<Actor> guiContainer;                  // GUI容器
 
-    /** 构造方法 */
+    /** 构造函数 */
     public GameScreen(final Main GAME){
         this.GAME = GAME;
         this.viewport = this.GAME.viewport;

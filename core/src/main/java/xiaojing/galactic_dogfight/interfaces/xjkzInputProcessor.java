@@ -4,8 +4,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 
 /**
- * @Author: 尽
- * @Description: 输入处理
+ * @author 尽
+ * @apiNote 输入处理
  */
 public class xjkzInputProcessor extends InputAdapter implements InputProcessor {
 

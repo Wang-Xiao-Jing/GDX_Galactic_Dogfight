@@ -16,8 +16,8 @@ import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 import static xiaojing.galactic_dogfight.client.gui.customControl.CustomStateButton.State.*;
 
 /**
- * @Author: 尽
- * @Description: 菜单配置界面
+ * @author 尽
+ * @apiNote 菜单配置界面
  */
 public class ConfigActor extends Group {
     final MainMenuScreen SCREEN;         // 父屏幕

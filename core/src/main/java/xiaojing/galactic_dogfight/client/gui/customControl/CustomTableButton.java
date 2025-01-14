@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import java.util.Optional;
 
 /**
- * @Author: 尽
- * @Description: 自定义文本按钮
+ * @author 尽
+ * @apiNote 自定义文本按钮
  */
 public class CustomTableButton extends CustomButton {
     private Label label;
@@ -23,7 +23,7 @@ public class CustomTableButton extends CustomButton {
     private final LabelStyle labelStyleDisabled = new LabelStyle(bitmapFont, Color.RED);
     private final LabelStyle labelStylePressed = new LabelStyle(bitmapFont, Color.ROYAL);
 
-    // region 构造方法
+    // region 构造函数
     /**
      * 构造带有文本的按钮
      */
@@ -263,7 +263,7 @@ public class CustomTableButton extends CustomButton {
     }
     // endregion
 
-    // region 获取方法
+    // region 获取函数
     /**
      * 获取子控件（Label）
      *
@@ -289,7 +289,7 @@ public class CustomTableButton extends CustomButton {
     }
     // endregion
 
-    // region 私有方法
+    // region 私有函数
     /** 设置标签样式 */
     private void setLabelStyle(LabelStyle style0, LabelStyle style1) {
         style0.fontColor = style1.fontColor;
