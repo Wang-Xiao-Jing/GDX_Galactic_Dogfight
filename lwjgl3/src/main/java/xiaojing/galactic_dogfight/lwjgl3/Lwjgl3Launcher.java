@@ -33,6 +33,7 @@ public class Lwjgl3Launcher {
         //// 对于测试性能很有用，但对某些硬件来说也可能非常有压力。
         //// 您可能还需要配置GPU驱动程序以完全禁用Vsync；这可能会导致屏幕撕裂。
         configuration.setWindowedMode(1920, 1080);
+        configuration.setWindowSizeLimits(1920, 1080,-1,-1);
         //// 您可以更改这些文件；它们位于lwjgl3/src/main/resources/中。
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
         return configuration;

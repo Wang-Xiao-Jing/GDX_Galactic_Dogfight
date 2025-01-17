@@ -1,4 +1,4 @@
-package xiaojing.galactic_dogfight.client.screen.mainMenuScreen;
+package xiaojing.galactic_dogfight.client.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,24 +9,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import xiaojing.galactic_dogfight.client.screen.QuickMethod;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomTableButton;
+
+import static xiaojing.galactic_dogfight.Main.manager;
 
 /**
  * @author 尽
  * @apiNote 主菜单界面
  */
 public class MainMenuActor extends Group {
-    private MainMenuScreen SCREEN;
-    private Container<Actor> POSITION;
-    private Table menu;
-    private Image titleImage;
-    CustomTableButton startButton;
-    CustomTableButton configButton;
-    CustomTableButton aboutButton;
-    CustomTableButton exitButton;
+    private MainMenuScreen SCREEN;      // 屏幕
+    private Container<Actor> POSITION;  // 容器
+    private Table menu;                 // 菜单
+    private Image titleImage;           // 标题图片
+    CustomTableButton startButton;      // 开始游戏按钮
+    CustomTableButton configButton;     // 设置按钮
+    CustomTableButton aboutButton;      // 关于按钮
+    CustomTableButton exitButton;       // 退出按钮
     private String startTxt, configTxt, aboutTxt, exitTxt;
-    QuickMethod quickMethod;
 
     // 初始化
     public MainMenuActor(final MainMenuScreen SCREEN, final Container<Actor> POSITION){
@@ -34,21 +34,20 @@ public class MainMenuActor extends Group {
         float optionRatio = 1;
         this.SCREEN = SCREEN;
         this.POSITION = POSITION;
-        quickMethod = new QuickMethod(SCREEN.viewport);
         setSize(this.POSITION.getWidth(), this.POSITION.getHeight());
-        button(optionRatio); // 菜单按钮
-        menu();              // 菜单
-        title();             // 标题
-        addActor(menu);
-        addActor(titleImage);
+        button(optionRatio);            // 菜单按钮
+        menu();                         // 菜单
+        title();                        // 标题
+        addActor(menu);                 // 添加菜单
+        addActor(titleImage);           // 添加标题
     }
 
-    // 标题
+    /** 标题 */
     private void title() {
         float titleImageScale = 3;
-        titleImage = new Image(SCREEN.GAME.manager.get("texture/gui/homepage/title.png", Texture.class));
+        titleImage = new Image(manager.get("texture/gui/homepage/title.png", Texture.class));
         titleImage.setScale(titleImageScale);
-        titleImage.setY(getHeight()-titleImage.getHeight()*titleImage.getScaleY());
+        titleImage.setY(getHeight() - titleImage.getHeight() * titleImage.getScaleY());
     }
 
     /** 交互 */
@@ -57,14 +56,6 @@ public class MainMenuActor extends Group {
         configButton.replaceStyle();
         aboutButton.replaceStyle();
         exitButton.replaceStyle();
-    }
-
-    // 测试
-    private void extracted() {
-        System.out.println("----------------------");
-        System.out.println(startButton.isDisabled());
-        System.out.println("按下：" + startButton.isPressed());
-        System.out.println("触摸：" + startButton.isOver());
     }
 
     // 按钮
@@ -104,6 +95,12 @@ public class MainMenuActor extends Group {
 
     // 监听器
     void listener(final MainMenuScreen SCREEN, final Container<Actor> POSITION) {
+        startButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+            }
+        });
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {

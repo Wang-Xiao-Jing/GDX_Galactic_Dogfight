@@ -1,7 +1,5 @@
-package xiaojing.galactic_dogfight.client.screen.mainMenuScreen;
+package xiaojing.galactic_dogfight.client.screen;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -13,16 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomImageButton;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 
+import static xiaojing.galactic_dogfight.Main.manager;
 import static xiaojing.galactic_dogfight.client.gui.customControl.CustomStateButton.State.*;
 
 /**
- * @author 尽
- * @apiNote 菜单配置界面
+ * @Author: 尽
+ * @Description: 菜单配置界面
  */
-public class ConfigActor extends Group {
-    final MainMenuScreen SCREEN;         // 父屏幕
-    final Container<Actor> POSITION;     // 父容器
-    final AssetManager MANAGER;          // 资源管理器
+public class MainMenuConfigActor extends Group {
+    MainMenuScreen SCREEN;               // 父屏幕
+    Container<Actor> POSITION;           // 父容器
     CustomLabel title;                   // 标题
     Container<Actor> titleBox;           // 标题容器
     CustomImageButton closeButton;       // 关闭按钮
@@ -30,18 +28,17 @@ public class ConfigActor extends Group {
     Skin test;                           // 皮肤
     Image background;                    // 背景
     Drawable ninePatch;
-    Drawable ninePatchHang;                    // 背景
+    Drawable ninePatchHang;              //
     float BORDER_OFFSET_X;               // 边框偏移量
     float BORDER_OFFSET_Y;               // 边框偏移量
 
-    public ConfigActor(final MainMenuScreen SCREEN, final Container<Actor> POSITION) {
+    public MainMenuConfigActor(final MainMenuScreen SCREEN, final Container<Actor> POSITION) {
         BORDER_OFFSET_X = 30f;
         BORDER_OFFSET_Y = 10f;
         this.SCREEN = SCREEN;
         this.POSITION = POSITION;
-        MANAGER = SCREEN.GAME.manager;
         setSize(this.POSITION.getWidth(), this.POSITION.getHeight());
-        test = MANAGER.get("texture/gui/test/test.json", Skin.class);
+        test = manager.get("texture/gui/test/test.json", Skin.class);
         background = new Image(test.get("background", NinePatch.class));
         ninePatch = new NinePatchDrawable(test.get("no", NinePatch.class));
         ninePatchHang = new NinePatchDrawable(test.get("no-hang", NinePatch.class));
@@ -55,7 +52,7 @@ public class ConfigActor extends Group {
         background();
         titleBox();
         closeButtonBox();
-        debugAll();
+//        debugAll();
     }
 
     private void closeButtonBox() {
