@@ -2,7 +2,6 @@ package xiaojing.galactic_dogfight.client.screen;
 
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -18,9 +17,7 @@ import static xiaojing.galactic_dogfight.client.gui.customControl.CustomStateBut
  * @Author: 尽
  * @Description: 菜单配置界面
  */
-public class MainMenuConfigActor extends Group {
-    MainMenuScreen SCREEN;               // 父屏幕
-    Container<Actor> POSITION;           // 父容器
+public class MainMenuConfigActor extends CustomizeGuiGroup {
     CustomLabel title;                   // 标题
     Container<Actor> titleBox;           // 标题容器
     CustomImageButton closeButton;       // 关闭按钮
@@ -32,12 +29,9 @@ public class MainMenuConfigActor extends Group {
     float BORDER_OFFSET_X;               // 边框偏移量
     float BORDER_OFFSET_Y;               // 边框偏移量
 
-    public MainMenuConfigActor(final MainMenuScreen SCREEN, final Container<Actor> POSITION) {
+    public MainMenuConfigActor() {
         BORDER_OFFSET_X = 30f;
         BORDER_OFFSET_Y = 10f;
-        this.SCREEN = SCREEN;
-        this.POSITION = POSITION;
-        setSize(this.POSITION.getWidth(), this.POSITION.getHeight());
         test = manager.get("texture/gui/test/test.json", Skin.class);
         background = new Image(test.get("background", NinePatch.class));
         ninePatch = new NinePatchDrawable(test.get("no", NinePatch.class));
@@ -63,11 +57,26 @@ public class MainMenuConfigActor extends Group {
         closeButton.setDrawable(PRESSED, ninePatchHang);
     }
 
+    @Override
+    public void adjustSize(float width, float height) {
+        setSize(width, height);
+        background.setSize(getWidth() - BORDER_OFFSET_X, getHeight() - BORDER_OFFSET_Y);
+        background.setOrigin(background.getWidth()/2, background.getHeight()/2);
+        background.setPosition(BORDER_OFFSET_X / 2f, BORDER_OFFSET_Y / 2f );
+        titleBox.setY(background.getHeight() + BORDER_OFFSET_Y/2 - title.getHeight() - 2);
+        titleBox.setX(BORDER_OFFSET_X/2 + 2);
+        closeButtonBox.setSize(closeButton.getWidth(),closeButton.getHeight());
+        closeButtonBox.setX(getWidth() - closeButton.getWidth() - BORDER_OFFSET_X/2 - 2);
+        closeButtonBox.setY(getHeight() - closeButton.getHeight() - BORDER_OFFSET_Y/2 - 2);
+    }
+
+    @Override
     public void interactive() {
         closeButton.replaceStyle();
     }
 
-    void listener(final MainMenuScreen SCREEN, final Container<Actor> POSITION) {
+    @Override
+    public void listener(final MainMenuScreen SCREEN) {
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {

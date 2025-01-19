@@ -17,9 +17,7 @@ import static xiaojing.galactic_dogfight.Main.manager;
  * @author 尽
  * @apiNote 主菜单界面
  */
-public class MainMenuActor extends Group {
-    private MainMenuScreen SCREEN;      // 屏幕
-    private Container<Actor> POSITION;  // 容器
+public class MainMenuActor extends CustomizeGuiGroup{
     private Table menu;                 // 菜单
     private Image titleImage;           // 标题图片
     CustomTableButton startButton;      // 开始游戏按钮
@@ -29,12 +27,9 @@ public class MainMenuActor extends Group {
     private String startTxt, configTxt, aboutTxt, exitTxt;
 
     // 初始化
-    public MainMenuActor(final MainMenuScreen SCREEN, final Container<Actor> POSITION){
+    public MainMenuActor(){
         initialTexts();
-        float optionRatio = 1;
-        this.SCREEN = SCREEN;
-        this.POSITION = POSITION;
-        setSize(this.POSITION.getWidth(), this.POSITION.getHeight());
+        float optionRatio = 1; // 菜单按钮缩放比
         button(optionRatio);            // 菜单按钮
         menu();                         // 菜单
         title();                        // 标题
@@ -42,12 +37,17 @@ public class MainMenuActor extends Group {
         addActor(titleImage);           // 添加标题
     }
 
+    @Override
+    public void adjustSize(float width, float height){
+        setSize(width, height);
+        titleImage.setY(getHeight() - titleImage.getHeight() * titleImage.getScaleY());
+    }
+
     /** 标题 */
     private void title() {
         float titleImageScale = 3;
         titleImage = new Image(manager.get("texture/gui/homepage/title.png", Texture.class));
         titleImage.setScale(titleImageScale);
-        titleImage.setY(getHeight() - titleImage.getHeight() * titleImage.getScaleY());
     }
 
     /** 交互 */
@@ -93,14 +93,15 @@ public class MainMenuActor extends Group {
         exitTxt = "退出游戏";
     }
 
-    // 监听器
-    void listener(final MainMenuScreen SCREEN, final Container<Actor> POSITION) {
-        startButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-
-            }
-        });
+    /** 监听器&触发器 */
+    @Override
+    public void listener(MainMenuScreen SCREEN) {
+//        startButton.addListener(new ClickListener(){
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//
+//            }
+//        });
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {
