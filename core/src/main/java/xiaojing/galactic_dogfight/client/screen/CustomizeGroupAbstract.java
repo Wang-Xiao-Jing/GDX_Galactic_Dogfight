@@ -6,30 +6,27 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  * @author 尽
  * @apiNote 自定义Group
  */
-public abstract class CustomizeGuiGroup extends Group implements CustomizeGroup {
-    @Override
-    public void adjustSize() {
-
-    }
-
-    /** 监听器&触发器 */
-    @Override
-    public void listener() {
-
-    }
-
-    @Override
+public abstract class CustomizeGroupAbstract extends Group{
+    /** 交互 */
     public void interactive() {
 
     }
 
     /** 监听器&触发器 */
-    @Override
+    public void listener() {
+
+    }
+
+    /** 监听器&触发器 */
     public void listener(MainMenuScreen SCREEN) {
 
     }
 
-    @Override
+    /** 调整大小 */
+    public void adjustSize() {
+
+    }
+
     public void adjustSize(float width, float height) {
         setSize(width, height);
     }

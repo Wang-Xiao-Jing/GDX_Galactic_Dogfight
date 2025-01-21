@@ -2,10 +2,7 @@ package xiaojing.galactic_dogfight.client.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -17,7 +14,7 @@ import static xiaojing.galactic_dogfight.Main.manager;
  * @author 尽
  * @apiNote 主菜单界面
  */
-public class MainMenuActor extends CustomizeGuiGroup{
+public class MainMenuActor extends CustomizeGroupAbstract {
     private Table menu;                 // 菜单
     private Image titleImage;           // 标题图片
     CustomTableButton startButton;      // 开始游戏按钮
@@ -95,24 +92,27 @@ public class MainMenuActor extends CustomizeGuiGroup{
 
     /** 监听器&触发器 */
     @Override
-    public void listener(MainMenuScreen SCREEN) {
-//        startButton.addListener(new ClickListener(){
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//
-//            }
-//        });
+    public void listener(MainMenuScreen screen) {
+        startButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!screen.loading){
+                    screen.loading = true;
+                    screen.loadingScreen = new EnterLoadingScreen();
+                }
+            }
+        });
         exitButton.addListener(new ClickListener() {
             @Override
-            public void clicked (InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit(); // 退出应用程序
             }
         });
         configButton.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                SCREEN.GUI_CONTAINER.setActor(SCREEN.configActor);
-                SCREEN.switchPages();
+                screen.GUI_CONTAINER.setActor(screen.configActor);
+                screen.switchPages();
             }
         });
     }

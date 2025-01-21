@@ -1,7 +1,6 @@
 package xiaojing.galactic_dogfight.client.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,12 +13,15 @@ import static xiaojing.galactic_dogfight.Main.*;
  * @author 尽
  * @apiNote 主菜单屏幕
  */
-public class MainMenuScreen extends ScreenAdapter{
+public class MainMenuScreen extends CustomizeScreenAbstract {
     final Stage MAIN_STAGE;                         // 总舞台
     final Container<Actor> BACKGROUND_CONTAINER;    // 背景容器
     final Container<Actor> GUI_CONTAINER;           // GUI容器
     MainMenuConfigActor configActor;                // 配置界面
     MainMenuActor mainMenuActor;                    // 主菜单界面
+    EnterLoadingScreen loadingScreen;
+
+    boolean loading;
 
     /**
      * 构造函数
@@ -49,14 +51,18 @@ public class MainMenuScreen extends ScreenAdapter{
         batch.setProjectionMatrix(uiViewport.getCamera().combined); // 设置投影矩阵
         uiViewport.apply();   // 应用视口
         MAIN_STAGE.draw();
-        MAIN_STAGE.act(Gdx.graphics.getDeltaTime());
+        MAIN_STAGE.act(delta);
         batch.begin();      // 开始绘制
-        batch.end();// 结束绘制
+        batch.end();        // 结束绘制
+        if (loading&&loadingScreen!=null) {
+            loadingScreen.render(delta);
+        }
     }
 
     /** 交互 */
+    @Override
     public void interactive() {
-        ((CustomizeGuiGroup) GUI_CONTAINER.getChild(0)).interactive();
+        ((CustomizeGroupAbstract) GUI_CONTAINER.getChild(0)).interactive();
     }
 
     /**
@@ -69,11 +75,15 @@ public class MainMenuScreen extends ScreenAdapter{
             uiViewport.getWorldHeight() - guiMarginsTop - guiMarginsBottom
         );
         guiChildSize();
+        if (loading){
+            loadingScreen.adjustSize();
+        }
     }
 
     /** 调整子元素大小 */
-    private void guiChildSize() {
-        ((CustomizeGuiGroup) GUI_CONTAINER.getChild(0)).adjustSize(
+    @Override
+    protected void guiChildSize() {
+        ((CustomizeGroupAbstract) GUI_CONTAINER.getChild(0)).adjustSize(
             GUI_CONTAINER.getWidth(),
             GUI_CONTAINER.getHeight()
         );
@@ -82,8 +92,9 @@ public class MainMenuScreen extends ScreenAdapter{
     /**
      * 监听器
      */
+    @Override
     public void listener() {
-        ((CustomizeGuiGroup) GUI_CONTAINER.getChild(0)).listener(this);
+        ((CustomizeGroupAbstract) GUI_CONTAINER.getChild(0)).listener(this);
     }
 
     /**
@@ -95,6 +106,7 @@ public class MainMenuScreen extends ScreenAdapter{
     }
 
     /** 切换页面 */
+    @Override
     public void switchPages(){
         listener();
         GUI_CONTAINER.setSize(

@@ -17,7 +17,7 @@ import static xiaojing.galactic_dogfight.client.gui.customControl.CustomStateBut
  * @Author: 尽
  * @Description: 菜单配置界面
  */
-public class MainMenuConfigActor extends CustomizeGuiGroup {
+public class MainMenuConfigActor extends CustomizeGroupAbstract {
     CustomLabel title;                   // 标题
     Container<Actor> titleBox;           // 标题容器
     CustomImageButton closeButton;       // 关闭按钮

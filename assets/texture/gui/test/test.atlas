@@ -5,7 +5,6 @@ format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 background
-    rotate: false
     xy: 70, 0
     size: 35, 35
     orig: 0, 0
@@ -14,7 +13,6 @@ background
     offset: 0, 0
     index: -1
 background-1
-    rotate: false
     xy: 110, 0
     size: 5, 5
     split: 1, 1, 1, 1
@@ -110,3 +108,35 @@ no-hang
     xy: 57, 45
     size: 10, 10
     orig: 10, 10
+progressBar-vertical
+    xy: 69, 36
+    size: 36, 6
+    orig: 0, 0
+    split: 2, 2, 2, 2
+    pad: 0, 0, 0, 0
+    offset: 0, 0
+    index: -1
+progressBar-vertical-frame
+    xy: 69, 36
+    size: 36, 6
+    orig: 0, 0
+    split: 2, 2, 2, 2
+    pad: 0, 0, 0, 0
+    offset: 0, 0
+    index: -1
+progressBar-horizontal
+    xy: 110, 6
+    size: 5, 29
+    orig: 0, 0
+    split: 2, 2, 2, 2
+    pad: 0, 0, 0, 0
+    offset: 0, 0
+    index: -1
+progressBar-horizontal-frame
+    xy: 110, 6
+    size: 5, 29
+    orig: 0, 0
+    split: 2, 2, 2, 2
+    pad: 0, 0, 0, 0
+    offset: 0, 0
+    index: -1

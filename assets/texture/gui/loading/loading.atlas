@@ -1,0 +1,17 @@
+loading_gui.png
+    size: 128, 128
+    format: RGBA8888
+    filter: Nearest, Nearest
+    repeat: none
+progressBar-grayscale-horizontal
+    xy: 0, 0
+    size: 16, 5
+    split: 9, 6, 5, 5
+progressBar-default-horizontal
+    xy: 0, 6
+    size: 16, 5
+    split: 9, 6, 5, 5
+progressBar-background-horizontal
+    xy: 0, 12
+    size: 16, 5
+    split: 9, 6, 5, 5
