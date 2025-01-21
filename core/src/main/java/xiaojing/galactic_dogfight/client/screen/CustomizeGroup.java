@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  * @author 尽
  * @apiNote 自定义Group
  */
-public abstract class CustomizeGroupAbstract extends Group{
+public abstract class CustomizeGroup extends Group{
     /** 交互 */
     public void interactive() {
 

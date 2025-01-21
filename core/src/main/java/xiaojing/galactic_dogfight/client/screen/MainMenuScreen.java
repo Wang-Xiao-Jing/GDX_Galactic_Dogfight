@@ -62,7 +62,7 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
     /** 交互 */
     @Override
     public void interactive() {
-        ((CustomizeGroupAbstract) GUI_CONTAINER.getChild(0)).interactive();
+        ((CustomizeGroup) GUI_CONTAINER.getChild(0)).interactive();
     }
 
     /**
@@ -83,7 +83,7 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
     /** 调整子元素大小 */
     @Override
     protected void guiChildSize() {
-        ((CustomizeGroupAbstract) GUI_CONTAINER.getChild(0)).adjustSize(
+        ((CustomizeGroup) GUI_CONTAINER.getChild(0)).adjustSize(
             GUI_CONTAINER.getWidth(),
             GUI_CONTAINER.getHeight()
         );
@@ -94,7 +94,7 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
      */
     @Override
     public void listener() {
-        ((CustomizeGroupAbstract) GUI_CONTAINER.getChild(0)).listener(this);
+        ((CustomizeGroup) GUI_CONTAINER.getChild(0)).listener(this);
     }
 
     /**

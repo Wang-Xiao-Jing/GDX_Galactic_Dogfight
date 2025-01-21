@@ -1,22 +1,18 @@
 package xiaojing.galactic_dogfight.server;
 
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import xiaojing.galactic_dogfight.Main;
+import xiaojing.galactic_dogfight.client.screen.CustomizeScreenAbstract;
 
 import static xiaojing.galactic_dogfight.Main.*;
 
 /**
  * @author 尽
- * @apiNote
+ * @apiNote 主游戏画面（场景）
  */
-public class MainGameScreen implements Screen {
+public class MainGameScreen extends CustomizeScreenAbstract {
     final SpriteBatch BATCH;                        // 用于绘制的SpriteBatch实例
     final Stage MAIN_STAGE;                         // 总舞台
     final Container<Actor> GUI_CONTAINER;           // GUI容器

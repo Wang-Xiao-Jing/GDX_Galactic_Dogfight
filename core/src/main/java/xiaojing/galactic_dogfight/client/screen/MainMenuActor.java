@@ -14,7 +14,7 @@ import static xiaojing.galactic_dogfight.Main.manager;
  * @author 尽
  * @apiNote 主菜单界面
  */
-public class MainMenuActor extends CustomizeGroupAbstract {
+public class MainMenuActor extends CustomizeGroup {
     private Table menu;                 // 菜单
     private Image titleImage;           // 标题图片
     CustomTableButton startButton;      // 开始游戏按钮

@@ -1,6 +1,5 @@
 package xiaojing.galactic_dogfight.client.screen;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 
 /**
