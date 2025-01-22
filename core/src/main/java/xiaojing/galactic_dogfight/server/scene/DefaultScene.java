@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import xiaojing.galactic_dogfight.Main;
 
 /**
@@ -28,13 +27,13 @@ public class DefaultScene implements Screen {
         this.GAME = GAME;
         this.gameViewport = this.GAME.gameViewport;
         this.uiViewport = this.GAME.uiViewport;
-        this.BATCH = this.GAME.batch;
-        this.manager = this.GAME.manager;
+        this.BATCH = this.GAME.spriteBatch;
+        this.manager = this.GAME.assetManager;
         this.MAIN_STAGE = new Stage(uiViewport);
         GUI_CONTAINER = new Container<>();
         GUI_CONTAINER.setSize(
-            uiViewport.getWorldWidth() - this.GAME.guiMarginsLeft - this.GAME.guiMarginsRight,
-            uiViewport.getWorldHeight() - this.GAME.guiMarginsTop - this.GAME.guiMarginsBottom
+            uiViewport.getWorldWidth() - this.GAME.guiLeftMargin - this.GAME.guiRightMargin,
+            uiViewport.getWorldHeight() - this.GAME.guiTopMargin - this.GAME.guiBottomMargin
         );
         GUI_CONTAINER.setFillParent(true);
     }

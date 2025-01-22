@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 
 
 import static com.badlogic.gdx.math.Vector2.Zero;
-import static xiaojing.galactic_dogfight.Main.EMPTY_TEXTURE;
+import static xiaojing.galactic_dogfight.Main.emptyTexture;
 import static xiaojing.galactic_dogfight.server.NewId.*;
 
 /**
@@ -30,7 +30,7 @@ public class Unit extends Sprite {
     // region 构造函数
     /** 默认构造函数 */
     public Unit() {
-        this(UNIT, UnitType.EMPTY, EMPTY_TEXTURE);
+        this(UNIT, UnitType.EMPTY, emptyTexture);
     }
 
     /** 构造单位函数 */
@@ -129,7 +129,7 @@ public class Unit extends Sprite {
 
     /** 设置单位纹理 */
     public void setUnitTexture(Texture texture) {
-        if (texture == null) texture = EMPTY_TEXTURE;
+        if (texture == null) texture = emptyTexture;
         setTexture(texture);
     }
 
@@ -139,7 +139,7 @@ public class Unit extends Sprite {
             setTexture(new Texture(textureRoute));
             return;
         }
-        setTexture(EMPTY_TEXTURE);
+        setTexture(emptyTexture);
     }
 
     /** 设置单位纹理 */
@@ -147,7 +147,7 @@ public class Unit extends Sprite {
         try {
             setTexture(skin.get(textureName, Texture.class));
         } catch (Exception _) {
-            setTexture(EMPTY_TEXTURE);
+            setTexture(emptyTexture);
         }
     }
 

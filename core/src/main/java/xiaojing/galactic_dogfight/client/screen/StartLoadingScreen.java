@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 
 import static xiaojing.galactic_dogfight.Main.*;
@@ -30,16 +30,16 @@ public class StartLoadingScreen extends CustomizeLoadingScreen {
     float end;                            // 移动向量
     final BitmapFont bitmapFont;          // 默认字体
 
-    public StartLoadingScreen(Game game){
+    public StartLoadingScreen(Main game){
         this.game = game;
         this.MAIN_STAGE = new Stage(uiViewport);
-        this.bitmapFont = manager.get("texture/gui/loading/loading.fnt");
+        this.bitmapFont = assetManager.get("texture/gui/loading/loading.fnt");
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.drawPixel(0, 0);
         TextureRegion region = new TextureRegion(new Texture(pixmap), 0, 0, 1, 1);
         pixmap.dispose();
-        lineSize = 10 * scale;
+        lineSize = 10 * scaleFactor;
 
         progressBar = new Image(region);
         background = new Image(region);
@@ -60,8 +60,8 @@ public class StartLoadingScreen extends CustomizeLoadingScreen {
     @Override
     public void render(float delta) {
         MAIN_STAGE.draw();
-        progressValue = manager.getProgress();
-        if (manager.update()){
+        progressValue = assetManager.getProgress();
+        if (assetManager.update()){
             exitAction.act(delta);
         }
         start = 0;

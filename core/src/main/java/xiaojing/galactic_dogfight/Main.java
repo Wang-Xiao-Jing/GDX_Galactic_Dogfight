@@ -18,69 +18,73 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.kotcrab.vis.ui.VisUI;
+import xiaojing.galactic_dogfight.client.screen.CustomizeLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.StartLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.MainMenuScreen;
 
 /**
  * @author 尽
- * @apiNote 主类
+ * @apiNote 游戏主类，负责游戏的初始化、资源加载、渲染和资源释放
  */
 public class Main extends Game {
-    public static Texture EMPTY_TEXTURE;                // 空纹理
-    public static SpriteBatch batch;                    // 渲染器
-    public static ScreenViewport uiViewport;            // UI窗口适配器
-    public static ExtendViewport gameViewport;          // 游戏场景窗口适配器
-    public static BitmapFont bitmapFont;                // 默认字体
-    public static BitmapFont freeTypeFont;              // 自定义字体
-    public static Texture PIXEL_PNG;                    // 通用像素染色白图
-    public static float scale = 0.3f;                   // 缩放比例
-    public static AssetManager manager;                 // 资源管理器
-    public static AssetManager gameManager;             // 资源管理器
-    // 边距
-    public static float guiMarginsTop = 20f;
-    public static float guiMarginsBottom = 20f;
-    public static float guiMarginsLeft = 20f;
-    public static float guiMarginsRight = 20f;
+    // 公共静态资源
+    public static Texture emptyTexture;                        // 空纹理
+    public static SpriteBatch spriteBatch;                     // 渲染器
+    public static ScreenViewport uiViewport;                   // UI窗口适配器
+    public static ExtendViewport gameViewport;                 // 游戏场景窗口适配器
+    public static BitmapFont defaultFont;                      // 默认字体
+    public static BitmapFont customFont;                       // 自定义字体
+    public static Texture pixelTexture;                        // 通用像素染色白图
+    public static float scaleFactor = 0.3f;                    // 缩放比例
+    public static AssetManager assetManager;                   // 资源管理器
+    public static AssetManager gameAssetManager;               // 资源管理器
+    public static float delta = 0;
 
-    private boolean isResourcesLoaded = false;          // 资源是否已加载完成
-    private float loadingDelta = 0;                     // 加载的时间计数
-    private boolean isInitializeLoadingScreen = false;  // 初始化加载界面
-    private boolean isRenderLoadingScreen = false;      // 是否渲染加载页面 & 菜单交互
-    private MainMenuScreen mainMenuScreen;              // 菜单界面
-    private StartLoadingScreen startLoadingScreen;      // 加载界面
+    // 边距
+    public static float guiTopMargin = 20f;
+    public static float guiBottomMargin = 20f;
+    public static float guiLeftMargin = 20f;
+    public static float guiRightMargin = 20f;
+
+    // 内部状态变量
+    private boolean areResourcesLoaded = false;                 // 资源是否已加载完成
+    private float loadingTime = 0;                              // 加载的时间计数
+    private boolean isInitializationLoadingScreenDone = false;  // 初始化加载界面
+    public boolean loading;
+    private MainMenuScreen mainMenuScreen;                      // 菜单界面
+    private CustomizeLoadingScreen loadingScreen;               // 加载界面
 
     /**
      * 初始化
      */
     public void create() {
-        batch = new SpriteBatch();
+        spriteBatch = new SpriteBatch();
         uiViewport = new ScreenViewport();
-        uiViewport.setUnitsPerPixel(scale);
-        gameViewport = new ExtendViewport(1920f / scale, 1080f / scale);
-        manager();
+        uiViewport.setUnitsPerPixel(scaleFactor);
+        gameViewport = new ExtendViewport(1920f / scaleFactor, 1080f / scaleFactor);
+        initializeAssetManager();
         VisUI.load();
-//        manager.update(60);
     }
 
     /** 资源载入 */
-    private void manager() {
-        EMPTY_TEXTURE = new Texture("texture/empty_texture.png");
-        manager = new AssetManager();
-        gameManager = new AssetManager();
+    private void initializeAssetManager() {
+        emptyTexture = new Texture("texture/empty_texture.png");
+        assetManager = new AssetManager();
+        gameAssetManager = new AssetManager();
         FileHandleResolver resolver = new InternalFileHandleResolver();
-        manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-        manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+        assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         mySmallFont.fontFileName = "fonts/silver/silver.ttf";
         mySmallFont.fontParameters.size = 19;
-        manager.load("texture/gui/loading/loading.fnt", BitmapFont.class);      // 加载界面字体
-        manager.load("texture/gui/homepage/background.jpg", Texture.class);     // 主页背景
-        manager.load("fonts/silver/silver.fnt", BitmapFont.class);
-        manager.load("fonts/silver/silver.ttf", BitmapFont.class, mySmallFont);
-        manager.load("texture/gui/pixel.png", Texture.class);                   // 通用像素染色白图
-        manager.load("texture/gui/homepage/title.png", Texture.class);          // 主页标题
-        manager.load("texture/gui/test/test.json", Skin.class);                 // 测试gui皮肤
-        manager.load("texture/gui/loading/loading.json", Skin.class);           //
+        assetManager.load("texture/gui/loading/loading.fnt", BitmapFont.class);      // 加载界面字体
+        assetManager.load("texture/gui/homepage/background.jpg", Texture.class);     // 主页背景
+        assetManager.load("fonts/silver/silver.fnt", BitmapFont.class);
+        assetManager.load("fonts/silver/silver.ttf", BitmapFont.class, mySmallFont);
+        assetManager.load("texture/gui/pixel.png", Texture.class);                   // 通用像素染色白图
+        assetManager.load("texture/gui/homepage/title.png", Texture.class);          // 主页标题
+        assetManager.load("texture/gui/test/test.json", Skin.class);                 // 测试gui皮肤
+        assetManager.load("texture/gui/loading/loading.json", Skin.class);           //
     }
 
     @Override
@@ -95,64 +99,80 @@ public class Main extends Game {
      */
     @Override
     public void render() {
+        delta = Gdx.graphics.getDeltaTime();
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         ScreenUtils.clear(Color.BLACK); // 清屏
-        loading();
-        super.render();
-        loadingScreen(); // 加载界面
-    }
 
-    private void loadingScreen() {
-        // 渲染加载界面
-        if(manager.isLoaded("texture/gui/loading/loading.fnt") && !isRenderLoadingScreen) {
-            // 初始化加载界面
-            if (!isInitializeLoadingScreen){
-                startLoadingScreen = new StartLoadingScreen(this);
-                isInitializeLoadingScreen = true;
-            }
-            startLoadingScreen.render(Gdx.graphics.getDeltaTime());
-        }
-
-        // 当加载页面完成过度时，才允许交互
-        if (isRenderLoadingScreen){
-            if (getScreen() instanceof MainMenuScreen menuScreen) {
-                menuScreen.interactive();
-            }
-        }
-    }
-
-    /** 加载 */
-    private void loading() {
         // 加载完成
-        if(manager.update()) {
+        if(assetManager.update()) {
             // 初始化
-            if (loadingDelta >= 1f){
-                startLoadingScreen.dispose(); // 释放加载界面
-                loadingDelta = 0;             // 重置时间
-                isRenderLoadingScreen = true; // 允许交互
-                mainMenuScreen.listener();    // 监听器
+            if (loadingTime >= 1f){
+                disposeLoadingScreen();             // 释放加载界面
+                loadingTime = 0;                    // 重置时间
+                loading = true;    // 允许交互
+                mainMenuScreen.listener();          // 监听器
             }
             // 初始化资源
-            if(!isResourcesLoaded) {
+            if(!areResourcesLoaded) {
                 // 使用 BitmapFont
-                bitmapFont = manager.get("fonts/silver/silver.fnt", BitmapFont.class);
-                bitmapFont.setUseIntegerPositions(true);
-                bitmapFont.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
+                defaultFont = assetManager.get("fonts/silver/silver.fnt", BitmapFont.class);
+                defaultFont.setUseIntegerPositions(true);
+                defaultFont.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
                 // 使用 FreeType
-                freeTypeFont = manager.get("fonts/silver/silver.ttf", BitmapFont.class);
-                freeTypeFont.setUseIntegerPositions(true);
-                freeTypeFont.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
-                PIXEL_PNG = manager.get("texture/gui/pixel.png", Texture.class); // 赋值通用像素染色白图
+                customFont = assetManager.get("fonts/silver/silver.ttf", BitmapFont.class);
+                customFont.setUseIntegerPositions(true);
+                customFont.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
+                pixelTexture = assetManager.get("texture/gui/pixel.png", Texture.class); // 赋值通用像素染色白图
+
                 mainMenuScreen = new MainMenuScreen(this);  // 创建菜单
                 this.setScreen(mainMenuScreen);                   // 设置菜单为当前屏幕
-                isResourcesLoaded = true;                         // 资源加载完成
+                areResourcesLoaded = true;                        // 资源加载完成
             }
         }
 
         // 切换时间递增
-        if (manager.isLoaded("texture/gui/loading/loading.fnt") && !isRenderLoadingScreen){
-            loadingDelta += Gdx.graphics.getDeltaTime();
+        if (assetManager.isLoaded("texture/gui/loading/loading.fnt") && !loading){
+            loadingTime += delta;
         }
+
+        super.render();
+
+        // 渲染加载界面
+        if(assetManager.isLoaded("texture/gui/loading/loading.fnt") && !loading) {
+            // 初始化加载界面
+            if (!isInitializationLoadingScreenDone){
+                setLoadingScreen(new StartLoadingScreen(this));
+                isInitializationLoadingScreenDone = true;
+            }
+            loadingScreen.render(delta);
+        }
+
+        // 当加载页面完成过度时，才允许交互
+        if (loading){
+            if (getScreen() instanceof MainMenuScreen menuScreen) {
+                menuScreen.interactive();
+            }
+        }
+
+        if (loading && loadingScreen != null  && ! loadingScreen.isExit) {
+            loadingScreen.render(delta);
+        }
+    }
+
+    /** 设置加载界面 */
+    public void setLoadingScreen(CustomizeLoadingScreen loadingScreen){
+        this.loadingScreen = loadingScreen;
+    }
+
+    /** 获取加载界面 */
+    public CustomizeLoadingScreen getLoadingScreen(){
+        return loadingScreen;
+    }
+
+    /** 释放加载界面 */
+    public void disposeLoadingScreen() {
+        loadingScreen.dispose();
+        loadingScreen = null;
     }
 
     /**
@@ -161,9 +181,10 @@ public class Main extends Game {
     @Override
     public void dispose() {
         VisUI.dispose();
-        manager.dispose();
-        gameManager.dispose();
+        assetManager.dispose();
+        gameAssetManager.dispose();
         screen.dispose();
-        batch.dispose();
+        spriteBatch.dispose();
+        if (loadingScreen!=null) disposeLoadingScreen();
     }
 }

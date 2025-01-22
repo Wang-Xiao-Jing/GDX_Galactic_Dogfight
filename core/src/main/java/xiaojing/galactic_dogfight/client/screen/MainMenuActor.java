@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomTableButton;
 
-import static xiaojing.galactic_dogfight.Main.manager;
+import static xiaojing.galactic_dogfight.Main.assetManager;
 
 /**
  * @author 尽
@@ -26,7 +26,7 @@ public class MainMenuActor extends CustomizeGroup {
     // 初始化
     public MainMenuActor(){
         initialTexts();
-        float optionRatio = 1; // 菜单按钮缩放比
+        float optionRatio = 1;          // 菜单按钮缩放比
         button(optionRatio);            // 菜单按钮
         menu();                         // 菜单
         title();                        // 标题
@@ -43,7 +43,7 @@ public class MainMenuActor extends CustomizeGroup {
     /** 标题 */
     private void title() {
         float titleImageScale = 3;
-        titleImage = new Image(manager.get("texture/gui/homepage/title.png", Texture.class));
+        titleImage = new Image(assetManager.get("texture/gui/homepage/title.png", Texture.class));
         titleImage.setScale(titleImageScale);
     }
 
@@ -98,7 +98,8 @@ public class MainMenuActor extends CustomizeGroup {
             public void clicked(InputEvent event, float x, float y) {
                 if (!screen.loading){
                     screen.loading = true;
-                    screen.loadingScreen = new EnterLoadingScreen(screen.game);
+                    screen.game.loading = true;
+                    screen.game.setLoadingScreen(new EnterLoadingScreen(screen.game));
                 }
             }
         });

@@ -19,12 +19,12 @@ public class MainGameScreen extends CustomizeScreenAbstract {
 
     public MainGameScreen() {
         gameViewport.getCamera().position.set(gameViewport.getWorldWidth() / 2, gameViewport.getWorldHeight() / 2, 0);
-        this.BATCH = batch;
+        this.BATCH = spriteBatch;
         this.MAIN_STAGE = new Stage(uiViewport);
         this.GUI_CONTAINER = new Container<>();
         this.GUI_CONTAINER.setSize(
-            uiViewport.getWorldWidth() - guiMarginsLeft - guiMarginsRight,
-            uiViewport.getWorldHeight() - guiMarginsTop - guiMarginsBottom
+            uiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
+            uiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
         );
         this.GUI_CONTAINER.setFillParent(true);
     }

@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomImageButton;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 
-import static xiaojing.galactic_dogfight.Main.manager;
+import static xiaojing.galactic_dogfight.Main.assetManager;
 import static xiaojing.galactic_dogfight.client.gui.customControl.CustomStateButton.State.*;
 
 /**
@@ -32,7 +32,7 @@ public class MainMenuConfigActor extends CustomizeGroup {
     public MainMenuConfigActor() {
         BORDER_OFFSET_X = 30f;
         BORDER_OFFSET_Y = 10f;
-        test = manager.get("texture/gui/test/test.json", Skin.class);
+        test = assetManager.get("texture/gui/test/test.json", Skin.class);
         background = new Image(test.get("background", NinePatch.class));
         ninePatch = new NinePatchDrawable(test.get("no", NinePatch.class));
         ninePatchHang = new NinePatchDrawable(test.get("no-hang", NinePatch.class));

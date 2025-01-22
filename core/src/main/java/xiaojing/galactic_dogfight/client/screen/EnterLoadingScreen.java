@@ -20,23 +20,23 @@ import static xiaojing.galactic_dogfight.Main.*;
  */
 public class EnterLoadingScreen extends CustomizeLoadingScreen {
     float duration = 1f;            // 过度时间
-    CustomLabel describeLabel;       // 加载提示标签
+    CustomLabel describeLabel;      // 加载提示标签
     Table labelContainer;           // 提示标签容器
     Image progressBarBackground;    // 进度条
     Image progressBar;              // 进度条
     Image background;               // 背景
     Skin style;                     // 皮肤
 
-    public EnterLoadingScreen(Game game){
+    public EnterLoadingScreen(Main game){
         this.game = game;
         main_stage = new Stage(uiViewport);
-        style = manager.get("texture/gui/loading/loading.json", Skin.class);
+        style = assetManager.get("texture/gui/loading/loading.json", Skin.class);
         progressBarBackground = new Image(style.getPatch("progressBar-background-horizontal"));
         progressBar = new Image(style.getPatch("progressBar-default-horizontal"));
-        background = new Image(Main.PIXEL_PNG);
+        background = new Image(Main.pixelTexture);
         action = new AlphaAction();
         labelContainer = new Table();
-        describeLabel = new CustomLabel(PlayPrompt(), bitmapFont, 1f);
+        describeLabel = new CustomLabel(PlayPrompt(), defaultFont, 1f);
         background.setFillParent(true);
         background.setColor(Color.BLACK);
         progressBarBackground.setHeight(5);
@@ -52,23 +52,23 @@ public class EnterLoadingScreen extends CustomizeLoadingScreen {
         labelContainer.setHeight(labelContainer.defaults().getPrefHeight());
         labelContainer.top().left();
         adjustSize();
-        gameManager.load("texture/bullet/template_bullet.png", Texture.class);
-        gameManager.load("texture/enemy/template_enemy.png", Texture.class);
+        gameAssetManager.load("texture/bullet/template_bullet.png", Texture.class);
+        gameAssetManager.load("texture/enemy/template_enemy.png", Texture.class);
+        gameAssetManager.load("texture/outerSpace/outerSpace.png", Texture.class);
         ((AlphaAction)action).setAlpha(0);
         action.setDuration(duration);
         action.setReverse(true);
-        main_stage.setDebugAll(true);
+//        main_stage.setDebugAll(true);
     }
 
     float time = 0;
-    private float fontScale = 0;
     @Override
     public void render(float delta) {
         uiViewport.apply();   // 应用视口
         main_stage.draw();
         main_stage.act(delta);
         progressBar.setWidth(progressBar.getPrefWidth() +
-            (progressBarBackground.getWidth() - progressBar.getPrefWidth()) * gameManager.getProgress());
+            (progressBarBackground.getWidth() - progressBar.getPrefWidth()) * gameAssetManager.getProgress());
         action.act(delta);
         time +=delta;
         if (time >= 3) {
@@ -78,11 +78,14 @@ public class EnterLoadingScreen extends CustomizeLoadingScreen {
             time = 0;
         }
         if(((AlphaAction)action).getColor().a >= 1){
-            if(gameManager.update()){
-//                action.restart();
-//                action.setReverse(false);
-//                complete();
+            if(gameAssetManager.update()){
+                action.restart();
+                action.setReverse(false);
+                game.setScreen(new MainGameScreen());
             }
+        }else {
+            if (((AlphaAction)action).getColor().a <= 0) isExit = true;
+            complete();
         }
     }
 
@@ -92,8 +95,6 @@ public class EnterLoadingScreen extends CustomizeLoadingScreen {
             uiViewport.getWorldWidth() / 3
         );
         if (labelContainer.getWidth() >= 200) labelContainer.setWidth(200);
-//        labelContainer.getCells().get(0).width(labelContainer.getWidth());
-//        labelContainer.getCells().get(1).height(labelContainer.getHeight() - labelContainer.getCells().get(0).getActorHeight());
         progressBarBackground.setWidth(uiViewport.getWorldWidth() * 0.5f);
         if(progressBarBackground.getWidth() >= 300) progressBarBackground.setWidth(300);
         progressBarBackground.setPosition(
@@ -107,10 +108,7 @@ public class EnterLoadingScreen extends CustomizeLoadingScreen {
     @Override
     public void complete(){
         if (!isExit) return;
-        if (((AlphaAction)action).getColor().a <= 0){
-            game.setScreen(new MainGameScreen());
-            dispose();
-        }
+        game.disposeLoadingScreen();
     }
 
     @Override
@@ -133,7 +131,7 @@ public class EnterLoadingScreen extends CustomizeLoadingScreen {
             "你知道吗: 电线杆一般是水泥的。",
             "你知道吗: 血清素症候群的癫痫发作时给予不足量的苯二氮卓镇静反而可能诱发全面性发作。",
             "你知道吗: 你最好不要信这些。",
-            "黑藓Black_Moss：我每天起早贪黑，把所有空余时间都搭进去，就为了从国外搬运MC资源到国内论坛。只要一有空，我就泡在论坛上忙这事儿。\t可到最后，怎么所有错都成我的了？行吧，你们厉害，都是大佬，是我不配了？"
+            "黑藓Black_Moss：我每天起早贪黑，把所有空余时间都搭进去，就为了从国外搬运MC资源到国内论坛。只要一有空，我就泡在论坛上忙这事儿。可到最后，怎么所有错都成我的了？行吧，你们厉害，都是大佬，是我不配了？"
         };
         return txt[random.nextInt(txt.length)];
     }

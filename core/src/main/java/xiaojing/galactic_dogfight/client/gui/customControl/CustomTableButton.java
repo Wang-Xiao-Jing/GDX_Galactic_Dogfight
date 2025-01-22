@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CustomTableButton extends CustomButton {
     private Label label;
     // 默认字体
-    private final BitmapFont bitmapFont = xiaojing.galactic_dogfight.Main.bitmapFont;
+    private final BitmapFont bitmapFont = xiaojing.galactic_dogfight.Main.defaultFont;
 
     private final LabelStyle labelStyleDefault = new LabelStyle(bitmapFont, Color.WHITE);
     private final LabelStyle labelStyleOver = new LabelStyle(bitmapFont, Color.GREEN);

@@ -4,21 +4,22 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+import xiaojing.galactic_dogfight.Main;
 
 /**
  * @author 尽
  * @apiNote 自定义加载画面
  */
 public abstract class CustomizeLoadingScreen extends CustomizeScreenAbstract{
-    Game game;
-    protected float enterDuration;      // 进入过度时间
-    protected float exitDuration;       // 退出过度时间
-    protected Stage main_stage;         // 主舞台
-    protected TemporalAction enterAction;       // 进入动作
-    protected boolean isEnter;          // 进入动作是否完成
-    protected TemporalAction exitAction;        // 退出动作
-    protected boolean isExit;           // 退出动作是否完成
-    protected TemporalAction action;            // 动作
+    Main game;
+    public float enterDuration;              // 进入过度时间
+    public float exitDuration;               // 退出过度时间
+    public Stage main_stage;                 // 主舞台
+    public TemporalAction enterAction;       // 进入动作
+    public boolean isEnter;                  // 进入动作是否完成
+    public TemporalAction exitAction;        // 退出动作
+    public boolean isExit;                   // 退出动作是否完成
+    public TemporalAction action;            // 动作
 
     public CustomizeLoadingScreen(){
         this(0, 0);
