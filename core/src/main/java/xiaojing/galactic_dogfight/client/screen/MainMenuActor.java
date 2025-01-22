@@ -98,21 +98,23 @@ public class MainMenuActor extends CustomizeGroup {
             public void clicked(InputEvent event, float x, float y) {
                 if (!screen.loading){
                     screen.loading = true;
-                    screen.loadingScreen = new EnterLoadingScreen();
+                    screen.loadingScreen = new EnterLoadingScreen(screen.game);
                 }
             }
         });
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit(); // 退出应用程序
+                if (!screen.loading) Gdx.app.exit(); // 退出应用程序
             }
         });
         configButton.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                screen.GUI_CONTAINER.setActor(screen.configActor);
-                screen.switchPages();
+                if (!screen.loading) {
+                    screen.GUI_CONTAINER.setActor(screen.configActor);
+                    screen.switchPages();
+                }
             }
         });
     }

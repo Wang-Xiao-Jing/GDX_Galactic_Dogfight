@@ -1,13 +1,16 @@
 package xiaojing.galactic_dogfight.client.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
+import xiaojing.galactic_dogfight.server.MainGameScreen;
+
+import java.util.Random;
 
 import static xiaojing.galactic_dogfight.Main.*;
 
@@ -17,77 +20,121 @@ import static xiaojing.galactic_dogfight.Main.*;
  */
 public class EnterLoadingScreen extends CustomizeLoadingScreen {
     float duration = 1f;            // 过度时间
-    float progressValue;            // 进度条值
-    CustomLabel loadingLabel;       // 加载提示标签
+    CustomLabel describeLabel;       // 加载提示标签
+    Table labelContainer;           // 提示标签容器
     Image progressBarBackground;    // 进度条
     Image progressBar;              // 进度条
     Image background;               // 背景
-    BitmapFont bitmapFont;          // 默认字体
     Skin style;                     // 皮肤
 
-    public EnterLoadingScreen(){
+    public EnterLoadingScreen(Game game){
+        this.game = game;
         main_stage = new Stage(uiViewport);
         style = manager.get("texture/gui/loading/loading.json", Skin.class);
         progressBarBackground = new Image(style.getPatch("progressBar-background-horizontal"));
         progressBar = new Image(style.getPatch("progressBar-default-horizontal"));
         background = new Image(Main.PIXEL_PNG);
         action = new AlphaAction();
-//        main_stage.setDebugAll(true);
-//        loadingLabel = new CustomLabel("加载中...", bitmapFont, 0.8f);
-//        this.bitmapFont = manager.get("fonts/silver/silver.fnt");
-//        action = new AlphaAction();
-//        action.setAlpha(0);
-//        action.setDuration(duration)
+        labelContainer = new Table();
+        describeLabel = new CustomLabel(PlayPrompt(), bitmapFont, 1f);
         background.setFillParent(true);
         background.setColor(Color.BLACK);
         progressBarBackground.setHeight(5);
         main_stage.addActor(background);
         main_stage.addActor(progressBarBackground);
         main_stage.addActor(progressBar);
+        main_stage.addActor(labelContainer);
         main_stage.addAction(action);
         progressBar.setHeight(5);
+        labelContainer.moveBy(5,5);
+        labelContainer.defaults().height(describeLabel.getPrefHeight());
+        labelContainer.add(describeLabel).width(52).left();
+        labelContainer.setHeight(labelContainer.defaults().getPrefHeight());
+        labelContainer.top().left();
         adjustSize();
         gameManager.load("texture/bullet/template_bullet.png", Texture.class);
         gameManager.load("texture/enemy/template_enemy.png", Texture.class);
         ((AlphaAction)action).setAlpha(0);
-        ((AlphaAction)action).setDuration(duration);
-        ((AlphaAction)action).setReverse(true);
+        action.setDuration(duration);
+        action.setReverse(true);
+        main_stage.setDebugAll(true);
     }
 
+    float time = 0;
+    private float fontScale = 0;
     @Override
     public void render(float delta) {
-//        batch.setProjectionMatrix(uiViewport.getCamera().combined); // 设置投影矩阵
         uiViewport.apply();   // 应用视口
         main_stage.draw();
         main_stage.act(delta);
         progressBar.setWidth(progressBar.getPrefWidth() +
             (progressBarBackground.getWidth() - progressBar.getPrefWidth()) * gameManager.getProgress());
         action.act(delta);
+        time +=delta;
+        if (time >= 3) {
+            describeLabel.setText(PlayPrompt());
+            describeLabel.setFontScale(1);
+            describeLabel.setWidth(describeLabel.getPrefWidth());
+            time = 0;
+        }
         if(((AlphaAction)action).getColor().a >= 1){
             if(gameManager.update()){
-                action.restart();
-                ((AlphaAction)action).setReverse(false);
-                if (((AlphaAction)action).getColor().a <= 0){
-                    dispose();
-                }
+//                action.restart();
+//                action.setReverse(false);
+//                complete();
             }
         }
     }
 
-    /** 调整大小 */
     @Override
     public void adjustSize() {
-        progressBarBackground.setWidth(uiViewport.getWorldWidth()*0.5f);
+        labelContainer.setWidth(
+            uiViewport.getWorldWidth() / 3
+        );
+        if (labelContainer.getWidth() >= 200) labelContainer.setWidth(200);
+//        labelContainer.getCells().get(0).width(labelContainer.getWidth());
+//        labelContainer.getCells().get(1).height(labelContainer.getHeight() - labelContainer.getCells().get(0).getActorHeight());
+        progressBarBackground.setWidth(uiViewport.getWorldWidth() * 0.5f);
         if(progressBarBackground.getWidth() >= 300) progressBarBackground.setWidth(300);
         progressBarBackground.setPosition(
-            uiViewport.getWorldWidth()/2 - progressBarBackground.getWidth()/2,
-            uiViewport.getWorldHeight() * 0.2f - progressBarBackground.getHeight()/2
+            uiViewport.getWorldWidth() / 2 - progressBarBackground.getWidth() / 2,
+            uiViewport.getWorldHeight() * 0.2f - progressBarBackground.getHeight() / 2
         );
         progressBar.setPosition(progressBarBackground.getX(), progressBarBackground.getY());
+    }
+
+
+    @Override
+    public void complete(){
+        if (!isExit) return;
+        if (((AlphaAction)action).getColor().a <= 0){
+            game.setScreen(new MainGameScreen());
+            dispose();
+        }
     }
 
     @Override
     public void dispose() {
         main_stage.dispose();
+    }
+
+    public String PlayPrompt() {
+        Random random = new Random();
+        String[] txt ={
+            "你知道吗: 人的脸皮在生理角度来讲，也是会随着年龄的增长而加厚。",
+            "你知道吗: 人类对ccb的开发不足1%。",
+            "你知道吗: 肾上腺素风暴（Adrenergic storm）是儿茶酚胺肾上腺素和去甲肾上腺素的血清水平突然而剧烈增加。",
+            "你知道吗: 南极3%的冰是企鹅的尿液形成的。",
+            "你知道吗: 男性断掉的丁丁，保存得当的话，再移植手术的成功率在90%以上。",
+            "你知道吗: 将牛粪放在高温沸水中蒸煮一个小时左右，牛粪就会释放出香兰素，也就是可以散发出香草味的物质。",
+            "你知道吗: 金属制品的温度在零下是尝起来是甜的。",
+            "你知道吗: 实际上这个作品是因为作者无聊搞的。",
+            "（此时一位充满好奇心的南方人舔了一下电线杆）",
+            "你知道吗: 电线杆一般是水泥的。",
+            "你知道吗: 血清素症候群的癫痫发作时给予不足量的苯二氮卓镇静反而可能诱发全面性发作。",
+            "你知道吗: 你最好不要信这些。",
+            "黑藓Black_Moss：我每天起早贪黑，把所有空余时间都搭进去，就为了从国外搬运MC资源到国内论坛。只要一有空，我就泡在论坛上忙这事儿。\t可到最后，怎么所有错都成我的了？行吧，你们厉害，都是大佬，是我不配了？"
+        };
+        return txt[random.nextInt(txt.length)];
     }
 }

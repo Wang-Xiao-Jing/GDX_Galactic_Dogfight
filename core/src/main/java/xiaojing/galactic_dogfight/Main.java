@@ -107,7 +107,7 @@ public class Main extends Game {
         if(manager.isLoaded("texture/gui/loading/loading.fnt") && !isRenderLoadingScreen) {
             // 初始化加载界面
             if (!isInitializeLoadingScreen){
-                startLoadingScreen = new StartLoadingScreen();
+                startLoadingScreen = new StartLoadingScreen(this);
                 isInitializeLoadingScreen = true;
             }
             startLoadingScreen.render(Gdx.graphics.getDeltaTime());
@@ -122,14 +122,14 @@ public class Main extends Game {
     }
 
     /** 加载 */
-    public void loading() {
+    private void loading() {
         // 加载完成
         if(manager.update()) {
             // 初始化
             if (loadingDelta >= 1f){
                 startLoadingScreen.dispose(); // 释放加载界面
                 loadingDelta = 0;             // 重置时间
-                isRenderLoadingScreen = true;         // 允许交互
+                isRenderLoadingScreen = true; // 允许交互
                 mainMenuScreen.listener();    // 监听器
             }
             // 初始化资源
@@ -143,9 +143,9 @@ public class Main extends Game {
                 freeTypeFont.setUseIntegerPositions(true);
                 freeTypeFont.getData().setScale(uiViewport.getWorldHeight() / Gdx.graphics.getHeight());
                 PIXEL_PNG = manager.get("texture/gui/pixel.png", Texture.class); // 赋值通用像素染色白图
-                mainMenuScreen = new MainMenuScreen();  // 创建菜单
-                this.setScreen(mainMenuScreen);                    // 设置菜单为当前屏幕
-                isResourcesLoaded = true;                            // 资源加载完成
+                mainMenuScreen = new MainMenuScreen(this);  // 创建菜单
+                this.setScreen(mainMenuScreen);                   // 设置菜单为当前屏幕
+                isResourcesLoaded = true;                         // 资源加载完成
             }
         }
 

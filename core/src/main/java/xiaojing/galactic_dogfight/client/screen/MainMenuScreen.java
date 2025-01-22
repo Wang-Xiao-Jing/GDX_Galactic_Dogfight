@@ -1,10 +1,12 @@
 package xiaojing.galactic_dogfight.client.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import xiaojing.galactic_dogfight.server.MainGameScreen;
 
 import static xiaojing.galactic_dogfight.Main.*;
 
@@ -14,6 +16,7 @@ import static xiaojing.galactic_dogfight.Main.*;
  * @apiNote 主菜单屏幕
  */
 public class MainMenuScreen extends CustomizeScreenAbstract {
+    Game game;
     final Stage MAIN_STAGE;                         // 总舞台
     final Container<Actor> BACKGROUND_CONTAINER;    // 背景容器
     final Container<Actor> GUI_CONTAINER;           // GUI容器
@@ -26,7 +29,8 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
     /**
      * 构造函数
      */
-    public MainMenuScreen() {
+    public MainMenuScreen(Game game) {
+        this.game = game;
         this.MAIN_STAGE = new Stage(uiViewport);
         Gdx.input.setInputProcessor(MAIN_STAGE);
         BACKGROUND_CONTAINER = new Container<>(new Image(manager.get("texture/gui/homepage/background.jpg", Texture.class)));
@@ -54,7 +58,7 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
         MAIN_STAGE.act(delta);
         batch.begin();      // 开始绘制
         batch.end();        // 结束绘制
-        if (loading&&loadingScreen!=null) {
+        if (loading && loadingScreen != null) {
             loadingScreen.render(delta);
         }
     }
@@ -103,6 +107,11 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
     @Override
     public void dispose() {
         MAIN_STAGE.dispose();
+    }
+
+    /** 进入游戏 */
+    public void enterGame(){
+        game.setScreen(new MainGameScreen());
     }
 
     /** 切换页面 */

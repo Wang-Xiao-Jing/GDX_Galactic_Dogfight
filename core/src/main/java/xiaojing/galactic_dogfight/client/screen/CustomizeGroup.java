@@ -1,5 +1,6 @@
 package xiaojing.galactic_dogfight.client.screen;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
@@ -19,6 +20,10 @@ public abstract class CustomizeGroup extends Group{
 
     /** 监听器&触发器 */
     public void listener(MainMenuScreen SCREEN) {
+
+    }
+
+    public void listener(Screen SCREEN) {
 
     }
 
