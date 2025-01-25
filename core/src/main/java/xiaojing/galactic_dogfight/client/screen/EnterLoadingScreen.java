@@ -2,6 +2,7 @@ package xiaojing.galactic_dogfight.client.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
@@ -81,7 +82,7 @@ public class EnterLoadingScreen extends CustomizeLoadingScreen {
             if(gameAssetManager.update()){
                 action.restart();
                 action.setReverse(false);
-                game.setScreen(new MainGameScreen());
+                game.setScreen(new MainGameScreen(game));
             }
         }else {
             if (((AlphaAction)action).getColor().a <= 0) isExit = true;
@@ -108,6 +109,7 @@ public class EnterLoadingScreen extends CustomizeLoadingScreen {
     @Override
     public void complete(){
         if (!isExit) return;
+        game.loading = false;
         game.disposeLoadingScreen();
     }
 

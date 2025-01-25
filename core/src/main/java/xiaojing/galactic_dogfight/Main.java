@@ -29,7 +29,8 @@ import xiaojing.galactic_dogfight.client.screen.MainMenuScreen;
 public class Main extends Game {
     // 公共静态资源
     public static Texture emptyTexture;                        // 空纹理
-    public static SpriteBatch spriteBatch;                     // 渲染器
+    public static SpriteBatch guIspriteBatch;                     // 渲染器
+    public static SpriteBatch gameSpriteBatch;                 // 渲染器
     public static ScreenViewport uiViewport;                   // UI窗口适配器
     public static ExtendViewport gameViewport;                 // 游戏场景窗口适配器
     public static BitmapFont defaultFont;                      // 默认字体
@@ -50,7 +51,7 @@ public class Main extends Game {
     private boolean areResourcesLoaded = false;                 // 资源是否已加载完成
     private float loadingTime = 0;                              // 加载的时间计数
     private boolean isInitializationLoadingScreenDone = false;  // 初始化加载界面
-    public boolean loading;
+    public boolean loading;                                     // 是否加载
     private MainMenuScreen mainMenuScreen;                      // 菜单界面
     private CustomizeLoadingScreen loadingScreen;               // 加载界面
 
@@ -58,12 +59,14 @@ public class Main extends Game {
      * 初始化
      */
     public void create() {
-        spriteBatch = new SpriteBatch();
+        guIspriteBatch = new SpriteBatch();
+        gameSpriteBatch = new SpriteBatch();
         uiViewport = new ScreenViewport();
         uiViewport.setUnitsPerPixel(scaleFactor);
-        gameViewport = new ExtendViewport(1920f / scaleFactor, 1080f / scaleFactor);
+        gameViewport = new ExtendViewport(1920f * scaleFactor, 1080f * scaleFactor);
         initializeAssetManager();
         VisUI.load();
+        loading = true;
     }
 
     /** 资源载入 */
@@ -102,14 +105,13 @@ public class Main extends Game {
         delta = Gdx.graphics.getDeltaTime();
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         ScreenUtils.clear(Color.BLACK); // 清屏
-
         // 加载完成
         if(assetManager.update()) {
             // 初始化
             if (loadingTime >= 1f){
                 disposeLoadingScreen();             // 释放加载界面
                 loadingTime = 0;                    // 重置时间
-                loading = true;    // 允许交互
+                loading = false;                     // 允许交互
                 mainMenuScreen.listener();          // 监听器
             }
             // 初始化资源
@@ -128,17 +130,20 @@ public class Main extends Game {
                 this.setScreen(mainMenuScreen);                   // 设置菜单为当前屏幕
                 areResourcesLoaded = true;                        // 资源加载完成
             }
+            if (loading && loadingScreen != null  && ! loadingScreen.isExit) {
+                loadingScreen.render(delta);
+            }
         }
 
         // 切换时间递增
-        if (assetManager.isLoaded("texture/gui/loading/loading.fnt") && !loading){
+        if (assetManager.isLoaded("texture/gui/loading/loading.fnt") && loading){
             loadingTime += delta;
         }
 
         super.render();
 
         // 渲染加载界面
-        if(assetManager.isLoaded("texture/gui/loading/loading.fnt") && !loading) {
+        if(assetManager.isLoaded("texture/gui/loading/loading.fnt") && loading) {
             // 初始化加载界面
             if (!isInitializationLoadingScreenDone){
                 setLoadingScreen(new StartLoadingScreen(this));
@@ -148,14 +153,10 @@ public class Main extends Game {
         }
 
         // 当加载页面完成过度时，才允许交互
-        if (loading){
+        if (!loading){
             if (getScreen() instanceof MainMenuScreen menuScreen) {
                 menuScreen.interactive();
             }
-        }
-
-        if (loading && loadingScreen != null  && ! loadingScreen.isExit) {
-            loadingScreen.render(delta);
         }
     }
 
@@ -184,7 +185,8 @@ public class Main extends Game {
         assetManager.dispose();
         gameAssetManager.dispose();
         screen.dispose();
-        spriteBatch.dispose();
+        guIspriteBatch.dispose();
+        gameSpriteBatch.dispose();
         if (loadingScreen!=null) disposeLoadingScreen();
     }
 }

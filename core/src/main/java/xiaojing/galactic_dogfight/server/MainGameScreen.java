@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.screen.CustomizeScreenAbstract;
+import xiaojing.galactic_dogfight.server.scene.DefaultScene;
 
 import static xiaojing.galactic_dogfight.Main.*;
 
@@ -12,21 +14,10 @@ import static xiaojing.galactic_dogfight.Main.*;
  * @author 尽
  * @apiNote 主游戏画面（场景）
  */
-public class MainGameScreen extends CustomizeScreenAbstract {
-    final SpriteBatch BATCH;                        // 用于绘制的SpriteBatch实例
-    final Stage MAIN_STAGE;                         // 总舞台
-    final Container<Actor> GUI_CONTAINER;           // GUI容器
+public class MainGameScreen extends DefaultScene {
 
-    public MainGameScreen() {
-        gameViewport.getCamera().position.set(gameViewport.getWorldWidth() / 2, gameViewport.getWorldHeight() / 2, 0);
-        this.BATCH = spriteBatch;
-        this.MAIN_STAGE = new Stage(uiViewport);
-        this.GUI_CONTAINER = new Container<>();
-        this.GUI_CONTAINER.setSize(
-            uiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
-            uiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
-        );
-        this.GUI_CONTAINER.setFillParent(true);
+    public MainGameScreen(final Main GAME) {
+        super(GAME);
     }
 
 
@@ -37,11 +28,12 @@ public class MainGameScreen extends CustomizeScreenAbstract {
 
     @Override
     public void render(float delta) {
-
+        super.render(delta);
     }
 
     @Override
     public void resize(int width, int height) {
+        super.resize(width, height);
     }
 
     @Override

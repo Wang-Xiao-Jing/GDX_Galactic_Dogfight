@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="nts.tsx"/>
+ <layer id="1" name="acg" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztzaERACAQA8G0AShAPfTfH6kigzixepukHjZs2grbvLy8vLy8vLy8vLy8H75lJ+zaA9XMd4k=
+  </data>
+ </layer>
+</map>
