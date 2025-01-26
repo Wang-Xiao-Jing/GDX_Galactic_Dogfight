@@ -98,17 +98,19 @@ public abstract class DefaultScene extends CustomScreenAbstract {
 
     /** 相机缩放 */
     public void scaleCamera(){
-        boolean add = Gdx.input.isKeyPressed(Input.Keys.EQUALS);
-        boolean minus = Gdx.input.isKeyPressed(Input.Keys.MINUS);
+        boolean amplify = Gdx.input.isKeyPressed(Input.Keys.EQUALS);
+        boolean reduce = Gdx.input.isKeyPressed(Input.Keys.MINUS);
         boolean reset = Gdx.input.isKeyPressed(Input.Keys.DEL);
         float ratio = 0.01f;
 
-        if (add){
-            cameraZoomRatio += ratio;
+        if (amplify){
+            amplifyCamera(ratio);
         }
-
-        if (minus){
-            cameraZoomRatio -= ratio;
+        if (reduce){
+            reduceCamera(ratio);
+        }
+        if (reset){
+            resetCamera();
         }
 
         if (cameraZoomRatio >= 2){
@@ -123,15 +125,21 @@ public abstract class DefaultScene extends CustomScreenAbstract {
             gameViewportHeight * globalScaleFactor * cameraZoomRatio
         );
 
-        if (reset){
-            cameraZoomRatio = 1;
-            gameViewport.setWorldSize(
-                gameViewportWidth * globalScaleFactor,
-                gameViewportHeight * globalScaleFactor
-            );
-        }
-
         camera.zoom = cameraZoomRatio;
+    }
+
+    public void resetCamera() {
+        cameraZoomRatio = 1;
+    }
+
+    /** 缩小相机 */
+    public void reduceCamera(float ratio) {
+        cameraZoomRatio -= ratio;
+    }
+
+    /** 放大相机 */
+    public void amplifyCamera(float ratio) {
+        cameraZoomRatio += ratio;
     }
 
     /** 玩家上移 */
