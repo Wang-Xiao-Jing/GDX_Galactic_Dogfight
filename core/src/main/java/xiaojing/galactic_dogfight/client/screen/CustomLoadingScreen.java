@@ -10,7 +10,7 @@ import xiaojing.galactic_dogfight.Main;
  * @author 尽
  * @apiNote 自定义加载画面
  */
-public abstract class CustomizeLoadingScreen extends CustomizeScreenAbstract{
+public abstract class CustomLoadingScreen extends CustomScreenAbstract{
     Main game;
     public float enterDuration;              // 进入过度时间
     public float exitDuration;               // 退出过度时间
@@ -21,11 +21,11 @@ public abstract class CustomizeLoadingScreen extends CustomizeScreenAbstract{
     public boolean isExit;                   // 退出动作是否完成
     public TemporalAction action;            // 动作
 
-    public CustomizeLoadingScreen(){
+    public CustomLoadingScreen(){
         this(0, 0);
     }
 
-    public CustomizeLoadingScreen(float enterDuration, float exitDuration){
+    public CustomLoadingScreen(float enterDuration, float exitDuration){
         this.enterDuration = enterDuration;
         this.exitDuration = exitDuration;
     }

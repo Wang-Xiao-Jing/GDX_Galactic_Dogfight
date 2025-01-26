@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import xiaojing.galactic_dogfight.Main;
-import xiaojing.galactic_dogfight.client.screen.CustomizeScreenAbstract;
+import xiaojing.galactic_dogfight.client.screen.CustomScreenAbstract;
 import xiaojing.galactic_dogfight.server.scene.DefaultScene;
 
 import static xiaojing.galactic_dogfight.Main.*;
@@ -23,7 +23,7 @@ public class MainGameScreen extends DefaultScene {
 
     @Override
     public void show() {
-
+        super.show();
     }
 
     @Override
@@ -38,21 +38,21 @@ public class MainGameScreen extends DefaultScene {
 
     @Override
     public void pause() {
-
+        super.pause();
     }
 
     @Override
     public void resume() {
-
+        super.resume();
     }
 
     @Override
     public void hide() {
-
+        super.hide();
     }
 
     @Override
     public void dispose() {
-
+        super.dispose();
     }
 }

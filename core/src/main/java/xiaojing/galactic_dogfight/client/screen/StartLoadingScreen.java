@@ -1,6 +1,5 @@
 package xiaojing.galactic_dogfight.client.screen;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +17,7 @@ import static xiaojing.galactic_dogfight.Main.*;
  * @author 尽
  * @apiNote 加载画面界面
  */
-public class StartLoadingScreen extends CustomizeLoadingScreen {
+public class StartLoadingScreen extends CustomLoadingScreen {
     final float DURATION = 0.8f;          // 过度时间
     final Stage MAIN_STAGE;               // 总舞台
     final CustomLabel loadingLabel;       // 加载提示标签
@@ -32,14 +31,14 @@ public class StartLoadingScreen extends CustomizeLoadingScreen {
 
     public StartLoadingScreen(Main game){
         this.game = game;
-        this.MAIN_STAGE = new Stage(uiViewport);
+        this.MAIN_STAGE = new Stage(guiViewport);
         this.bitmapFont = assetManager.get("texture/gui/loading/loading.fnt");
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.drawPixel(0, 0);
         TextureRegion region = new TextureRegion(new Texture(pixmap), 0, 0, 1, 1);
         pixmap.dispose();
-        lineSize = 10 * scaleFactor;
+        lineSize = 10 * globalScaleFactor;
 
         progressBar = new Image(region);
         background = new Image(region);
@@ -65,12 +64,12 @@ public class StartLoadingScreen extends CustomizeLoadingScreen {
             exitAction.act(delta);
         }
         start = 0;
-        end = start + uiViewport.getWorldWidth() * progressValue;
+        end = start + guiViewport.getWorldWidth() * progressValue;
         progressBar.setWidth(end);
         loadingLabel.setText(String.format("%.2f", progressValue * 100)+"%");
         loadingLabel.setPosition(
-            uiViewport.getWorldWidth() / 2 - loadingLabel.getPrefWidth() / 2,
-            uiViewport.getWorldHeight() / 2 - loadingLabel.getPrefHeight() / 2
+            guiViewport.getWorldWidth() / 2 - loadingLabel.getPrefWidth() / 2,
+            guiViewport.getWorldHeight() / 2 - loadingLabel.getPrefHeight() / 2
         );
     }
 

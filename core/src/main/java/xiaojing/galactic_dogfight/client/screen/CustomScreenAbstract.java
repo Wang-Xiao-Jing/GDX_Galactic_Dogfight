@@ -6,7 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
  * @author 尽
  * @apiNote 抽象类，所有自定义的Screen类都需要继承此类
  */
-public abstract class CustomizeScreenAbstract extends ScreenAdapter {
+public abstract class CustomScreenAbstract extends ScreenAdapter {
     /** 渲染 */
     @Override
     public void render(float delta){

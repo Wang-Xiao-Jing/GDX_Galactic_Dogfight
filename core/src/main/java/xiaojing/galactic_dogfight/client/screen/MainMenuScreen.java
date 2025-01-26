@@ -14,7 +14,7 @@ import static xiaojing.galactic_dogfight.Main.*;
  * @author 尽
  * @apiNote 主菜单屏幕
  */
-public class MainMenuScreen extends CustomizeScreenAbstract {
+public class MainMenuScreen extends CustomScreenAbstract {
     Main game;
     final Stage MAIN_STAGE;                         // 总舞台
     final Container<Actor> BACKGROUND_CONTAINER;    // 背景容器
@@ -29,7 +29,7 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
      */
     public MainMenuScreen(Main game) {
         this.game = game;
-        this.MAIN_STAGE = new Stage(uiViewport);
+        this.MAIN_STAGE = new Stage(guiViewport);
         Gdx.input.setInputProcessor(MAIN_STAGE);
         BACKGROUND_CONTAINER = new Container<>(new Image(assetManager.get("texture/gui/homepage/background.jpg", Texture.class)));
         GUI_CONTAINER = new Container<>();
@@ -49,18 +49,18 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
      */
     @Override
     public void render(float delta) {
-        guIspriteBatch.setProjectionMatrix(uiViewport.getCamera().combined); // 设置投影矩阵
-        uiViewport.apply();   // 应用视口
+        guiSpriteBatch.setProjectionMatrix(guiViewport.getCamera().combined); // 设置投影矩阵
+        guiViewport.apply();   // 应用视口
         MAIN_STAGE.draw();
         MAIN_STAGE.act(delta);
-        guIspriteBatch.begin();      // 开始绘制
-        guIspriteBatch.end();        // 结束绘制
+        guiSpriteBatch.begin();      // 开始绘制
+        guiSpriteBatch.end();        // 结束绘制
     }
 
     /** 交互 */
     @Override
     public void interactive() {
-        ((CustomizeGroup) GUI_CONTAINER.getChild(0)).interactive();
+        ((CustomGroup) GUI_CONTAINER.getChild(0)).interactive();
     }
 
     /**
@@ -69,8 +69,8 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
     @Override
     public void resize(int width, int height) {
         GUI_CONTAINER.setSize(
-            uiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
-            uiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
+            guiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
+            guiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
         );
         guiChildSize();
         if (loading){
@@ -81,7 +81,7 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
     /** 调整子元素大小 */
     @Override
     protected void guiChildSize() {
-        ((CustomizeGroup) GUI_CONTAINER.getChild(0)).adjustSize(
+        ((CustomGroup) GUI_CONTAINER.getChild(0)).adjustSize(
             GUI_CONTAINER.getWidth(),
             GUI_CONTAINER.getHeight()
         );
@@ -92,7 +92,7 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
      */
     @Override
     public void listener() {
-        ((CustomizeGroup) GUI_CONTAINER.getChild(0)).listener(this);
+        ((CustomGroup) GUI_CONTAINER.getChild(0)).listener(this);
     }
 
     /**
@@ -108,8 +108,8 @@ public class MainMenuScreen extends CustomizeScreenAbstract {
     public void switchPages(){
         listener();
         GUI_CONTAINER.setSize(
-            uiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
-            uiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
+            guiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
+            guiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
         );
         guiChildSize();
     }

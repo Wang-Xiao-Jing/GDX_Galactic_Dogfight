@@ -1,4 +1,4 @@
-package xiaojing.galactic_dogfight.server;
+package xiaojing.galactic_dogfight.server.unit;
 
 /**
  * 单位TAG
