@@ -10,8 +10,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.utils.Array;
 import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.screen.CustomScreenAbstract;
+import xiaojing.galactic_dogfight.server.unit.EntityUnit;
+import xiaojing.galactic_dogfight.server.unit.PlayerUnit;
+import xiaojing.galactic_dogfight.server.unit.UnitTag;
 
 import static com.badlogic.gdx.math.Vector2.Zero;
 import static xiaojing.galactic_dogfight.Main.*;
@@ -31,7 +35,10 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     private final float maxiMapX, maxiMapY;               // 地图最大坐标
     private float moveSpeed = 1;                          // 相机移动的速度
     protected final Vector2 resistance;                   // 空气阻力
-    public float CenterPointSize = 5;                     // 显示中心点大小
+    public float centerPointSize = 5;                     // 显示中心点大小
+    protected Array<EntityUnit> entityUnits;              // 单位
+
+//    public float cameraZoomRatio = 1;
 
     public DefaultScene(Main game) {
         GAME = game;
@@ -48,10 +55,17 @@ public abstract class DefaultScene extends CustomScreenAbstract {
             guiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
         );
         GUI_CONTAINER.setFillParent(true);
-        isCenterPoint = true;
+        isCenterPoint = false;
         resistance = Zero;
+        entityUnits = new Array<>();
+        entityUnits.add(new PlayerUnit());
+        entityUnits.add(new EntityUnit(new EntityUnit.EntityUnitBuilder().unitIdName("a").width(16).height(16).build()));
+        for (int i = 0; i < entityUnits.size; i++){
+            entityUnits.get(i).debug();
+        }
     }
 
+    // region 相机操作方法
     /** 获取相机位置X轴 */
     public float getCameraPositionX(){
         return gameViewport.getCamera().position.x;
@@ -60,6 +74,11 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     /** 设置相机位置X轴 */
     public void setCameraPositionX(float x){
         gameViewport.getCamera().position.x = x;
+    }
+
+    /** 移动相机位置X轴 */
+    public void translateCameraPositionX(float x){
+        gameViewport.getCamera().position.x += x;
     }
 
     /** 获取相机位置Y轴 */
@@ -72,6 +91,11 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         gameViewport.getCamera().position.y = y;
     }
 
+    /** 移动相机位置Y轴 */
+    public void translateCameraPositionY(float y){
+        gameViewport.getCamera().position.y += y;
+    }
+
     /** 获取相机位置 */
     public Vector3 getCameraPosition(){
         return gameViewport.getCamera().position;
@@ -81,6 +105,12 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     public void setCameraPosition(float x, float y){
         gameViewport.getCamera().position.x = x;
         gameViewport.getCamera().position.y = y;
+    }
+
+    /** 移动相机位置 */
+    public void translateCameraPositionY(float x, float y){
+        gameViewport.getCamera().position.y += y;
+        gameViewport.getCamera().position.x += x;
     }
 
     /** 设置相机位置 */
@@ -103,10 +133,10 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         boolean reset = Gdx.input.isKeyPressed(Input.Keys.DEL);
         float ratio = 0.01f;
 
-        if (amplify){
+        if (reduce){
             amplifyCamera(ratio);
         }
-        if (reduce){
+        if (amplify){
             reduceCamera(ratio);
         }
         if (reset){
@@ -128,6 +158,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         camera.zoom = cameraZoomRatio;
     }
 
+    /** 重置相机 */
     public void resetCamera() {
         cameraZoomRatio = 1;
     }
@@ -141,25 +172,39 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     public void amplifyCamera(float ratio) {
         cameraZoomRatio += ratio;
     }
+    // endregion
 
+    // region 玩家移动
     /** 玩家上移 */
     public void playerMoveUp(float distance){
-        gameViewport.getCamera().position.y += distance;
+        translateCameraPositionY(distance);
+        if(getPlayerUnit()!=null){
+            getPlayerUnit().translateUnitY(distance);
+        }
     }
 
     /** 玩家下移 */
     public void playerMoveDown(float distance){
-        gameViewport.getCamera().position.y -= distance;
+        translateCameraPositionY(-distance);
+        if(getPlayerUnit()!=null) {
+            getPlayerUnit().translateUnitY(-distance);
+        }
     }
 
     /** 玩家左移 */
     public void playerMoveLeft(float distance){
-        gameViewport.getCamera().position.x -= distance;
+        translateCameraPositionX(-distance);
+        if(getPlayerUnit()!=null) {
+            getPlayerUnit().translateUnitX(-distance);
+        }
     }
 
     /** 玩家右移 */
     public void playerMoveRight(float distance){
-        gameViewport.getCamera().position.x += distance;
+        translateCameraPositionX(distance);
+        if(getPlayerUnit()!=null) {
+            getPlayerUnit().translateUnitX(distance);
+        }
     }
 
     /** 移动 */
@@ -214,6 +259,18 @@ public abstract class DefaultScene extends CustomScreenAbstract {
             setCameraPositionY(0);
         }
     }
+    // endregion
+
+    /** 获取玩家 */
+    public PlayerUnit getPlayerUnit() {
+        for(int i = 0; i < entityUnits.size; i++){
+            if(entityUnits.get(i).getUnitName().equals("galactic_dogfight:player")){
+                return (PlayerUnit)entityUnits.get(i);
+            }
+        }
+        // 等待处理
+        return null;
+    }
 
     @Override
     public void show() {
@@ -244,17 +301,24 @@ public abstract class DefaultScene extends CustomScreenAbstract {
 
     /** 游戏渲染 */
     public void gameSpriteBatchBegin(){
+        unitRender();
+    }
 
+    /** 单位渲染 */
+    public void unitRender(){
+        for(int i = 0; i < entityUnits.size; i++){
+            entityUnits.get(i).draw(gameSpriteBatch);
+        }
     }
 
     /** GUI 渲染 */
     public void guiSpriteBatchBegin(){
         if (isCenterPoint) {
             guiSpriteBatch.draw(
-                pixelTexture, guiViewport.getWorldWidth()/2 - CenterPointSize/2,
-                guiViewport.getWorldHeight()/2 - CenterPointSize/2,
-                CenterPointSize,
-                CenterPointSize
+                pixelTexture, guiViewport.getWorldWidth()/2 - centerPointSize /2,
+                guiViewport.getWorldHeight()/2 - centerPointSize /2,
+                centerPointSize,
+                centerPointSize
             );
         }
     }

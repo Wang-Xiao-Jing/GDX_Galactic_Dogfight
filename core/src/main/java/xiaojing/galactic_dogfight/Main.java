@@ -33,10 +33,10 @@ public class Main extends Game {
     public static Texture emptyTexture;                        // 空纹理
     public static SpriteBatch guiSpriteBatch;                  // 渲染器
     public static SpriteBatch gameSpriteBatch;                 // 渲染器
-    public static ScreenViewport guiViewport;                   // UI窗口适配器
+    public static ScreenViewport guiViewport;                  // UI窗口适配器
     public static ExtendViewport gameViewport;                 // 游戏场景窗口适配器
     public static BitmapFont defaultFont;                      // 默认字体
-    public static BitmapFont customFont;                       // 自定义字体
+//    public static BitmapFont customFont;                     // 自定义字体
     public static Texture pixelTexture;                        // 通用像素染色白图
     public static float globalScaleFactor = 0.3f;              // 缩放比例
     public static AssetManager assetManager;                   // 资源管理器
@@ -84,17 +84,17 @@ public class Main extends Game {
         FileHandleResolver resolver = new InternalFileHandleResolver();
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
-        FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        mySmallFont.fontFileName = "fonts/silver/silver.ttf";
-        mySmallFont.fontParameters.size = 19;
-        assetManager.load("texture/gui/loading/loading.fnt", BitmapFont.class);      // 加载界面字体
+//        FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+//        mySmallFont.fontFileName = "fonts/silver/silver.ttf";
+//        mySmallFont.fontParameters.size = 19;
+        assetManager.load("fonts/loading/loading.fnt", BitmapFont.class);            // 加载界面字体
         assetManager.load("texture/gui/homepage/background.jpg", Texture.class);     // 主页背景
-        assetManager.load("fonts/silver/silver.fnt", BitmapFont.class);
-        assetManager.load("fonts/silver/silver.ttf", BitmapFont.class, mySmallFont);
+        assetManager.load("fonts/silver/silver.fnt", BitmapFont.class);              // 默认字体
+//        assetManager.load("fonts/silver/silver.ttf", BitmapFont.class, mySmallFont);
         assetManager.load("texture/gui/pixel.png", Texture.class);                   // 通用像素染色白图
         assetManager.load("texture/gui/homepage/title.png", Texture.class);          // 主页标题
         assetManager.load("texture/gui/test/test.json", Skin.class);                 // 测试gui皮肤
-        assetManager.load("texture/gui/loading/loading.json", Skin.class);           //
+        assetManager.load("texture/gui/loading/loading.json", Skin.class);           // 加载界面皮肤
     }
 
     @Override
@@ -119,7 +119,7 @@ public class Main extends Game {
             if (loadingTime >= 1f){
                 disposeLoadingScreen();             // 释放加载界面
                 loadingTime = 0;                    // 重置时间
-                loading = false;                     // 允许交互
+                loading = false;                    // 允许交互
                 mainMenuScreen.listener();          // 监听器
             }
             // 初始化资源
@@ -129,9 +129,10 @@ public class Main extends Game {
                 defaultFont.setUseIntegerPositions(true);
                 defaultFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
                 // 使用 FreeType
-                customFont = assetManager.get("fonts/silver/silver.ttf", BitmapFont.class);
-                customFont.setUseIntegerPositions(true);
-                customFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
+//                customFont = assetManager.get("fonts/silver/silver.ttf", BitmapFont.class);
+//                customFont.setUseIntegerPositions(true);
+//                customFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
+
                 pixelTexture = assetManager.get("texture/gui/pixel.png", Texture.class); // 赋值通用像素染色白图
 
                 mainMenuScreen = new MainMenuScreen(this);  // 创建菜单
@@ -144,14 +145,14 @@ public class Main extends Game {
         }
 
         // 切换时间递增
-        if (assetManager.isLoaded("texture/gui/loading/loading.fnt") && loading){
+        if (assetManager.isLoaded("fonts/loading/loading.fnt") && loading){
             loadingTime += delta;
         }
 
         super.render();
 
         // 渲染加载界面
-        if(assetManager.isLoaded("texture/gui/loading/loading.fnt") && loading) {
+        if(assetManager.isLoaded("fonts/loading/loading.fnt") && loading) {
             // 初始化加载界面
             if (!isInitializationLoadingScreenDone){
                 setLoadingScreen(new StartLoadingScreen(this));

@@ -52,10 +52,14 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         labelContainer.setHeight(labelContainer.defaults().getPrefHeight());
         labelContainer.top().left();
         adjustSize();
-        gameAssetManager.load("texture/bullet/template_bullet.png", Texture.class);
-        gameAssetManager.load("texture/enemy/template_enemy.png", Texture.class);
+        gameAssetManager.load("texture/sprite/bullet/template_bullet.png", Texture.class);
+        gameAssetManager.load("texture/sprite/enemy/template_enemy.png", Texture.class);
         gameAssetManager.load("texture/outerSpace/outerSpace.png", Texture.class);
         gameAssetManager.load("demo/map/map.tmx", TiledMap.class);
+        gameAssetManager.load("texture/gui/game/button.json", Skin.class);
+        gameAssetManager.load("texture/gui/game/panel.json", Skin.class);
+        gameAssetManager.load("texture/gui/game/player_detailed_panel.json", Skin.class);
+        gameAssetManager.load("texture/sprite/player/template_player.png", Texture.class);
         ((AlphaAction)action).setAlpha(0);
         action.setDuration(duration);
         action.setReverse(true);
@@ -90,6 +94,7 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         }
     }
 
+    // 调整大小时调用
     @Override
     public void adjustSize() {
         labelContainer.setWidth(
@@ -105,7 +110,7 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         progressBar.setPosition(progressBarBackground.getX(), progressBarBackground.getY());
     }
 
-
+    // 加载完成后调用
     @Override
     public void complete(){
         if (!isExit) return;
@@ -118,6 +123,7 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         main_stage.dispose();
     }
 
+    /**  提示轮播 */
     public String PlayPrompt() {
         Random random = new Random();
         String[] txt ={

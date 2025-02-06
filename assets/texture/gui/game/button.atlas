@@ -1,0 +1,17 @@
+button.png
+size: 128, 128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+button_light_effect_background
+  xy: 0, 0
+  size: 36, 36
+  index: -1
+equipment_button
+  xy: 0, 37
+  size: 16, 16
+  index: 1
+set_button
+  xy: 17, 37
+  size: 16, 16
+  index: 1

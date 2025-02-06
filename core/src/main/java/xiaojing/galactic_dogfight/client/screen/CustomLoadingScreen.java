@@ -11,7 +11,7 @@ import xiaojing.galactic_dogfight.Main;
  * @apiNote 自定义加载画面
  */
 public abstract class CustomLoadingScreen extends CustomScreenAbstract{
-    Main game;
+    Main game;                               // 游戏实例
     public float enterDuration;              // 进入过度时间
     public float exitDuration;               // 退出过度时间
     public Stage main_stage;                 // 主舞台
@@ -31,9 +31,7 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract{
     }
 
     /**
-     * 渲染
-     *
-     * @param delta
+     * 渲染时调用
      */
     @Override
     public void render(float delta) {
@@ -63,7 +61,7 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract{
         exitAction.act(delta);
     }
 
-    /** 完成之后执行 */
+    /** 完成之后调用 */
     public void complete(){
     }
 }

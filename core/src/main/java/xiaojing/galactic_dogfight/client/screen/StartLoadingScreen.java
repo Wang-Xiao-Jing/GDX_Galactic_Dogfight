@@ -1,5 +1,6 @@
 package xiaojing.galactic_dogfight.client.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,7 +33,9 @@ public class StartLoadingScreen extends CustomLoadingScreen {
     public StartLoadingScreen(Main game){
         this.game = game;
         this.MAIN_STAGE = new Stage(guiViewport);
-        this.bitmapFont = assetManager.get("texture/gui/loading/loading.fnt");
+        this.bitmapFont = assetManager.get("fonts/loading/loading.fnt");
+        bitmapFont.setUseIntegerPositions(true);
+//        bitmapFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.drawPixel(0, 0);

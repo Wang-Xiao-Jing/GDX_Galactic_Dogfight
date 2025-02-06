@@ -1,0 +1,15 @@
+panel.png
+size: 128, 128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+panel1
+  xy: 0, 0
+  size: 18, 29
+  split: 5, 5, 6, 5
+  pad: 6, 1, 1, 1
+  index: 0
+panel2
+  xy: 0, 30
+  size: 75, 75
+  index: -1

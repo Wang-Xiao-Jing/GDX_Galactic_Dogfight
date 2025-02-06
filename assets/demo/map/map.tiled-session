@@ -5,11 +5,11 @@
     ],
     "fileStates": {
         "map.tmx": {
-            "scale": 5.5,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 39.09090909090909,
-                "y": 45.09090909090909
+                "x": 349.33333333333337,
+                "y": 240.66666666666669
             }
         },
         "nts.tsx": {
@@ -21,6 +21,7 @@
         "map.tmx",
         "nts.tsx"
     ],
+    "project": "",
     "recentFiles": [
         "nts.tsx",
         "map.tmx"
