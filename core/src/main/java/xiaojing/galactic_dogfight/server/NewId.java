@@ -1,12 +1,14 @@
 package xiaojing.galactic_dogfight.server;
 
+import java.util.regex.Pattern;
+
 /**
  * @author 尽
  * @apiNote  创建单位ID类
  */
 public class NewId {
     public static final String ID = "galactic_dogfight";
-    private static final String ALLOW_CHARACTERS = "abcdefghijklnmopqrstuvwxiz1234567890_-.";
+    private static final String ALLOW_CHARACTERS = "[^(a-z0-9_\\-.)]";
     public static final String UNIT = "unit";
 
     /** 默认单位ID */
@@ -28,16 +30,7 @@ public class NewId {
 
     /** 判断字符串 */
     private static boolean stringRules(String string) {
-        int count = 0;
-        for (int i = 0; i < string.length(); i++){
-            for (int j = 0; j < ALLOW_CHARACTERS.length(); j++){
-                if (string.charAt(i) == ALLOW_CHARACTERS.charAt(j)){
-                    count++;
-                    break;
-                }
-            }
-        }
-        return count == string.length() - 1;
+        return Pattern.matches(ALLOW_CHARACTERS, string);
     }
 
     /**
@@ -45,6 +38,7 @@ public class NewId {
      * <br/>
      * 判断名称和命名名称ID是否符合规则
      */
+    // TODO
     public static String newUnitIdName(String unitNamingID, String unitName){
         if (!stringRules(unitNamingID)) {
             unitNamingID = "mod";
