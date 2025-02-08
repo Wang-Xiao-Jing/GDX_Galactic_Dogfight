@@ -1,15 +1,13 @@
 package xiaojing.galactic_dogfight.server.unit;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 
-import static com.badlogic.gdx.math.Vector2.Zero;
 import static xiaojing.galactic_dogfight.Main.emptyTexture;
 import static xiaojing.galactic_dogfight.server.NewId.newUnitIdName;
 import static xiaojing.galactic_dogfight.server.unit.UnitType.EMPTY;
 
 /**
- * @apiNote {@link EntityUnit} 构建器
+ * @apiNote {@link Entity} 构建器
  * @author 尽
  */
 public class EntityUnitBuilder {

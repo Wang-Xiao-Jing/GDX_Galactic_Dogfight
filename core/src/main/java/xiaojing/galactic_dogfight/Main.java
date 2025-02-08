@@ -41,7 +41,7 @@ public class Main extends Game {
     public static float globalScaleFactor = 0.3f;              // 缩放比例
     public static AssetManager assetManager;                   // 资源管理器
     public static AssetManager gameAssetManager;               // 资源管理器
-    public static float delta = 0;
+    public float delta = 0;
     public static float cameraZoomRatio = 1f;                  // 相机缩放倍率
     public static float gameViewportWidth = 1920f;             // 相机缩放倍率
     public static float gameViewportHeight = 1080f;            // 相机缩放倍率
