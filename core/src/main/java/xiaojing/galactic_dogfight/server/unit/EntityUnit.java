@@ -35,6 +35,7 @@ import static xiaojing.galactic_dogfight.server.unit.UnitType.EMPTY;
  * @author 尽
  * @apiNote 实体单位
  */
+// TODO - Entity and Actor.
 public class EntityUnit extends Sprite {
     private final String unitIdName;                // 单位标识符
     protected final Array<EntityUnit> sonUnit;      // 子单位

@@ -9,7 +9,7 @@ import static xiaojing.galactic_dogfight.Main.gameAssetManager;
  * @author 尽
  * @apiNote 玩家单位
  */
-public class PlayerUnit extends EntityUnit{
+public class PlayerUnit extends EntityUnit {
     public final String playerName;
 
     public PlayerUnit() {

@@ -1,6 +1,7 @@
 package xiaojing.galactic_dogfight.server.unit;
 
 /** 单位类型 */
+//TODO
 public enum UnitType {
     /** 空 */
     EMPTY      ("empty"),
