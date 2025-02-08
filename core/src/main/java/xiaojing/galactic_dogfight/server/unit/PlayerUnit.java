@@ -21,6 +21,6 @@ public class PlayerUnit extends EntityUnit {
             .build());
         playerName = "player";
 //        debug();
-        setBoundsColor(Color.GREEN);
+//        setBoundsColor(Color.GREEN);
     }
 }

@@ -14,8 +14,8 @@ import com.badlogic.gdx.utils.Array;
 import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.screen.CustomScreenAbstract;
 import xiaojing.galactic_dogfight.server.unit.EntityUnit;
+import xiaojing.galactic_dogfight.server.unit.EntityUnitBuilder;
 import xiaojing.galactic_dogfight.server.unit.PlayerUnit;
-import xiaojing.galactic_dogfight.server.unit.UnitTag;
 
 import static com.badlogic.gdx.math.Vector2.Zero;
 import static xiaojing.galactic_dogfight.Main.*;
@@ -27,14 +27,15 @@ import static xiaojing.galactic_dogfight.Main.*;
 public abstract class DefaultScene extends CustomScreenAbstract {
     protected final Main GAME;                            // 游戏实例
     protected final Stage GUI_MAIN_STAGE;                 // GUI总舞台
+    protected final Stage STAGE;                          // 总舞台
     protected final Container<Actor> GUI_CONTAINER;       // GUI容器
     protected boolean isCenterPoint;                      // 是否显示屏幕中心点
     protected TiledMap map;                               // 地图
-    protected final OrthogonalTiledMapRenderer renderer;  // 正交相机渲染
-    protected final OrthographicCamera camera;            // 正交相机
-    private final float maxiMapX, maxiMapY;               // 地图最大坐标
+    protected final OrthogonalTiledMapRenderer RENDERER;  // 正交相机渲染
+    protected final OrthographicCamera CAMERA;            // 正交相机
+    private final float MAXI_MAP_X, MAXI_MAP_Y;           // 地图最大坐标
     private float moveSpeed = 1;                          // 相机移动的速度
-    protected final Vector2 resistance;                   // 空气阻力
+    protected float resistance;                           // 空气阻力
     public float centerPointSize = 5;                     // 显示中心点大小
     protected Array<EntityUnit> entityUnits;              // 单位
 
@@ -43,12 +44,13 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     public DefaultScene(Main game) {
         GAME = game;
         map = gameAssetManager.get("demo/map/map.tmx");
-        maxiMapX = map.getProperties().get("width", Integer.class) * map.getProperties().get("tilewidth", Integer.class);
-        maxiMapY = map.getProperties().get("height", Integer.class) * map.getProperties().get("tileheight", Integer.class);
-        renderer = new OrthogonalTiledMapRenderer(map, 1);
-        camera = (OrthographicCamera) gameViewport.getCamera();
-        gameSpriteBatch.setProjectionMatrix(camera.combined);
+        MAXI_MAP_X = map.getProperties().get("width", Integer.class) * map.getProperties().get("tilewidth", Integer.class);
+        MAXI_MAP_Y = map.getProperties().get("height", Integer.class) * map.getProperties().get("tileheight", Integer.class);
+        RENDERER = new OrthogonalTiledMapRenderer(map, 1);
+        CAMERA = (OrthographicCamera) gameViewport.getCamera();
+        gameSpriteBatch.setProjectionMatrix(CAMERA.combined);
         GUI_MAIN_STAGE = new Stage(guiViewport);
+        STAGE = new Stage(gameViewport, gameSpriteBatch);
         GUI_CONTAINER = new Container<>();
         GUI_CONTAINER.setSize(
             guiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
@@ -56,13 +58,14 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         );
         GUI_CONTAINER.setFillParent(true);
         isCenterPoint = false;
-        resistance = Zero;
         entityUnits = new Array<>();
-        entityUnits.add(new PlayerUnit());
-        entityUnits.add(new EntityUnit(new EntityUnit.EntityUnitBuilder().unitIdName("a").width(16).height(16).build()));
-        for (int i = 0; i < entityUnits.size; i++){
-            entityUnits.get(i).debug();
-        }
+//        entityUnits.add(new PlayerUnit());
+//        entityUnits.add(new EntityUnit(new EntityUnit.EntityUnitBuilder().unitIdName("a").width(16).height(16).build()));
+//        for (int i = 0; i < entityUnits.size; i++){
+//            entityUnits.get(i).debug();
+//        }
+        STAGE.addActor(new PlayerUnit());
+        STAGE.addActor(new EntityUnit(new EntityUnitBuilder().unitIdName("a").width(16).height(16).position(50,50).build()));
     }
 
     // region 相机操作方法
@@ -155,7 +158,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
             gameViewportHeight * globalScaleFactor * cameraZoomRatio
         );
 
-        camera.zoom = cameraZoomRatio;
+        CAMERA.zoom = cameraZoomRatio;
     }
 
     /** 重置相机 */
@@ -246,11 +249,11 @@ public abstract class DefaultScene extends CustomScreenAbstract {
             playerMoveDown(moveSpeed);
         }
 
-        if (getCameraPositionX()>=maxiMapX){
-            setCameraPositionX(maxiMapX);
+        if (getCameraPositionX()>= MAXI_MAP_X){
+            setCameraPositionX(MAXI_MAP_X);
         }
-        if (getCameraPositionY()>=maxiMapY){
-            setCameraPositionY(maxiMapY);
+        if (getCameraPositionY()>= MAXI_MAP_Y){
+            setCameraPositionY(MAXI_MAP_Y);
         }
         if (getCameraPositionX()<=0){
             setCameraPositionX(0);
@@ -285,12 +288,15 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         time += delta;
         playerMove();
 //        gameViewport.getCamera().update();
-        camera.update();
+        CAMERA.update();
 //        gameViewport.apply();
         guiViewport.apply();
-        renderer.setView(camera);
-        renderer.render();
-        gameSpriteBatch.setProjectionMatrix(camera.combined); // 设置投影矩阵
+//        gameViewport.apply();
+        RENDERER.setView(CAMERA);
+        RENDERER.render();
+        gameSpriteBatch.setProjectionMatrix(CAMERA.combined); // 设置投影矩阵
+        STAGE.draw();
+        STAGE.act(delta);
         gameSpriteBatch.begin();
         gameSpriteBatchBegin();
         gameSpriteBatch.end();
@@ -301,15 +307,15 @@ public abstract class DefaultScene extends CustomScreenAbstract {
 
     /** 游戏渲染 */
     public void gameSpriteBatchBegin(){
-        unitRender();
+//        unitRender();
     }
 
-    /** 单位渲染 */
-    public void unitRender(){
-        for(int i = 0; i < entityUnits.size; i++){
-            entityUnits.get(i).draw(gameSpriteBatch);
-        }
-    }
+//    /** 单位渲染 */
+//    public void unitRender(){
+////        for(int i = 0; i < entityUnits.size; i++){
+////            entityUnits.get(i).draw(gameSpriteBatch);
+////        }
+//    }
 
     /** GUI 渲染 */
     public void guiSpriteBatchBegin(){
@@ -345,7 +351,8 @@ public abstract class DefaultScene extends CustomScreenAbstract {
 
     @Override
     public void dispose() {
-        renderer.dispose();
+        RENDERER.dispose();
         GUI_MAIN_STAGE.dispose();
+        STAGE.dispose();
     }
 }
