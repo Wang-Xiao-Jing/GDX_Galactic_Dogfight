@@ -1,43 +1,72 @@
 package xiaojing.galactic_dogfight.server;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import space.earlygrey.shapedrawer.ShapeDrawer;
+import xiaojing.galactic_dogfight.server.inputProcessor.KeyProcessor;
+import xiaojing.galactic_dogfight.server.player.Player;
 import xiaojing.galactic_dogfight.server.unit.Entity;
 
-import static xiaojing.galactic_dogfight.Main.cameraZoomRatio;
+import static xiaojing.galactic_dogfight.Main.*;
+import static xiaojing.galactic_dogfight.server.InputConfiguration.*;
 
 /**
  * @author 尽
  * @apiNote 默认相机
  */
-public class DefaultCamera{
-    private float moveSpeed = 150;          // 相机移动的速度
+public class DefaultCamera implements KeyProcessor {
+    private float moveSpeed = 100;          // 相机移动的速度
     private float acceleration = 1;         // 加速度
-    private float currentMoveSpeed = 150;   // 当前速度
-    private float temporarySpeed;           // 临时速度存储
-    private boolean isTimeElapsed;          // 是否延迟
-    private Vector2 previousPosition;       // 上次位置
-    private Vector2 currentPosition;        // 当前位置
-    private int frameCount;                 // 帧数
+    private float currentSpeed = 100;       // 当前速度
 
     public final OrthographicCamera camera; // 相机
-    public float speed;                     // 速度
+    private float speed;                    // 速度
 
+    private boolean zoomIn;
+    private boolean zoomOut;
+    private boolean resetZoom;
 
     public DefaultCamera(final Camera camera){
         this.camera = (OrthographicCamera) camera;
+        initialize();
     }
 
     public DefaultCamera(){
         this.camera = new OrthographicCamera();
+        initialize();
     }
 
     public DefaultCamera(Viewport viewport){
         this.camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
+        initialize();
+    }
+
+    /** 初始化 */
+    public void initialize(){
+        shapeDrawer = new ShapeDrawer(gameSpriteBatch, new TextureRegion(pixelTexture));
+        previousPosition = new Vector2();
+        addInputProcessor();
+    }
+
+    /** 更新按键状态 */
+    @Override
+    public void updateKeyState(int keycode, boolean state) {
+        if (keycode == zoomInKey) {
+            zoomIn = state;
+        }
+        if (keycode == zoomOutKey) {
+            zoomOut = state;
+        }
+        if (keycode == resetZoomKey) {
+            resetZoom = state;
+        }
     }
 
     /** 获取相机位置X轴 */
@@ -89,6 +118,11 @@ public class DefaultCamera{
         camera.translate(x, y);
     }
 
+    /** 移动相机位置 */
+    public void translate(Vector2 vector2){
+        camera.translate(vector2);
+    }
+
     /** 设置相机位置 */
     public void setPosition(Vector2 position){
         camera.position.x = position.x;
@@ -97,11 +131,7 @@ public class DefaultCamera{
 
     /** 相机缩放 */
     public void scale() {
-        boolean zoomIn = Gdx.input.isKeyPressed(Input.Keys.EQUALS);
-        boolean zoomOut = Gdx.input.isKeyPressed(Input.Keys.MINUS);
-        boolean resetZoom = Gdx.input.isKeyPressed(Input.Keys.DEL);
         float zoomRatio = 0.01f;
-
         if (zoomOut) {
             reduceZoom(zoomRatio);
         }
@@ -137,66 +167,95 @@ public class DefaultCamera{
         cameraZoomRatio += ratio;
     }
 
+    protected transient ShapeDrawer shapeDrawer;         // 绘制器
+    protected transient Color BoundsColor = Color.WHITE; // 矩形框颜色
+    protected transient boolean bugBox = true;                  // 是否显示矩形框
+
+    protected void drawDebugBounds(float extremeDistance, Vector2 targetPosition) {
+        if (!bugBox) return;
+        shapeDrawer.circle(getX(), getY(), extremeDistance);
+        shapeDrawer.circle(targetPosition.x, targetPosition.y, 10);
+        shapeDrawer.line(new Vector2(getX(), getY()), targetPosition);
+    }
+
+    private float temporarySpeed;           // 临时速度存储
+    private boolean isTimeElapsed;          // 是否延迟
+    private Vector2 previousPosition;       // 上次位置
+    private Vector2 currentPosition;        // 当前位置
+    private int frameCount;                 // 帧计数
+    private float accumulatedSpeedChange;   // 累积的速度变化
+
     /** 移动到目标 */
-    public void moveTarget(float delta, Entity targetEntity) {
+    public void moveTarget(float delta, Entity entity) {
+        updateSpeed();
         // 获取目标实体的位置
-        Vector2 targetPosition = targetEntity.getUnitOriginPosition();
+        Vector2 targetPosition = entity.getOriginPosition();
         // 计算从当前位置到目标位置的方向向量
         Vector2 direction = new Vector2(targetPosition.x - getX(), targetPosition.y - getY());
         // 计算当前位置与目标位置之间的距离
         float distance = direction.len();
-        float speedChange;
+        direction.nor().scl(distance * entity.getSpeed()*0.01F * delta);
+        if (entity instanceof Player player && player.isMove()){
+            translate(getMoveVector((player.isDown ? player.getSpeed()*0.1F : -player.getSpeed() * player.getRetreatSpeed() * 0.1F)* delta, player));
+        }
+        {
+            translate(direction);
+        }
 
-        // 检查是否是时间流逝的开始，用于初始化速度计算
+    }
+
+    private Vector2 getMoveVector(float distance, Entity entity) {
+        // 计算方向向量（基于当前旋转角度）
+        Vector2 direction = new Vector2(1, 0); // 初始方向向量 (1, 0) 表示向右
+        direction.setAngleRad(entity.getRotation() * MathUtils.degreesToRadians); // 根据旋转角度设置方向向量
+        // 计算移动向量
+        // 方向向量乘以距离
+        return new Vector2(direction).scl(distance);
+    }
+
+    /** 检查是否是时间流逝的开始，用于初始化速度计算 */
+    private void updateSpeed() {
+        Vector2 currentPosition = getPosition();
+        float speedChange = currentPosition.dst(previousPosition);
+
         if (!isTimeElapsed) {
             isTimeElapsed = true;
-            previousPosition = getPosition();
+            previousPosition = currentPosition;
+            return;
+        }
+
+        // 如果速度变化为0，则重置速度
+        if (speedChange == 0) {
+            currentSpeed = 0;
         } else {
-            isTimeElapsed = false;
-            currentPosition = getPosition();
-            // 计算当前帧的速度变化
-            speedChange = currentPosition.dst(previousPosition);
-            // 如果速度变化为0，则重置速度
-            if (speedChange == 0) {
-                speed = 0;
-            }
-            // 根据速度变化调整速度
-            if (frameCount == 3) {
-                speed = temporarySpeed / 3;
-                temporarySpeed = 0;
-                frameCount = 0;
-            }
-            temporarySpeed += speedChange;
+            accumulatedSpeedChange += speedChange;
             frameCount++;
         }
 
-        // 根据距离和当前移动速度更新位置
-        if (distance >= currentMoveSpeed * delta) {
-            // 方向向量标准化
-            direction.nor();
-            // 根据方向和速度移动
-            translate(direction.x * currentMoveSpeed * delta, direction.y * currentMoveSpeed * delta);
-            // 根据摄像机视口尺寸计算极限距离
-            // TODO 还需要优化极限速度调节添加回弹缓冲
-            float extremeDistance = (camera.viewportWidth > camera.viewportHeight) ? camera.viewportHeight / 3 : camera.viewportWidth / 3;
-            // 如果目标实体与当前实体之间的距离超过极限距离，则加速移动
-            if (targetEntity.getUnitPosition().dst(getPosition()) >= extremeDistance) {
-                currentMoveSpeed += currentMoveSpeed * acceleration * delta;
-                return;
-            }
-            // 如果当前移动速度小于目标实体的速度，则加速到目标速度
-            if (currentMoveSpeed < targetEntity.getSpeed()) {
-                currentMoveSpeed += currentMoveSpeed * acceleration * delta;
-                return;
-            }
-            // 如果当前移动速度达到或超过目标实体的速度，则保持目标速度
-            if (currentMoveSpeed >= targetEntity.getSpeed()) {
-                currentMoveSpeed = targetEntity.getSpeed();
-            }
-        } else {
-            // 如果目标很近，直接移动到目标位置并重置速度
-            setPosition(targetPosition.x, targetPosition.y);
-            currentMoveSpeed = moveSpeed;
+        // 根据速度变化调整速度
+        if (frameCount == 3) {
+            currentSpeed = accumulatedSpeedChange / 3;
+            accumulatedSpeedChange = 0;
+            frameCount = 0;
         }
+
+        previousPosition = currentPosition;
     }
+
+    /** 获取速度 */
+    public float getSpeed() {
+        return speed;
+    }
+
+    /** 获取当前移动速度 */
+    public float getCurrentSpeed(){
+        return currentSpeed;
+    }
+
+    public void update(float delta, Entity entity) {
+        moveTarget(delta, entity);
+        scale();
+        camera.update();
+    }
+
 }

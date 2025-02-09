@@ -2,6 +2,7 @@ package xiaojing.galactic_dogfight;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -23,6 +24,7 @@ import com.kotcrab.vis.ui.VisUI;
 import xiaojing.galactic_dogfight.client.screen.CustomLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.StartLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.MainMenuScreen;
+import xiaojing.galactic_dogfight.server.inputProcessor.GameInputProcessor;
 
 /**
  * @author 尽
@@ -58,7 +60,9 @@ public class Main extends Game {
     private boolean isInitializationLoadingScreenDone = false;  // 初始化加载界面
     public boolean loading;                                     // 是否加载
     private MainMenuScreen mainMenuScreen;                      // 菜单界面
-    private CustomLoadingScreen loadingScreen;                  // 加载界面
+    private CustomLoadingScreen loadingScreen;
+
+    public static InputMultiplexer multiplexer;                 // 输入处理器
 
     /**
      * 初始化
@@ -72,6 +76,8 @@ public class Main extends Game {
         initializeAssetManager();
         VisUI.load();
         loading = true;
+        multiplexer = new InputMultiplexer();
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     /** 资源载入 */

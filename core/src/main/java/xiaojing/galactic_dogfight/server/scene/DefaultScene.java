@@ -1,7 +1,5 @@
 package xiaojing.galactic_dogfight.server.scene;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,7 +10,7 @@ import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 import xiaojing.galactic_dogfight.client.screen.CustomScreenAbstract;
 import xiaojing.galactic_dogfight.server.DefaultCamera;
 import xiaojing.galactic_dogfight.server.unit.Entity;
-import xiaojing.galactic_dogfight.server.unit.EntityUnitBuilder;
+import xiaojing.galactic_dogfight.server.unit.EntityBuilder;
 import xiaojing.galactic_dogfight.server.player.Player;
 
 import static xiaojing.galactic_dogfight.Main.*;
@@ -67,79 +65,8 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         isCenterPoint = false;
         CAMERA.camera.position.set(player.getOriginX(),player.getOriginY(),0);
         STAGE.addActor(player);
-        STAGE.addActor(new Entity(new EntityUnitBuilder().unitIdName("a").width(16).height(16).position(50,50).build()));
+        STAGE.addActor(new Entity(new EntityBuilder().unitIdName("a").width(16).height(16).position(50,50).build()));
     }
-
-    // region 玩家移动
-    /** 玩家上移 */
-    public void playerMoveUp(float distance){
-//        camera.translate(distance);
-        if(getPlayer()!=null){
-            getPlayer().translateUnitY(distance);
-        }
-    }
-
-    /** 玩家下移 */
-    public void playerMoveDown(float distance){
-//        camera.translate(-distance);
-        if(getPlayer()!=null) {
-            getPlayer().translateUnitY(-distance);
-        }
-    }
-
-    /** 玩家左移 */
-    public void playerMoveLeft(float distance){
-//        camera.translateX(-distance);
-        if(getPlayer()!=null) {
-            getPlayer().translateUnitX(-distance);
-        }
-    }
-
-    /** 玩家右移 */
-    public void playerMoveRight(float distance){
-//        camera.translateX(distance);
-        if(getPlayer()!=null) {
-            getPlayer().translateUnitX(distance);
-        }
-    }
-
-    /** 移动 */
-    private void playerMove(float delta) {
-        float speed = delta * player.getSpeed();
-        boolean RIGHT = Gdx.input.isKeyPressed(Input.Keys.D);
-        boolean LEFT = Gdx.input.isKeyPressed(Input.Keys.A);
-        boolean UP = Gdx.input.isKeyPressed(Input.Keys.W);
-        boolean DOWN = Gdx.input.isKeyPressed(Input.Keys.S);
-        if (RIGHT) {
-            playerMoveRight(speed);
-        }
-        if (LEFT) {
-            playerMoveLeft(speed);
-        }
-        if (UP) {
-            playerMoveUp(speed);
-        }
-        if (DOWN) {
-            playerMoveDown(speed);
-        }
-
-        CAMERA.moveTarget(delta,player);
-
-        if (CAMERA.getX()>= MAXI_MAP_X){
-            CAMERA.setX(MAXI_MAP_X);
-        }
-        if (CAMERA.getY()>= MAXI_MAP_Y){
-            CAMERA.setY(MAXI_MAP_Y);
-        }
-        if (CAMERA.getX()<=0){
-            CAMERA.setX(0);
-        }
-        if (CAMERA.getY()<=0){
-            CAMERA.setY(0);
-        }
-    }
-
-    // endregion
 
     /** 获取玩家 */
     public Player getPlayer() {
@@ -155,14 +82,14 @@ public abstract class DefaultScene extends CustomScreenAbstract {
 
     @Override
     public void render(float delta) {
-        CAMERA.scale();
         time += delta;
-        playerMove(delta);
-        CAMERA.camera.update();
+        CAMERA.scale();
+        getPlayer().playerMove(delta, CAMERA);
+        CAMERA.update(delta, player);
         guiViewport.apply();
         RENDERER.setView(CAMERA.camera);
         RENDERER.render();
-
+//        limitation();
         gameSpriteBatch.setProjectionMatrix(CAMERA.camera.combined); // 设置投影矩阵
         STAGE.draw();
         STAGE.act(delta);
@@ -174,6 +101,22 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         guiSpriteBatchBegin(delta);
         guiSpriteBatch.end();
 
+    }
+
+    /** 限制 */
+    private void limitation() {
+        if (CAMERA.getX()>= MAXI_MAP_X){
+            CAMERA.setX(MAXI_MAP_X);
+        }
+        if (CAMERA.getY()>= MAXI_MAP_Y){
+            CAMERA.setY(MAXI_MAP_Y);
+        }
+        if (CAMERA.getX()<=0){
+            CAMERA.setX(0);
+        }
+        if (CAMERA.getY()<=0){
+            CAMERA.setY(0);
+        }
     }
 
     /** 游戏渲染 */
@@ -191,9 +134,8 @@ public abstract class DefaultScene extends CustomScreenAbstract {
             );
         }
         GUI_MAIN_STAGE.draw();
-
-        label.setText("玩家速度：" + (String.format("%.2f", player.getSpeed())));
-        label1.setText("相机速度：" + (String.format("%.2f", CAMERA.speed)));
+        label.setText("玩家速度：" + (String.format("%.2f", player.getCurrentSpeed())));
+        label1.setText("相机速度：" + (String.format("%.2f", CAMERA.getCurrentSpeed())));
     }
 
     @Override

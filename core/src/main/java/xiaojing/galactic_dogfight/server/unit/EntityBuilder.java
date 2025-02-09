@@ -4,16 +4,16 @@ import com.badlogic.gdx.graphics.Texture;
 
 import static xiaojing.galactic_dogfight.Main.emptyTexture;
 import static xiaojing.galactic_dogfight.server.NewId.newUnitIdName;
-import static xiaojing.galactic_dogfight.server.unit.UnitType.EMPTY;
+import static xiaojing.galactic_dogfight.server.unit.EntityType.EMPTY;
 
 /**
  * @apiNote {@link Entity} 构建器
  * @author 尽
  */
-public class EntityUnitBuilder {
-    protected String unitIdName = newUnitIdName();
+public class EntityBuilder {
+    protected String entityIdName = newUnitIdName();
     protected Texture texture = emptyTexture;
-    protected UnitType unitType = EMPTY;
+    protected EntityType entityType = EMPTY;
     protected float speed = 1f;
     protected float x = 0;
     protected float y = 0;
@@ -29,89 +29,89 @@ public class EntityUnitBuilder {
     protected boolean isSetRectangleHeight;
 
     /** 设置单位命名标识符 */
-    public EntityUnitBuilder unitIdName(String unitIdName) {
-        this.unitIdName = newUnitIdName(unitIdName);
+    public EntityBuilder unitIdName(String unitIdName) {
+        this.entityIdName = newUnitIdName(unitIdName);
         return this;
     }
 
 
     /** 设置单位命名名称ID */
-    public EntityUnitBuilder unitIdName(String unitId, String unitName) {
-        this.unitIdName = newUnitIdName(unitId, unitName);
+    public EntityBuilder unitIdName(String unitId, String unitName) {
+        this.entityIdName = newUnitIdName(unitId, unitName);
         return this;
     }
 
     /** 设置单位纹理 */
-    public EntityUnitBuilder texture(Texture texture) {
+    public EntityBuilder texture(Texture texture) {
         this.texture = texture;
         return this;
     }
 
     /** 设置单位类型 */
-    public EntityUnitBuilder unitType(UnitType unitType) {
-        this.unitType = unitType;
+    public EntityBuilder unitType(EntityType entityType) {
+        this.entityType = entityType;
         return this;
     }
 
     /** 设置单位速度 */
-    public EntityUnitBuilder speed(float speed) {
+    public EntityBuilder speed(float speed) {
         this.speed = speed;
         return this;
     }
 
     /** 设置单位位置 */
-    public EntityUnitBuilder position(float x, float y) {
+    public EntityBuilder position(float x, float y) {
         this.x = x;
         this.y = y;
         return this;
     }
 
     /** 设置单位后退速度 */
-    public EntityUnitBuilder retreatSpeed(float retreatSpeed) {
+    public EntityBuilder retreatSpeed(float retreatSpeed) {
         this.retreatSpeed = retreatSpeed;
         return this;
     }
 
     /** 设置单位旋转速度 */
-    public EntityUnitBuilder rotationalSpeed(float rotationalSpeed) {
+    public EntityBuilder rotationalSpeed(float rotationalSpeed) {
         this.rotationalSpeed = rotationalSpeed;
         return this;
     }
 
     /** 设置单位侧向速度 */
-    public EntityUnitBuilder sideSpeed(float sideSpeed) {
+    public EntityBuilder sideSpeed(float sideSpeed) {
         this.sideSpeed = sideSpeed;
         return this;
     }
 
     /** 设置单位宽度 */
-    public EntityUnitBuilder width(float width) {
+    public EntityBuilder width(float width) {
         this.width = width;
         return this;
     }
 
     /** 设置单位高度 */
-    public EntityUnitBuilder height(float height) {
+    public EntityBuilder height(float height) {
         this.height = height;
         return this;
     }
 
     /** 设置单位碰撞箱宽度 */
-    public EntityUnitBuilder rectangleWidth(float rectangleWidth) {
+    public EntityBuilder rectangleWidth(float rectangleWidth) {
         this.rectangleWidth = rectangleWidth;
         isSetRectangleWidth = true;
         return this;
     }
 
     /** 设置单位碰撞箱高度 */
-    public EntityUnitBuilder rectangleHeight(float rectangleHeight) {
+    public EntityBuilder rectangleHeight(float rectangleHeight) {
         this.rectangleHeight = rectangleHeight;
         isSetRectangleHeight = true;
         return this;
     }
 
     /** 构建单位 */
-    public EntityUnitBuilder build() {
+    public EntityBuilder build() {
         if (!isSetRectangleHeight) {
             rectangleHeight = height;
         }

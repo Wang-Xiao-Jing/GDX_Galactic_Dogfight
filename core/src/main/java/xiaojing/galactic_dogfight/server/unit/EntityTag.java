@@ -4,7 +4,7 @@ package xiaojing.galactic_dogfight.server.unit;
  * 单位TAG
  */
 //TODO
-public enum UnitTag {
+public enum EntityTag {
     /** 队伍 */
     TEAM            ("team"),
     /** 玩家 */
@@ -20,7 +20,7 @@ public enum UnitTag {
 
     final String unitTag;
 
-    UnitTag(String unitTag) {
+    EntityTag(String unitTag) {
        this.unitTag = unitTag;
     }
 
