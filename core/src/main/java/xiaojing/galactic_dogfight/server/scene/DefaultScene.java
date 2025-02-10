@@ -2,6 +2,8 @@ package xiaojing.galactic_dogfight.server.scene;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -12,7 +14,18 @@ import xiaojing.galactic_dogfight.server.DefaultCamera;
 import xiaojing.galactic_dogfight.server.unit.Entity;
 import xiaojing.galactic_dogfight.server.unit.EntityBuilder;
 import xiaojing.galactic_dogfight.server.player.Player;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
+import static com.badlogic.gdx.math.Vector2.Zero;
 import static xiaojing.galactic_dogfight.Main.*;
 
 /**
@@ -31,11 +44,14 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     private final float MAXI_MAP_X, MAXI_MAP_Y;           // 地图最大坐标
     protected float resistance;                           // 空气阻力
     public float centerPointSize = 5;                     // 显示中心点大小
+    World world;
 
     Player player;                                        // 玩家
 
     CustomLabel label;
     CustomLabel label1;
+    CustomLabel label2;
+    CustomLabel label3;
 
 //    public float cameraZoomRatio = 1;
 
@@ -51,6 +67,8 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         STAGE = new Stage(gameViewport, gameSpriteBatch);
         GUI_CONTAINER = new Container<>();
         player = new Player();
+        world = new World(Zero, true);
+
         GUI_CONTAINER.setSize(
             guiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
             guiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
@@ -58,14 +76,21 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         GUI_CONTAINER.setFillParent(true);
         label = new CustomLabel(defaultFont);
         label1 = new CustomLabel(defaultFont);
+        label2 = new CustomLabel(defaultFont);
+        label3 = new CustomLabel(defaultFont);
         label.setFontScale(1);
         label1.setFontScale(1);
+        label2.setFontScale(1);
+        label3.setFontScale(1);
         GUI_MAIN_STAGE.addActor(label);
         GUI_MAIN_STAGE.addActor(label1);
+        GUI_MAIN_STAGE.addActor(label2);
+        GUI_MAIN_STAGE.addActor(label3);
         isCenterPoint = false;
         CAMERA.camera.position.set(player.getOriginX(),player.getOriginY(),0);
         STAGE.addActor(player);
-        STAGE.addActor(new Entity(new EntityBuilder().unitIdName("a").width(16).height(16).position(50,50).build()));
+        STAGE.addActor(new Entity(new EntityBuilder().entityIdName("a").width(16).height(16).position(50,50).build()));
+
     }
 
     /** 获取玩家 */
@@ -136,12 +161,16 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         GUI_MAIN_STAGE.draw();
         label.setText("玩家速度：" + (String.format("%.2f", player.getCurrentSpeed())));
         label1.setText("相机速度：" + (String.format("%.2f", CAMERA.getCurrentSpeed())));
+        label2.setText("瞄准模式：" + player.isAim);
+        label3.setText("是否居中：" + CAMERA.isCenter);
     }
 
     @Override
     public void resize(int width, int height) {
         label.setY(guiViewport.getWorldHeight() - label.getHeight()*2);
-        label1.setY(guiViewport.getWorldHeight() - (label.getHeight() + label1.getHeight())*2 - 4);
+        label1.setY(label.getY() - (label.getHeight())*2 - 4);
+        label2.setY(label1.getY() - (label.getHeight())*2 - 4);
+        label3.setY(label2.getY() - (label.getHeight())*2 - 4);
     }
 
     @Override

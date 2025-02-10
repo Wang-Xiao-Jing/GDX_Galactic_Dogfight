@@ -1,9 +1,11 @@
 package xiaojing.galactic_dogfight.server.unit;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import xiaojing.galactic_dogfight.server.NewId;
 
 import static xiaojing.galactic_dogfight.Main.emptyTexture;
-import static xiaojing.galactic_dogfight.server.NewId.newUnitIdName;
+import static xiaojing.galactic_dogfight.server.NewId.newEntityIdName;
 import static xiaojing.galactic_dogfight.server.unit.EntityType.EMPTY;
 
 /**
@@ -11,7 +13,7 @@ import static xiaojing.galactic_dogfight.server.unit.EntityType.EMPTY;
  * @author 尽
  */
 public class EntityBuilder {
-    protected String entityIdName = newUnitIdName();
+    protected String entityIdName = NewId.newEntityIdName();
     protected Texture texture = emptyTexture;
     protected EntityType entityType = EMPTY;
     protected float speed = 1f;
@@ -24,20 +26,21 @@ public class EntityBuilder {
     protected float height = 32f;
     protected float rectangleWidth;
     protected float rectangleHeight;
+    protected BodyDef bodyDef;
 
     protected boolean isSetRectangleWidth;
     protected boolean isSetRectangleHeight;
 
     /** 设置单位命名标识符 */
-    public EntityBuilder unitIdName(String unitIdName) {
-        this.entityIdName = newUnitIdName(unitIdName);
+    public EntityBuilder entityIdName(String entityIdName) {
+        this.entityIdName = NewId.newEntityIdName(entityIdName);
         return this;
     }
 
 
     /** 设置单位命名名称ID */
-    public EntityBuilder unitIdName(String unitId, String unitName) {
-        this.entityIdName = newUnitIdName(unitId, unitName);
+    public EntityBuilder entityIdName(String entityId, String entityName) {
+        this.entityIdName = newEntityIdName(entityId, entityName);
         return this;
     }
 
@@ -48,7 +51,7 @@ public class EntityBuilder {
     }
 
     /** 设置单位类型 */
-    public EntityBuilder unitType(EntityType entityType) {
+    public EntityBuilder entityType(EntityType entityType) {
         this.entityType = entityType;
         return this;
     }

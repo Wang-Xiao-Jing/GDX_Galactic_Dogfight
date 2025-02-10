@@ -1,7 +1,7 @@
 package xiaojing.galactic_dogfight.server.player;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import xiaojing.galactic_dogfight.server.DefaultCamera;
 import xiaojing.galactic_dogfight.server.inputProcessor.KeyProcessor;
 import xiaojing.galactic_dogfight.server.unit.Entity;
@@ -16,19 +16,41 @@ import static xiaojing.galactic_dogfight.server.InputConfiguration.*;
  */
 public class Player extends Entity implements KeyProcessor {
     public final String playerName;
+    public boolean isAim; // 是否瞄准
 
     public Player() {
         super(new EntityBuilder()
-            .unitIdName("player")
+            .entityIdName("player")
             .texture(gameAssetManager.get("texture/sprite/player/template_player.png"))
             .height(32)
             .width(32)
-            .speed(1000)
+            .speed(500)
             .rotationalSpeed(100)
             .retreatSpeed(0.5F)
             .build());
         playerName = "player";
         addInputProcessor();
+        bodyDef.allowSleep = false;
+        bodyDef.bullet = false;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+    }
+
+    /**
+     * 绘制
+     */
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+    }
+
+    /**
+     * 添加输入处理器
+     */
+    @Override
+    public void keyDownOverride(int keycode) {
+        if (keycode == playerAimSwitchKey){
+            isAim = !isAim;
+        }
     }
 
     /** 玩家上移 */
@@ -67,20 +89,16 @@ public class Player extends Entity implements KeyProcessor {
         float speed = delta * getSpeed();
         if (isUp) {
             translateForward(speed);
-//            playerMoveUp(speed);
         }
         if (isDown) {
-            translateForward(-speed*retreatSpeed);
-//            playerMoveDown(speed);
+            translateForward(-speed * retreatSpeed);
         }
         if (isMove()){
             if (isRight) {
                 rotateRight(rotationalSpeed * delta);
-    //            playerMoveRight(speed);
             }
             if (isLeft) {
                 rotateLeft(rotationalSpeed * delta);
-    //            playerMoveLeft(speed);
             }
         }
 
@@ -91,10 +109,10 @@ public class Player extends Entity implements KeyProcessor {
      */
     @Override
     public void updateKeyState(int keycode, boolean state) {
-        if (keycode == playerRightMovementKey) {
+        if (keycode == playerClockwiseRotationKey) {
             isRight = state;
         }
-        if (keycode == playerLeftMovementKey) {
+        if (keycode == playerAnticlockwiseRotationKey) {
             isLeft = state;
         }
         if (keycode == playerUpMovementKey) {

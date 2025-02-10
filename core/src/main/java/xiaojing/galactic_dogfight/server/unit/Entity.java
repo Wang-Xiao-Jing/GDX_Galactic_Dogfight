@@ -1,34 +1,43 @@
 package xiaojing.galactic_dogfight.server.unit;
 
+import com.badlogic.ashley.core.EntityListener;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import xiaojing.galactic_dogfight.runtimeException.CustomRuntimeException;
+import xiaojing.galactic_dogfight.server.inputProcessor.KeyProcessor;
 
 
 import static xiaojing.galactic_dogfight.Main.*;
-import static xiaojing.galactic_dogfight.server.NewId.newUnitIdName;
+import static xiaojing.galactic_dogfight.server.NewId.newEntityIdName;
 
 /**
  * @author 尽
  * @apiNote 实体实体
  */
-public class Entity extends Actor {
-    protected final Array<Entity> sonEntity;  // 子实体
+public class Entity extends Actor{
+    protected final Array<Entity> sonEntity;    // 子实体
     protected final EntityType entityType;      // 实体类型
     protected final Array<EntityTag> entityTag; // 实体标签
-    protected float currentSpeed;           // 实体当前速度
-    protected float speed;                  // 实体移动速度
-    protected float sideSpeed;              // 实体侧向 （左右）移动速度
-    protected float retreatSpeed;           // 实体后退移动速度 这个是倍率
-    protected float rotationalSpeed;        // 实体旋转速度
-    private final Sprite sprite;            // 实体纹理
-    private boolean isMove;                 // 是否移动
+    protected float currentSpeed;               // 实体当前速度
+    protected float speed;                      // 实体移动速度
+    protected float sideSpeed;                  // 实体侧向 （左右）移动速度
+    protected float retreatSpeed;               // 实体后退移动速度 这个是倍率
+    protected float rotationalSpeed;            // 实体旋转速度
+    private final Sprite sprite;                // 实体纹理
+    private boolean isMove;                     // 是否移动
+    protected final BodyDef bodyDef;
+    protected EventListener listener;           // 事件监听器
 
     // region 构造函数
 
@@ -43,7 +52,8 @@ public class Entity extends Actor {
             builder.rotationalSpeed,
             builder.sideSpeed,
             builder.width,
-            builder.height
+            builder.height,
+            builder.bodyDef
         );
     }
 
@@ -53,10 +63,13 @@ public class Entity extends Actor {
     public Entity(String entityIdName, Texture texture, EntityType entityType,
                   float speed, float x, float y,
                   float retreatSpeed, float rotationalSpeed, float sideSpeed,
-                  float width, float height) {
+                  float width, float height, BodyDef bodyDef) {
         this.sprite = new Sprite(texture);
+        this.bodyDef = new BodyDef();
         this.sonEntity = new Array<>();
         this.entityTag = new Array<>();
+        this.bodyDef.position.set(x, y);
+        this.bodyDef.gravityScale = 0;
         setName(entityIdName);
         this.entityType = entityType;
         this.speed = speed;
@@ -67,6 +80,7 @@ public class Entity extends Actor {
         setEntitySize(width, height);
         previousPosition = new Vector2();
         setRotation(90);
+        listener = new ClickListener();
     }
     // endregion
 
@@ -141,6 +155,7 @@ public class Entity extends Actor {
     public Entity setEntityPosition(float x, float y){
         setPosition(x, y);
         this.sprite.setPosition(x, y);
+        this.bodyDef.position.set(x, y);
         return this;
     }
 
@@ -148,6 +163,7 @@ public class Entity extends Actor {
     public Entity translateEntityPosition(float x, float y){
         moveBy(x, y);
         this.sprite.translate(x, y);
+        this.bodyDef.position.add(x, y);
         return this;
     }
 
@@ -160,6 +176,7 @@ public class Entity extends Actor {
     public Entity setEntityX(float x){
         setX(x);
         this.sprite.setX(x);
+        this.bodyDef.position.x = x;
         return this;
     }
 
@@ -167,6 +184,7 @@ public class Entity extends Actor {
     public Entity translateEntityX(float x){
         moveBy(x, 0);
         this.sprite.translateX(x);
+        this.bodyDef.position.x += x;
         return this;
     }
 
@@ -174,6 +192,7 @@ public class Entity extends Actor {
     public Entity setEntityY(float y){
         setY(y);
         this.sprite.setY(y);
+        this.bodyDef.position.y = y;
         return this;
     }
 
@@ -181,41 +200,48 @@ public class Entity extends Actor {
     public Entity translateEntityY(float y){
         moveBy(0, y);
         this.sprite.translateY(y);
+        this.bodyDef.position.y += y;
         return this;
     }
 
     /** 顺时针旋转实体 */
     public Entity rotateRight(float amountInDegrees){
-        rotateBy(-amountInDegrees);
-        sprite.rotate( - amountInDegrees);
-        return this;
+        return rotateEntity(-amountInDegrees);
     }
 
     /** 逆时针旋转实体 */
     public Entity rotateLeft(float amountInDegrees){
+
+        return rotateEntity(amountInDegrees);
+    }
+
+    /** 设置实体角度 */
+    public Entity setRotate(float amountInDegrees){
+        setRotation(amountInDegrees);
+        sprite.setRotation(amountInDegrees);
+        bodyDef.angle = amountInDegrees * MathUtils.degreesToRadians;
+        return this;
+    }
+
+    /** 旋转实体 */
+    public Entity rotateEntity(float amountInDegrees){
         rotateBy(amountInDegrees);
         sprite.setRotation((sprite.getRotation() + amountInDegrees) % 360);
-        rotationChanged();
+        bodyDef.angle += amountInDegrees * MathUtils.degreesToRadians;
         return this;
     }
 
-    /** 向前移动实体 */
+    /** 移动实体 方向 */
     public Entity translateForward(float distance){
-
-        // 更新实体的位置
-        translateEntityPosition(getMoveVector(distance));
-        return this;
+        return translateEntityPosition(getMoveVector(distance));
     }
 
-    /** 获取移动向量 */
-    private Vector2 getMoveVector(float distance) {
-        // 计算方向向量（基于当前旋转角度）
-        Vector2 direction = new Vector2(1, 0); // 初始方向向量 (1, 0) 表示向右
-        direction.setAngleRad(getRotation() * MathUtils.degreesToRadians); // 根据旋转角度设置方向向量
-        // 计算移动向量
-        // 方向向量乘以距离
-        return new Vector2(direction).scl(distance);
+    /** 清除实体 */
+    @Override
+    public void clear(){
+        super.clear();
     }
+
     // endregion
 
     // region 设置
@@ -373,5 +399,19 @@ public class Entity extends Actor {
         return isMove;
     }
 
+    /** 获取实体碰撞盒 */
+    public BodyDef getBodyDef() {
+        return this.bodyDef;
+    }
+
+    /** 获取移动向量 */
+    private Vector2 getMoveVector(float distance) {
+        // 计算方向向量（基于当前旋转角度）
+        Vector2 direction = new Vector2(1, 0); // 初始方向向量 (1, 0) 表示向右
+        direction.setAngleRad(getRotation() * MathUtils.degreesToRadians); // 根据旋转角度设置方向向量
+        // 计算移动向量
+        // 方向向量乘以距离
+        return new Vector2(direction).scl(distance);
+    }
     // endregion
 }

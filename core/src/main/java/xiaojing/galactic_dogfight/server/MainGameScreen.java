@@ -15,6 +15,7 @@ import static xiaojing.galactic_dogfight.Main.*;
  * @apiNote 主游戏画面（场景）
  */
 public class MainGameScreen extends DefaultScene {
+    public static boolean isGameScreenPause;
 
     public MainGameScreen(final Main GAME) {
         super(GAME);
@@ -39,6 +40,7 @@ public class MainGameScreen extends DefaultScene {
     @Override
     public void pause() {
         super.pause();
+        isGameScreenPause = !isGameScreenPause;
     }
 
     @Override
