@@ -3,7 +3,7 @@ package xiaojing.galactic_dogfight.server.scene;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -18,11 +18,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import static com.badlogic.gdx.math.Vector2.Zero;
@@ -44,7 +39,8 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     private final float MAXI_MAP_X, MAXI_MAP_Y;           // 地图最大坐标
     protected float resistance;                           // 空气阻力
     public float centerPointSize = 5;                     // 显示中心点大小
-    World world;
+    World world;                                          // 世界
+    Box2DDebugRenderer debugRenderer;
 
     Player player;                                        // 玩家
 
@@ -68,6 +64,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         GUI_CONTAINER = new Container<>();
         player = new Player();
         world = new World(Zero, true);
+//        Body world = new Body();
 
         GUI_CONTAINER.setSize(
             guiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,
@@ -78,6 +75,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         label1 = new CustomLabel(defaultFont);
         label2 = new CustomLabel(defaultFont);
         label3 = new CustomLabel(defaultFont);
+        debugRenderer = new Box2DDebugRenderer();
         label.setFontScale(1);
         label1.setFontScale(1);
         label2.setFontScale(1);
@@ -91,6 +89,9 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         STAGE.addActor(player);
         STAGE.addActor(new Entity(new EntityBuilder().entityIdName("a").width(16).height(16).position(50,50).build()));
 
+        for (int i = 0;i < STAGE.getActors().size;i++){
+            world.createBody(((Entity)STAGE.getActors().get(i)).getBodyDef());
+        }
     }
 
     /** 获取玩家 */
@@ -126,6 +127,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         guiSpriteBatchBegin(delta);
         guiSpriteBatch.end();
 
+        debugRenderer.render(world, CAMERA.camera.combined);
     }
 
     /** 限制 */

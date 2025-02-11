@@ -110,7 +110,7 @@ public class CustomTableButton extends CustomButton {
      * @param bitmapFont 按钮使用的字体
      */
     public CustomTableButton(BitmapFont bitmapFont) {
-        getSonLabel().getStyle().font = bitmapFont;
+        getChildLabel().getStyle().font = bitmapFont;
     }
     // endregion
 
@@ -121,7 +121,7 @@ public class CustomTableButton extends CustomButton {
      * @param text 文本
      */
     public void setText(CharSequence text){
-        getSonLabel().setText(text);
+        getChildLabel().setText(text);
     }
 
     /**
@@ -130,7 +130,7 @@ public class CustomTableButton extends CustomButton {
      * @param scale 缩放比例
      */
     public void setTextScale(float scale){
-        getSonLabel().setFontScale(scale);
+        getChildLabel().setFontScale(scale);
     }
 
     /**
@@ -235,7 +235,7 @@ public class CustomTableButton extends CustomButton {
      */
     @Override
     public void defaultState() {
-        getSonLabel().setStyle(labelStyleDefault);
+        getChildLabel().setStyle(labelStyleDefault);
     }
 
     /**
@@ -243,7 +243,7 @@ public class CustomTableButton extends CustomButton {
      */
     @Override
     public void overState() {
-        getSonLabel().setStyle(labelStyleOver);
+        getChildLabel().setStyle(labelStyleOver);
     }
 
     /**
@@ -251,7 +251,7 @@ public class CustomTableButton extends CustomButton {
      */
     @Override
     public void disabledState() {
-        getSonLabel().setStyle(labelStyleDisabled);
+        getChildLabel().setStyle(labelStyleDisabled);
     }
 
     /**
@@ -259,7 +259,7 @@ public class CustomTableButton extends CustomButton {
      */
     @Override
     public void pressedState() {
-        getSonLabel().setStyle(labelStylePressed);
+        getChildLabel().setStyle(labelStylePressed);
     }
     // endregion
 
@@ -269,7 +269,7 @@ public class CustomTableButton extends CustomButton {
      *
      * @return 子控件（Label）
      */
-    public Label getSonLabel() {
+    public Label getChildLabel() {
         return (Label) getChildren().first();
     }
 

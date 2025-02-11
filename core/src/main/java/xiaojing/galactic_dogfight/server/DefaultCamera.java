@@ -151,8 +151,8 @@ public class DefaultCamera implements KeyProcessor {
         if (cameraZoomRatio >= 2){
             cameraZoomRatio = 2;
         }
-        if (cameraZoomRatio <= 0.1){
-            cameraZoomRatio = 0.1f;
+        if (cameraZoomRatio <= 1){
+            cameraZoomRatio = 1f;
         }
 
         camera.zoom = cameraZoomRatio;
@@ -217,22 +217,22 @@ public class DefaultCamera implements KeyProcessor {
         direction.nor().scl(distance * entity.getSpeed() * 0.01F * delta);
 
         float cameraZoomMultiplier = camera.zoom;
-        if (cameraZoomMultiplier >= 1.4){
-            cameraZoomMultiplier = 1.4f;
+        if (cameraZoomMultiplier >= 1.6){
+            cameraZoomMultiplier = 1.6f;
         }
 
         // 如果目标实体是玩家，则根据玩家的状态进一步调整摄像机的移动
-        if (entity instanceof Player player && !isCenter && camera.zoom > 0.1F) {
+        if (entity instanceof Player player && !isCenter) {
             // 如果玩家正在移动
             if (player.isMove()) {
                if (!player.isAim){
-//                   cameraZoomMultiplier *= 5;
-                   direction.scl(1 / cameraZoomMultiplier*1.1F);
+                   direction.scl(1 / cameraZoomMultiplier * 0.9F);
+               }else{
+                   direction.scl(1 / cameraZoomMultiplier * 2F);
                }
-
                 // 根据玩家的移动状态和瞄准状态，计算额外的移动向量
                 float moveSpeed = (player.isAim && !player.isDown ? -50 : 1) *
-                    (player.isDown ? player.getSpeed() * 0.1F : -player.getSpeed() * player.getRetreatSpeed() * 0.1F) * delta;
+                    (player.isDown ? player.getSpeed() * 0.2F : - player.getSpeed() * player.getRetreatSpeed() * 0.1F) * delta;
                 translate(getMoveVector(moveSpeed * cameraZoomMultiplier, player));
                 // 按照计算的方向向量移动摄像机
                 translate(direction);
@@ -242,13 +242,13 @@ public class DefaultCamera implements KeyProcessor {
 
                 // 如果玩家正在瞄准，添加额外的移动向量
                 if (player.isAim) {
-                    translate(getMoveVector(2*cameraZoomMultiplier, player));
+                    translate(getMoveVector(1.5F * cameraZoomMultiplier, player));
                 }
             }
             return;
         }
-        if (isCenter || camera.zoom <= 0.1F){
-            translate(direction.scl(10));
+        if (isCenter){
+            translate(direction.scl(5));
 //           setPosition(targetPosition.x, targetPosition.y);
             return;
         }

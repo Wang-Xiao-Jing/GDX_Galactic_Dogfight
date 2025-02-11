@@ -1,21 +1,19 @@
 package xiaojing.galactic_dogfight.server.unit;
 
-import com.badlogic.ashley.core.EntityListener;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import xiaojing.galactic_dogfight.runtimeException.CustomRuntimeException;
-import xiaojing.galactic_dogfight.server.inputProcessor.KeyProcessor;
 
 
 import static xiaojing.galactic_dogfight.Main.*;
@@ -26,7 +24,7 @@ import static xiaojing.galactic_dogfight.server.NewId.newEntityIdName;
  * @apiNote 实体实体
  */
 public class Entity extends Actor{
-    protected final Array<Entity> sonEntity;    // 子实体
+    protected final Array<Entity> childEntity;    // 子实体
     protected final EntityType entityType;      // 实体类型
     protected final Array<EntityTag> entityTag; // 实体标签
     protected float currentSpeed;               // 实体当前速度
@@ -36,7 +34,9 @@ public class Entity extends Actor{
     protected float rotationalSpeed;            // 实体旋转速度
     private final Sprite sprite;                // 实体纹理
     private boolean isMove;                     // 是否移动
-    protected final BodyDef bodyDef;
+    protected final BodyDef bodyDef;            // 实体物理属性
+    protected final FixtureDef fixtureDef;      // 实体物理属性
+//    protected final PolygonShape polygonShape;  // 实体形状
     protected EventListener listener;           // 事件监听器
 
     // region 构造函数
@@ -64,10 +64,15 @@ public class Entity extends Actor{
                   float speed, float x, float y,
                   float retreatSpeed, float rotationalSpeed, float sideSpeed,
                   float width, float height, BodyDef bodyDef) {
-        this.sprite = new Sprite(texture);
+        sprite = new Sprite(texture);
         this.bodyDef = new BodyDef();
-        this.sonEntity = new Array<>();
-        this.entityTag = new Array<>();
+        fixtureDef = new FixtureDef();
+//        polygonShape = new PolygonShape();
+//        polygonShape.setAsBox(width / 2, height / 2);
+//        fixtureDef.shape = polygonShape;
+
+        childEntity = new Array<>();
+        entityTag = new Array<>();
         this.bodyDef.position.set(x, y);
         this.bodyDef.gravityScale = 0;
         setName(entityIdName);
@@ -85,6 +90,8 @@ public class Entity extends Actor{
     // endregion
 
     // region 方法
+
+
 
     /** 绘制 */
     @Override
@@ -246,14 +253,14 @@ public class Entity extends Actor{
 
     // region 设置
     /** 设置子实体 */
-    public Entity setSonEntity(Array<Entity> sonEntity) {
-        this.sonEntity.items = sonEntity.items;
+    public Entity setChildEntity(Array<Entity> sonEntity) {
+        this.childEntity.items = sonEntity.items;
         return this;
     }
 
     /** 设置子实体 */
-    public Entity setSonEntity(Entity Entity, int index){
-        this.sonEntity.set(index, Entity);
+    public Entity setChildEntity(Entity Entity, int index){
+        this.childEntity.set(index, Entity);
         return this;
     }
 
@@ -326,12 +333,12 @@ public class Entity extends Actor{
 
     /** 获取子实体 */
     public Entity getSonEntity(int index){
-        return sonEntity.get(index);
+        return childEntity.get(index);
     }
 
     /** 获取子实体 */
-    public Array<Entity> getSonEntity() {
-        return sonEntity;
+    public Array<Entity> getChildEntity() {
+        return childEntity;
     }
 
     /** 获取实体命名名称ID */
