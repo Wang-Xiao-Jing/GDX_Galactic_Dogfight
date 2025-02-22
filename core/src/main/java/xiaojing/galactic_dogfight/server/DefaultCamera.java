@@ -1,7 +1,5 @@
 package xiaojing.galactic_dogfight.server;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,11 +10,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 import xiaojing.galactic_dogfight.server.inputProcessor.KeyProcessor;
 import xiaojing.galactic_dogfight.server.player.Player;
-import xiaojing.galactic_dogfight.server.unit.Entity;
+import xiaojing.galactic_dogfight.server.entity.Entity;
 
 import static xiaojing.galactic_dogfight.Main.*;
 import static xiaojing.galactic_dogfight.server.InputConfiguration.*;
-import static xiaojing.galactic_dogfight.server.MainGameScreen.isGameScreenPause;
 
 /**
  * @author 尽
@@ -201,6 +198,7 @@ public class DefaultCamera implements KeyProcessor {
      * @param entity 目标实体，摄像机将移动到该实体的位置
      */
     public void moveTarget(float delta, Entity entity) {
+        float entitySpeed = entity.getSpeed()*500;
         // 更新摄像机的速度
         updateSpeed();
 
@@ -214,7 +212,7 @@ public class DefaultCamera implements KeyProcessor {
         float distance = direction.len();
 
         // 将方向向量归一化并缩放，使其长度等于目标实体的速度乘以时间间隔
-        direction.nor().scl(distance * entity.getSpeed() * 0.01F * delta);
+        direction.nor().scl(distance * entitySpeed * 0.01F * delta);
 
         float cameraZoomMultiplier = camera.zoom;
         if (cameraZoomMultiplier >= 1.6){
@@ -225,14 +223,14 @@ public class DefaultCamera implements KeyProcessor {
         if (entity instanceof Player player && !isCenter) {
             // 如果玩家正在移动
             if (player.isMove()) {
-               if (!player.isAim){
-                   direction.scl(1 / cameraZoomMultiplier * 0.9F);
+               if (!player.isAim && !player.isDown){
+                   direction.scl(1 / cameraZoomMultiplier * 0.5F);
                }else{
                    direction.scl(1 / cameraZoomMultiplier * 2F);
                }
                 // 根据玩家的移动状态和瞄准状态，计算额外的移动向量
-                float moveSpeed = (player.isAim && !player.isDown ? -50 : 1) *
-                    (player.isDown ? player.getSpeed() * 0.2F : - player.getSpeed() * player.getRetreatSpeed() * 0.1F) * delta;
+                float moveSpeed = ((player.isAim && !player.isDown) ? -50 : 0.1F) *
+                    (player.isDown ? entitySpeed * 0.2F : - entitySpeed * player.getRetreatSpeed() * 0.1F) * delta;
                 translate(getMoveVector(moveSpeed * cameraZoomMultiplier, player));
                 // 按照计算的方向向量移动摄像机
                 translate(direction);

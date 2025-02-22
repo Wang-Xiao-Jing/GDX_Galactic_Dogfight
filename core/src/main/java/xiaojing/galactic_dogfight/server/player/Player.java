@@ -1,18 +1,17 @@
 package xiaojing.galactic_dogfight.server.player;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import xiaojing.galactic_dogfight.server.DefaultCamera;
 import xiaojing.galactic_dogfight.server.inputProcessor.KeyProcessor;
-import xiaojing.galactic_dogfight.server.unit.Entity;
-import xiaojing.galactic_dogfight.server.unit.EntityBuilder;
+import xiaojing.galactic_dogfight.server.entity.Entity;
+import xiaojing.galactic_dogfight.server.entity.EntityBuilder;
 
 import static xiaojing.galactic_dogfight.Main.gameAssetManager;
 import static xiaojing.galactic_dogfight.server.InputConfiguration.*;
 
 /**
  * @author 尽
- * @apiNote 玩家单位
+ * @apiNote 玩家实体
  */
 public class Player extends Entity implements KeyProcessor {
     public final String playerName;
@@ -24,15 +23,18 @@ public class Player extends Entity implements KeyProcessor {
             .texture(gameAssetManager.get("texture/sprite/player/template_player.png"))
             .height(32)
             .width(32)
-            .speed(500)
+            .speed(5)
             .rotationalSpeed(100)
             .retreatSpeed(0.5F)
+            .reductionRatio(0.5F)
             .build());
         playerName = "player";
         addInputProcessor();
+//        multiplexer.addProcessor(new InputAdapter(){
+//
+//        });
         bodyDef.allowSleep = false;
         bodyDef.bullet = false;
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
     }
 
     /**
@@ -43,13 +45,17 @@ public class Player extends Entity implements KeyProcessor {
         super.draw(batch, parentAlpha);
     }
 
-    /**
-     * 添加输入处理器
-     */
     @Override
     public void keyDownOverride(int keycode) {
         if (keycode == playerAimSwitchKey){
             isAim = !isAim;
+        }
+    }
+
+    @Override
+    public void keyUpOverride(int keycode) {
+        if (keycode == playerUpMovementKey || keycode == playerDownMovementKey) {
+            isPressTheMobileButton = false;
         }
     }
 
@@ -76,6 +82,7 @@ public class Player extends Entity implements KeyProcessor {
     /** 移动 */
     public void playerMove(float delta , DefaultCamera camera) {
         playerMove(delta);
+        synchro();
 //        camera.moveTarget(delta, this);
     }
 
@@ -86,14 +93,9 @@ public class Player extends Entity implements KeyProcessor {
 
     /** 移动 */
     public void playerMove(float delta) {
-        float speed = delta * getSpeed();
+        float speed = delta * getSpeed()*10000;
         if (isUp) {
             translateForward(speed);
-        }
-        if (isDown) {
-            translateForward(-speed * retreatSpeed);
-        }
-        if (isMove()){
             if (isRight) {
                 rotateRight(rotationalSpeed * delta);
             }
@@ -101,6 +103,10 @@ public class Player extends Entity implements KeyProcessor {
                 rotateLeft(rotationalSpeed * delta);
             }
         }
+        if (isDown) {
+            translateForward(-speed * retreatSpeed);
+        }
+
 
     }
 
@@ -120,6 +126,9 @@ public class Player extends Entity implements KeyProcessor {
         }
         if (keycode == playerDownMovementKey) {
             isDown = state;
+        }
+        if (!isUp && !isDown) {
+            isPressTheMobileButton = state;
         }
     }
 }

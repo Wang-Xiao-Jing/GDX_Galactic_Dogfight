@@ -1,6 +1,6 @@
-package xiaojing.galactic_dogfight.server.unit;
+package xiaojing.galactic_dogfight.server.entity;
 
-/** 单位类型 */
+/** 实体类型 */
 //TODO
 public enum EntityType {
     /** 空 */

@@ -1,7 +1,7 @@
-package xiaojing.galactic_dogfight.server.unit;
+package xiaojing.galactic_dogfight.server.entity;
 
 /**
- * 单位TAG
+ * 实体TAG
  */
 //TODO
 public enum EntityTag {
@@ -9,11 +9,11 @@ public enum EntityTag {
     TEAM            ("team"),
     /** 玩家 */
     PLAYER          ("player"),
-    /** 玩家单位 */
+    /** 玩家实体 */
     PLAYER_UNITS    ("player_units"),
-    /** 中立单位 */
+    /** 中立实体 */
     NEUTRALITY_UNITS("neutrality_units"),
-    /** 敌人单位 */
+    /** 敌人实体 */
     ENEMY_UNITS     ("enemy_units"),
     /** 建筑物 */
     BUILDING        ("building");

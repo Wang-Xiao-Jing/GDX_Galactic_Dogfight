@@ -2,7 +2,6 @@ package xiaojing.galactic_dogfight.server.scene;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,13 +10,9 @@ import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 import xiaojing.galactic_dogfight.client.screen.CustomScreenAbstract;
 import xiaojing.galactic_dogfight.server.DefaultCamera;
-import xiaojing.galactic_dogfight.server.unit.Entity;
-import xiaojing.galactic_dogfight.server.unit.EntityBuilder;
+import xiaojing.galactic_dogfight.server.entity.Entity;
+import xiaojing.galactic_dogfight.server.entity.EntityBuilder;
 import xiaojing.galactic_dogfight.server.player.Player;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import static com.badlogic.gdx.math.Vector2.Zero;
@@ -39,15 +34,15 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     private final float MAXI_MAP_X, MAXI_MAP_Y;           // 地图最大坐标
     protected float resistance;                           // 空气阻力
     public float centerPointSize = 5;                     // 显示中心点大小
-    World world;                                          // 世界
-    Box2DDebugRenderer debugRenderer;
+    private final World world;                            // 世界
+    private final Box2DDebugRenderer debugRenderer;       // Box2D调试渲染器
 
-    Player player;                                        // 玩家
+    private final Player player;                          // 玩家
 
-    CustomLabel label;
-    CustomLabel label1;
-    CustomLabel label2;
-    CustomLabel label3;
+    private CustomLabel label;
+    private CustomLabel label1;
+    private CustomLabel label2;
+    private CustomLabel label3;
 
 //    public float cameraZoomRatio = 1;
 
@@ -76,6 +71,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         label2 = new CustomLabel(defaultFont);
         label3 = new CustomLabel(defaultFont);
         debugRenderer = new Box2DDebugRenderer();
+
         label.setFontScale(1);
         label1.setFontScale(1);
         label2.setFontScale(1);
@@ -84,13 +80,18 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         GUI_MAIN_STAGE.addActor(label1);
         GUI_MAIN_STAGE.addActor(label2);
         GUI_MAIN_STAGE.addActor(label3);
+
         isCenterPoint = false;
         CAMERA.camera.position.set(player.getOriginX(),player.getOriginY(),0);
         STAGE.addActor(player);
         STAGE.addActor(new Entity(new EntityBuilder().entityIdName("a").width(16).height(16).position(50,50).build()));
 
+        // 添加实体到世界
         for (int i = 0;i < STAGE.getActors().size;i++){
-            world.createBody(((Entity)STAGE.getActors().get(i)).getBodyDef());
+            if (STAGE.getActors().get(i) instanceof Entity entity){
+                entity.addToWorldDefault(world);
+//                world.createBody(entity.getBodyDef());
+            }
         }
     }
 
@@ -109,25 +110,41 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     @Override
     public void render(float delta) {
         time += delta;
+
+        // 渲染相机/地图
         CAMERA.scale();
-        getPlayer().playerMove(delta, CAMERA);
         CAMERA.update(delta, player);
-        guiViewport.apply();
         RENDERER.setView(CAMERA.camera);
         RENDERER.render();
-//        limitation();
         gameSpriteBatch.setProjectionMatrix(CAMERA.camera.combined); // 设置投影矩阵
+
+        // 除GUI以外的渲染
         STAGE.draw();
         STAGE.act(delta);
+        // 模拟世界
+        world.step(1.0f / 60.0f, 6, 2);
+        getPlayer().playerMove(delta, CAMERA);
+        for (int i = 0; i < STAGE.getActors().size; i++){
+            if (STAGE.getActors().get(i) instanceof Entity entity){
+                entity.synchro();
+            }
+        }
         gameSpriteBatch.begin();
         gameSpriteBatchBegin(delta);
+        debugRenderer.render(world, CAMERA.camera.combined);
         gameSpriteBatch.end();
 
+        // GUI渲染
+        guiViewport.apply();
+        GUI_MAIN_STAGE.draw();
+        GUI_MAIN_STAGE.act(delta);
         guiSpriteBatch.begin();
         guiSpriteBatchBegin(delta);
         guiSpriteBatch.end();
+    }
 
-        debugRenderer.render(world, CAMERA.camera.combined);
+    private void StepByStepGameContent(){
+
     }
 
     /** 限制 */
@@ -192,6 +209,8 @@ public abstract class DefaultScene extends CustomScreenAbstract {
 
     @Override
     public void dispose() {
+        world.dispose();
+        debugRenderer.dispose();
         RENDERER.dispose();
         GUI_MAIN_STAGE.dispose();
         STAGE.dispose();

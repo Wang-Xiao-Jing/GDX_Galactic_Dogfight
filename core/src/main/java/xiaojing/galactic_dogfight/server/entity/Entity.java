@@ -1,13 +1,11 @@
-package xiaojing.galactic_dogfight.server.unit;
+package xiaojing.galactic_dogfight.server.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,82 +14,114 @@ import com.badlogic.gdx.utils.Array;
 import xiaojing.galactic_dogfight.runtimeException.CustomRuntimeException;
 
 
+import static com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody;
 import static xiaojing.galactic_dogfight.Main.*;
-import static xiaojing.galactic_dogfight.server.NewId.newEntityIdName;
 
 /**
  * @author 尽
  * @apiNote 实体实体
  */
 public class Entity extends Actor{
-    protected final Array<Entity> childEntity;    // 子实体
+    protected final Array<Entity> childEntity;  // 子实体
     protected final EntityType entityType;      // 实体类型
     protected final Array<EntityTag> entityTag; // 实体标签
     protected float currentSpeed;               // 实体当前速度
     protected float speed;                      // 实体移动速度
-    protected float sideSpeed;                  // 实体侧向 （左右）移动速度
-    protected float retreatSpeed;               // 实体后退移动速度 这个是倍率
+    protected float sideSpeed;                  // 实体侧向移动速度
+    protected float retreatSpeed;               // 实体后退移动倍率
     protected float rotationalSpeed;            // 实体旋转速度
     private final Sprite sprite;                // 实体纹理
-    private boolean isMove;                     // 是否移动
-    protected final BodyDef bodyDef;            // 实体物理属性
-    protected final FixtureDef fixtureDef;      // 实体物理属性
-//    protected final PolygonShape polygonShape;  // 实体形状
+    protected boolean isMove;                     // 是否在移动
+    protected boolean isPressTheMobileButton;     // 是否按移动按键
     protected EventListener listener;           // 事件监听器
-
+    protected final BodyDef bodyDef;            // 实体物理属性
+    private float collisionBoxWidth;            // 实体碰撞盒宽度
+    private float collisionBoxHeight;           // 实体碰撞盒高度
+    private Body body;
+    private float reductionRatio;        // 停止减速比
     // region 构造函数
 
-    public Entity(EntityBuilder builder) {
-        this(builder.entityIdName,
-            builder.texture,
-            builder.entityType,
-            builder.speed,
-            builder.x,
-            builder.y,
-            builder.retreatSpeed,
-            builder.rotationalSpeed,
-            builder.sideSpeed,
-            builder.width,
-            builder.height,
-            builder.bodyDef
-        );
+    /**
+     * 实体构造函数
+     * @param b 实体构造器
+     */
+    public Entity(EntityBuilder b) {
+        this(b.entityIdName, b.texture, b.entityType, b.x, b.y,
+            b.speed, b.retreatSpeed, b.rotationalSpeed, b.sideSpeed,
+            b.width, b.height,
+            b.collisionBoxWidth, b.collisionBoxHeight, b.reductionRatio);
     }
 
     /**
-     * 构造函数
+     * 实体构造函数
+     * @param entityIdName 实体ID标识符
+     * @param texture 实体纹理
+     * @param entityType 实体类型 {@link EntityType}
+     * @param x X轴实体坐标
+     * @param y Y轴实体坐标
+     * @param speed 实体移动速度
+     * @param retreatSpeed 实体后退移动倍率
+     * @param rotationalSpeed 实体旋转速度
+     * @param sideSpeed 实体侧向移动速度
+     * @param width 实体宽度
+     * @param height 实体高度
+     * @param collisionBoxWidth 实体碰撞盒宽度
+     * @param collisionBoxHeight 实体碰撞盒高度
      */
     public Entity(String entityIdName, Texture texture, EntityType entityType,
-                  float speed, float x, float y,
-                  float retreatSpeed, float rotationalSpeed, float sideSpeed,
-                  float width, float height, BodyDef bodyDef) {
+                  float x, float y,
+                  float speed, float retreatSpeed, float rotationalSpeed, float sideSpeed,
+                  float width, float height,
+                  float collisionBoxWidth, float collisionBoxHeight, float reductionRatio) {
         sprite = new Sprite(texture);
-        this.bodyDef = new BodyDef();
-        fixtureDef = new FixtureDef();
-//        polygonShape = new PolygonShape();
-//        polygonShape.setAsBox(width / 2, height / 2);
-//        fixtureDef.shape = polygonShape;
-
+        bodyDef = new BodyDef();
+        bodyDef.gravityScale = 0;
+        bodyDef.type = DynamicBody;
         childEntity = new Array<>();
         entityTag = new Array<>();
-        this.bodyDef.position.set(x, y);
-        this.bodyDef.gravityScale = 0;
         setName(entityIdName);
         this.entityType = entityType;
         this.speed = speed;
         this.retreatSpeed = retreatSpeed;
         this.rotationalSpeed = rotationalSpeed;
         this.sideSpeed = sideSpeed;
-        setEntityPosition(x, y);
+        this.collisionBoxWidth = collisionBoxWidth;
+        this.collisionBoxHeight = collisionBoxHeight;
         setEntitySize(width, height);
-        previousPosition = new Vector2();
-        setRotation(90);
+        setRotation(90); // 朝上，原先朝向是在左侧
+        setEntityPosition(x, y);
         listener = new ClickListener();
+        previousPosition = new Vector2();
+        this.reductionRatio = reductionRatio;
     }
     // endregion
 
     // region 方法
+    /**
+     * 添加到世界（默认方法）
+     * <br/>
+     * 方形碰撞盒
+     * @param world 世界
+     */
+    public void addToWorldDefault(World world)
+    {
+        Body ballBody = world.createBody(bodyDef);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(collisionBoxWidth/2, collisionBoxHeight/2);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        ballBody.setUserData(this);
+        ballBody.createFixture(fixtureDef);
+        shape.dispose(); // 释放形状
+        body = ballBody;
+    }
 
-
+    /** 同步 */
+    public Entity synchro() {
+        setEntityPosition(body.getPosition().add(-getWidth()/2, -getHeight()/2));
+//        setEntitySize(body.getPosition());
+        return this;
+   }
 
     /** 绘制 */
     @Override
@@ -100,6 +130,15 @@ public class Entity extends Actor{
         updateSpeed();
         sprite.draw(batch, parentAlpha);
         super.draw(batch, parentAlpha);
+        pressTheMobileButton();
+    }
+
+    /** 按移动按键 */
+    protected void pressTheMobileButton() {
+        Vector2 velocity = body.getLinearVelocity();
+        Vector2 dragForce = velocity.cpy().scl(-reductionRatio * speed);
+        Vector2 dragForce2 = velocity.cpy().scl(-1 * speed);
+        body.applyForce(isPressTheMobileButton ? dragForce2 : dragForce, body.getWorldCenter(),false);
     }
 
     private boolean isTimeElapsed;          // 是否延迟
@@ -138,7 +177,6 @@ public class Entity extends Actor{
         previousPosition = currentPosition;
     }
 
-
     /** 添加实体标签 */
     public Entity abbEntityTag(EntityTag entityTag){
         this.entityTag.add(entityTag);
@@ -162,15 +200,16 @@ public class Entity extends Actor{
     public Entity setEntityPosition(float x, float y){
         setPosition(x, y);
         this.sprite.setPosition(x, y);
-        this.bodyDef.position.set(x, y);
+        this.bodyDef.position.set(getWidth()/2 + x, getHeight()/2 + y);
         return this;
     }
 
     /** 移动实体位置 */
     public Entity translateEntityPosition(float x, float y){
-        moveBy(x, y);
-        this.sprite.translate(x, y);
-        this.bodyDef.position.add(x, y);
+//        moveBy(x, y);
+//        this.sprite.translate(x, y);
+//        this.bodyDef.position.add(x, y);
+        body.setLinearVelocity(x, y);
         return this;
     }
 
@@ -183,7 +222,7 @@ public class Entity extends Actor{
     public Entity setEntityX(float x){
         setX(x);
         this.sprite.setX(x);
-        this.bodyDef.position.x = x;
+        this.bodyDef.position.x = getWidth()/2 + x;
         return this;
     }
 
@@ -199,7 +238,7 @@ public class Entity extends Actor{
     public Entity setEntityY(float y){
         setY(y);
         this.sprite.setY(y);
-        this.bodyDef.position.y = y;
+        this.bodyDef.position.y = getHeight()/2 + y;
         return this;
     }
 
@@ -420,5 +459,10 @@ public class Entity extends Actor{
         // 方向向量乘以距离
         return new Vector2(direction).scl(distance);
     }
+
+    /** 获取实体是否按下移动按钮 */
+    public boolean isPressTheMobileButton(){
+        return isPressTheMobileButton;
+    };
     // endregion
 }
