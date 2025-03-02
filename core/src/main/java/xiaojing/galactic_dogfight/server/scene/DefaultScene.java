@@ -10,7 +10,7 @@ import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 import xiaojing.galactic_dogfight.client.screen.CustomScreenAbstract;
 import xiaojing.galactic_dogfight.server.DefaultCamera;
-import xiaojing.galactic_dogfight.server.entity.Entity;
+import xiaojing.galactic_dogfight.core.entity.Entity;
 import xiaojing.galactic_dogfight.server.entity.EntityBuilder;
 import xiaojing.galactic_dogfight.server.player.Player;
 import com.badlogic.gdx.physics.box2d.World;

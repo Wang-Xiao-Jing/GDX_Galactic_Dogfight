@@ -75,6 +75,8 @@ subprojects {
   dependencies {
     // 请无视报错（）
     implementation "space.earlygrey:shapedrawer:$shapedrawerVersion"  // 添加依赖项
+
+    compileOnly("org.jetbrains:annotations:26.0.2")
   }
 }
 
