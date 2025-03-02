@@ -23,6 +23,7 @@ import com.kotcrab.vis.ui.VisUI;
 import xiaojing.galactic_dogfight.client.screen.CustomLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.StartLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.MainMenuScreen;
+import xiaojing.galactic_dogfight.i18n.I18N;
 
 /**
  * @author 尽
@@ -60,10 +61,18 @@ public class Main extends Game {
     private MainMenuScreen mainMenuScreen;                      // 菜单界面
     private CustomLoadingScreen loadingScreen;                  // 加载界面
 
+    public I18N language;
+
+    public static Main INSTANCES;
+
     /**
      * 初始化
      */
     public void create() {
+        INSTANCES = this;
+
+        this.language = new I18N("en_us");
+
         guiSpriteBatch = new SpriteBatch();
         gameSpriteBatch = new SpriteBatch();
         guiViewport = new ScreenViewport();

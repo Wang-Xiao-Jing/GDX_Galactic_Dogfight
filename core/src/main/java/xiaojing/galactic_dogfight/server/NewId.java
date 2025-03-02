@@ -11,26 +11,23 @@ public class NewId {
     private static final String ALLOW_CHARACTERS = "[^(a-z0-9_\\-.)]";
     public static final String UNIT = "unit";
 
+    /** 判断字符串 */
+    private static boolean stringRules(String string) {
+        return Pattern.matches(ALLOW_CHARACTERS, string);
+    }
+
     /** 默认单位ID */
     public static String newUnitIdName(){
         return ID + ":" + UNIT;
     }
 
     /**
-     * 创建unitId
+     * 创建 unitId
      * <br/>
      * 判断名称是否符合规则
      */
     public static String newUnitIdName(String unitName){
-        if (stringRules(unitName)){
-            return ID + ":" + unitName;
-        }
-        return newUnitIdName();
-    }
-
-    /** 判断字符串 */
-    private static boolean stringRules(String string) {
-        return Pattern.matches(ALLOW_CHARACTERS, string);
+        return stringRules(unitName) ? ID + ":" + unitName : newUnitIdName();
     }
 
     /**

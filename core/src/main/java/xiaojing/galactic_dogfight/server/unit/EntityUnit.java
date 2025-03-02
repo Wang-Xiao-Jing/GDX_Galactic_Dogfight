@@ -315,6 +315,7 @@ public class EntityUnit extends Sprite {
     public EntityUnit setRetreatSpeed(float speed){
         try {
             if (speed < 0 || speed > 1){
+                // TODO
                 throw new CustomRuntimeException("范围过大或者过小（范围：0~1）");
             }
         } catch (CustomRuntimeException e) {
