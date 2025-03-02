@@ -1,6 +1,5 @@
 package xiaojing.galactic_dogfight.client.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,13 +23,13 @@ public class StartLoadingScreen extends CustomLoadingScreen {
     final CustomLabel loadingLabel;       // 加载提示标签
     final Image progressBar;              // 进度条
     final Image background;               // 背景
-    float progressValue;                  // 进度条值
     final float lineSize;                 // 进度条宽度
+    final BitmapFont bitmapFont;          // 默认字体
+    float progressValue;                  // 进度条值
     float start;                          // 移动向量
     float end;                            // 移动向量
-    final BitmapFont bitmapFont;          // 默认字体
 
-    public StartLoadingScreen(Main game){
+    public StartLoadingScreen(Main game) {
         this.game = game;
         this.MAIN_STAGE = new Stage(guiViewport);
         this.bitmapFont = assetManager.get("fonts/loading/loading.fnt");
@@ -50,7 +49,7 @@ public class StartLoadingScreen extends CustomLoadingScreen {
         loadingLabel = new CustomLabel(bitmapFont);
 
         exitAction = new AlphaAction();
-        ((AlphaAction)exitAction).setAlpha(0);
+        ((AlphaAction) exitAction).setAlpha(0);
         exitAction.setDuration(DURATION);
 
         MAIN_STAGE.addActor(background);
@@ -63,13 +62,13 @@ public class StartLoadingScreen extends CustomLoadingScreen {
     public void render(float delta) {
         MAIN_STAGE.draw();
         progressValue = assetManager.getProgress();
-        if (assetManager.update()){
+        if (assetManager.update()) {
             exitAction.act(delta);
         }
         start = 0;
         end = start + guiViewport.getWorldWidth() * progressValue;
         progressBar.setWidth(end);
-        loadingLabel.setText(String.format("%.2f", progressValue * 100)+"%");
+        loadingLabel.setText(String.format("%.2f", progressValue * 100) + "%");
         loadingLabel.setPosition(
             guiViewport.getWorldWidth() / 2 - loadingLabel.getPrefWidth() / 2,
             guiViewport.getWorldHeight() / 2 - loadingLabel.getPrefHeight() / 2

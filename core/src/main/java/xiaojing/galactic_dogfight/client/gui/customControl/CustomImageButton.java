@@ -17,27 +17,27 @@ public class CustomImageButton extends CustomButton {
     private Drawable ImageStyleDisabled;  // 禁用样式
     private Drawable ImageStylePressed; // 按下样式
 
-    public CustomImageButton(){
-        this(null, null, null, null,1);
+    public CustomImageButton() {
+        this(null, null, null, null, 1);
     }
 
-    public CustomImageButton(float scale){
+    public CustomImageButton(float scale) {
         this(null, null, null, null, scale);
     }
 
-    public CustomImageButton(Drawable defaultStyle){
+    public CustomImageButton(Drawable defaultStyle) {
         this(defaultStyle, defaultStyle, defaultStyle, defaultStyle, 1);
     }
 
-    public CustomImageButton(Drawable defaultStyle, float scale){
+    public CustomImageButton(Drawable defaultStyle, float scale) {
         this(defaultStyle, defaultStyle, defaultStyle, defaultStyle, scale);
     }
 
-    public CustomImageButton(Drawable defaultStyle, Drawable overStyle, Drawable disabledStyle, Drawable pressedStyle){
+    public CustomImageButton(Drawable defaultStyle, Drawable overStyle, Drawable disabledStyle, Drawable pressedStyle) {
         this(defaultStyle, overStyle, disabledStyle, pressedStyle, 1);
     }
 
-    public CustomImageButton(Drawable defaultStyle, Drawable overStyle, Drawable disabledStyle, Drawable pressedStyle, float scale){
+    public CustomImageButton(Drawable defaultStyle, Drawable overStyle, Drawable disabledStyle, Drawable pressedStyle, float scale) {
         ImageStyleDefault = defaultStyle;
         ImageStyleOver = overStyle;
         ImageStyleDisabled = disabledStyle;
@@ -49,6 +49,7 @@ public class CustomImageButton extends CustomButton {
     }
 
     // region 状态切换
+
     /**
      * 切换到默认状态
      */
@@ -82,14 +83,16 @@ public class CustomImageButton extends CustomButton {
     }
     // endregion
 
-    public void setAllDrawable(Drawable settings){
+    public void setAllDrawable(Drawable settings) {
         ImageStyleDefault = settings;
         ImageStyleOver = settings;
         ImageStyleDisabled = settings;
         ImageStylePressed = settings;
     }
 
-    /** 获取指定状态的图片。 */
+    /**
+     * 获取指定状态的图片。
+     */
     public Optional<Drawable> getDrawable(State state) {
         return switch (state) {
             case DEFAULT -> Optional.ofNullable(ImageStyleDefault);
@@ -102,8 +105,8 @@ public class CustomImageButton extends CustomButton {
     /**
      * 设置指定状态的图片。
      *
-     * @param state       样式状态
-     * @param settings    样式设置
+     * @param state    样式状态
+     * @param settings 样式设置
      */
     public void setDrawable(State state, Drawable settings) {
         switch (state) {

@@ -1,12 +1,14 @@
-package xiaojing.galactic_dogfight.client.screen;
+package xiaojing.galactic_dogfight.client.gui.customControl;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import xiaojing.galactic_dogfight.Main;
 
 /**
+ * 自定义加载画面
+ *
  * @author 尽
- * @apiNote 自定义加载画面
+ * @apiNote
  */
 public abstract class CustomLoadingScreen extends CustomScreenAbstract {
     public float enterDuration;              // 进入过度时间
@@ -17,7 +19,7 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract {
     public TemporalAction exitAction;        // 退出动作
     public boolean isExit;                   // 退出动作是否完成
     public TemporalAction action;            // 动作
-    Main game;                               // 游戏实例
+    protected Main game;                     // 游戏实例
 
     public CustomLoadingScreen() {
         this(0, 0);
@@ -33,7 +35,6 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract {
      */
     @Override
     public void render(float delta) {
-        super.render(delta);
         enter(delta);
         exit(delta);
     }

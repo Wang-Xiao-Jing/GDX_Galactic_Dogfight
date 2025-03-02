@@ -1,10 +1,10 @@
 package xiaojing.galactic_dogfight.client.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import xiaojing.galactic_dogfight.Main;
 
 import static xiaojing.galactic_dogfight.Main.*;
@@ -15,10 +15,10 @@ import static xiaojing.galactic_dogfight.Main.*;
  * @apiNote 主菜单屏幕
  */
 public class MainMenuScreen extends CustomScreenAbstract {
-    Main game;
     final Stage MAIN_STAGE;                         // 总舞台
     final Container<Actor> BACKGROUND_CONTAINER;    // 背景容器
     final Container<Actor> GUI_CONTAINER;           // GUI容器
+    Main game;
     MainMenuConfigActor configActor;                // 配置界面
     MainMenuActor mainMenuActor;                    // 主菜单界面
 
@@ -57,7 +57,9 @@ public class MainMenuScreen extends CustomScreenAbstract {
         guiSpriteBatch.end();        // 结束绘制
     }
 
-    /** 交互 */
+    /**
+     * 交互
+     */
     @Override
     public void interactive() {
         ((CustomGroup) GUI_CONTAINER.getChild(0)).interactive();
@@ -73,12 +75,14 @@ public class MainMenuScreen extends CustomScreenAbstract {
             guiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
         );
         guiChildSize();
-        if (loading){
+        if (loading) {
             game.getLoadingScreen().adjustSize();
         }
     }
 
-    /** 调整子元素大小 */
+    /**
+     * 调整子元素大小
+     */
     @Override
     protected void guiChildSize() {
         ((CustomGroup) GUI_CONTAINER.getChild(0)).adjustSize(
@@ -103,9 +107,11 @@ public class MainMenuScreen extends CustomScreenAbstract {
         MAIN_STAGE.dispose();
     }
 
-    /** 切换页面 */
+    /**
+     * 切换页面
+     */
     @Override
-    public void switchPages(){
+    public void switchPages() {
         listener();
         GUI_CONTAINER.setSize(
             guiViewport.getWorldWidth() - guiLeftMargin - guiRightMargin,

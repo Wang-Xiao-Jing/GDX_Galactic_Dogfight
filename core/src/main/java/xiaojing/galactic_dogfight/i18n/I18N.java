@@ -23,7 +23,7 @@ public final class I18N {
             return;
         }
 
-        try(InputStream stream = handler.read()) {
+        try (InputStream stream = handler.read()) {
             MapNode node = JSON.json.parse(stream, false).asMapNodeOrEmpty();
             node.forEach(it -> builder.put(it.getKey(), it.getValue().toString()));
 
@@ -45,7 +45,7 @@ public final class I18N {
         final String name = "lang" + File.pathSeparator + "en_us.json";
 
         var handler = Gdx.files.local(name);
-        try(InputStream stream = handler.read()) {
+        try (InputStream stream = handler.read()) {
             MapNode node = JSON.json.parse(stream, false).asMapNodeOrEmpty();
             node.forEach(it -> builder.put(it.getKey(), it.getValue().toString()));
         } catch (IOException e) {

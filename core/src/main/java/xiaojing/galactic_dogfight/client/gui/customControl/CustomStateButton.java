@@ -19,11 +19,12 @@ public abstract class CustomStateButton extends Button {
     boolean disabledState;       // 禁用状态
     boolean pressedState;        // 按下状态
 
-    public CustomStateButton(){
+    public CustomStateButton() {
         setStyle(styleDefault);
     }
 
     // region 状态切换
+
     /**
      * 切换到默认状态
      */
@@ -45,23 +46,14 @@ public abstract class CustomStateButton extends Button {
     public abstract void pressedState();
     // endregion
 
-    /** 样式状态切换 */
+    /**
+     * 样式状态切换
+     */
     public abstract void replaceStyle();
-
-    /** 按钮状态枚举。 */
-    public enum State {
-        /** 默认状态 */
-        DEFAULT,
-        /** 鼠标悬停状态 */
-        OVER,
-        /** 禁用状态 */
-        DISABLED,
-        /** 按下状态 */
-        PRESSED
-    }
 
     /**
      * 获取按钮子控件。
+     *
      * @return 按钮子控件。
      */
     public abstract Actor getChild();
@@ -69,37 +61,57 @@ public abstract class CustomStateButton extends Button {
     /**
      * 设置指定状态的样式。
      *
-     * @param state       样式状态
-     * @param settings    样式设置
+     * @param state    样式状态
+     * @param settings 样式设置
      */
     public abstract void setFontStyle(State state, ButtonStyle settings);
 
-    /** 获取指定状态的样式。 */
+    /**
+     * 获取指定状态的样式。
+     */
     protected abstract Optional<ButtonStyle> getStyle(State state);
 
-    /** 按钮状态切换 */
-    public void replaceState(){
-        if (isDisabled()){
+    /**
+     * 按钮状态切换
+     */
+    public void replaceState() {
+        if (isDisabled()) {
             disabledState = true;
             defaultState = false;
-        }else {
-            if(isOver()){
+        } else {
+            if (isOver()) {
                 overState = true;
-                if (isPressed()){
-                    pressedState = true;
-                }
-                else {
-                    pressedState = false;
-                }
+                pressedState = isPressed();
                 defaultState = false;
-            }
-            else{
+            } else {
                 overState = false;
                 pressedState = false;
                 disabledState = false;
                 defaultState = true;
             }
         }
+    }
+
+    /**
+     * 按钮状态枚举。
+     */
+    public enum State {
+        /**
+         * 默认状态
+         */
+        DEFAULT,
+        /**
+         * 鼠标悬停状态
+         */
+        OVER,
+        /**
+         * 禁用状态
+         */
+        DISABLED,
+        /**
+         * 按下状态
+         */
+        PRESSED
     }
 
 }

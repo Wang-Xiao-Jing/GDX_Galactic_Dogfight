@@ -1,19 +1,19 @@
-package xiaojing.galactic_dogfight.client.screen;
+package xiaojing.galactic_dogfight.client.gui.customControl;
 
 import com.badlogic.gdx.ScreenAdapter;
 
 /**
+ * 抽象类
+ *
  * @author 尽
- * @apiNote 抽象类，所有自定义的Screen类都需要继承此类
+ * @apiNote 所有自定义的Screen类都需要继承此类
  */
 public abstract class CustomScreenAbstract extends ScreenAdapter {
     /**
      * 渲染
      */
     @Override
-    public void render(float delta) {
-
-    }
+    public abstract void render(float delta);
 
     /**
      * 改变大小窗口大小时执行
@@ -59,9 +59,7 @@ public abstract class CustomScreenAbstract extends ScreenAdapter {
      * 释放资源
      */
     @Override
-    public void dispose() {
-
-    }
+    public abstract void dispose();
 
 
     /**
