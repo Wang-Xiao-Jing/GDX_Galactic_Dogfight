@@ -2,6 +2,7 @@ package xiaojing.galactic_dogfight;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -23,6 +24,7 @@ import com.kotcrab.vis.ui.VisUI;
 import xiaojing.galactic_dogfight.client.screen.CustomLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.StartLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.MainMenuScreen;
+import xiaojing.galactic_dogfight.i18n.I18N;
 
 /**
  * @author 尽
