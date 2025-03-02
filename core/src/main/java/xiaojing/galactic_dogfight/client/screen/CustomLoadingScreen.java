@@ -1,7 +1,5 @@
 package xiaojing.galactic_dogfight.client.screen;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import xiaojing.galactic_dogfight.Main;
@@ -10,8 +8,7 @@ import xiaojing.galactic_dogfight.Main;
  * @author 尽
  * @apiNote 自定义加载画面
  */
-public abstract class CustomLoadingScreen extends CustomScreenAbstract{
-    Main game;                               // 游戏实例
+public abstract class CustomLoadingScreen extends CustomScreenAbstract {
     public float enterDuration;              // 进入过度时间
     public float exitDuration;               // 退出过度时间
     public Stage main_stage;                 // 主舞台
@@ -20,12 +17,13 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract{
     public TemporalAction exitAction;        // 退出动作
     public boolean isExit;                   // 退出动作是否完成
     public TemporalAction action;            // 动作
+    Main game;                               // 游戏实例
 
-    public CustomLoadingScreen(){
+    public CustomLoadingScreen() {
         this(0, 0);
     }
 
-    public CustomLoadingScreen(float enterDuration, float exitDuration){
+    public CustomLoadingScreen(float enterDuration, float exitDuration) {
         this.enterDuration = enterDuration;
         this.exitDuration = exitDuration;
     }
@@ -40,20 +38,24 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract{
         exit(delta);
     }
 
-    /** 播放进入动作 */
-    public void enter(float delta){
+    /**
+     * 播放进入动作
+     */
+    public void enter(float delta) {
         if (enterDuration <= 0 || isEnter) return;
-        if (enterAction.getTime()>= enterDuration) {
+        if (enterAction.getTime() >= enterDuration) {
             isEnter = true;
             return;
         }
         enterAction.act(delta);
     }
 
-    /** 播放退出动作 */
-    public void exit(float delta){
+    /**
+     * 播放退出动作
+     */
+    public void exit(float delta) {
         if (exitDuration <= 0 || isExit) return;
-        if (exitAction.getTime()>= exitDuration) {
+        if (exitAction.getTime() >= exitDuration) {
             isExit = true;
             complete();
             return;
@@ -61,7 +63,9 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract{
         exitAction.act(delta);
     }
 
-    /** 完成之后调用 */
-    public void complete(){
+    /**
+     * 完成之后调用
+     */
+    public void complete() {
     }
 }

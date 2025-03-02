@@ -7,18 +7,24 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  * @author 尽
  * @apiNote 自定义Group
  */
-public abstract class CustomGroup extends Group{
-    /** 交互 */
+public abstract class CustomGroup extends Group {
+    /**
+     * 交互
+     */
     public void interactive() {
 
     }
 
-    /** 监听器&触发器 */
+    /**
+     * 监听器&触发器
+     */
     public void listener() {
 
     }
 
-    /** 监听器&触发器 */
+    /**
+     * 监听器&触发器
+     */
     public void listener(MainMenuScreen SCREEN) {
 
     }
@@ -27,7 +33,9 @@ public abstract class CustomGroup extends Group{
 
     }
 
-    /** 调整大小 */
+    /**
+     * 调整大小
+     */
     public void adjustSize() {
 
     }

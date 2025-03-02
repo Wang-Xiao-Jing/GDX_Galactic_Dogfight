@@ -7,24 +7,22 @@ import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomScreenAbstract;
 
 import static xiaojing.galactic_dogfight.Main.*;
-import static xiaojing.galactic_dogfight.Main.guiBottomMargin;
 
 /**
  * 默认的GUI
+ *
  * @author xiaojing
  */
 public class DefaultGUI extends CustomScreenAbstract {
     protected final Stage GUI_MAIN_STAGE;                 // GUI总舞台
     protected final Container<Actor> GUI_CONTAINER;       // GUI容器
+    private final DefaultScene scene;
     protected float centerPointSize = 5;                     // 显示中心点大小
     protected boolean isCenterPoint;                    // 是否显示屏幕中心点
-
-    private CustomLabel label;
-    private CustomLabel label1;
-    private CustomLabel label2;
-    private CustomLabel label3;
-
-    private final DefaultScene scene;
+    private final CustomLabel label;
+    private final CustomLabel label1;
+    private final CustomLabel label2;
+    private final CustomLabel label3;
 
     public DefaultGUI(DefaultScene scene) {
         this.scene = scene;
@@ -35,7 +33,6 @@ public class DefaultGUI extends CustomScreenAbstract {
             guiViewport.getWorldHeight() - guiTopMargin - guiBottomMargin
         );
         GUI_CONTAINER.setFillParent(true);
-
 
 
         label = new CustomLabel(defaultFont);
@@ -55,7 +52,7 @@ public class DefaultGUI extends CustomScreenAbstract {
     }
 
     @Override
-    public void render(float delta){
+    public void render(float delta) {
         // GUI渲染
         guiViewport.apply();
         GUI_MAIN_STAGE.draw();
@@ -66,20 +63,22 @@ public class DefaultGUI extends CustomScreenAbstract {
 
     }
 
-    /** GUI 渲染 */
-    public void guiSpriteBatchBegin(float delta){
+    /**
+     * GUI 渲染
+     */
+    public void guiSpriteBatchBegin(float delta) {
         if (isCenterPoint) {
             guiSpriteBatch.draw(
-                pixelTexture, guiViewport.getWorldWidth()/2 - centerPointSize /2,
-                guiViewport.getWorldHeight()/2 - centerPointSize /2,
+                pixelTexture, guiViewport.getWorldWidth() / 2 - centerPointSize / 2,
+                guiViewport.getWorldHeight() / 2 - centerPointSize / 2,
                 centerPointSize,
                 centerPointSize
             );
         }
         GUI_MAIN_STAGE.draw();
-        label.setText("玩家速度：" + (String.format("%.2f", scene.getPlayer().getCurrentSpeed())));
+        label.setText("玩家速度：" + (String.format("%.2f", scene.getPlayerVehicle().getCurrentSpeed())));
         label1.setText("相机速度：" + (String.format("%.2f", scene.getCamera().getCurrentSpeed())));
-        label2.setText("瞄准模式：" + scene.getPlayer().isAim);
+        label2.setText("瞄准模式：" + scene.getPlayerVehicle().isAim);
         label3.setText("是否居中：" + scene.getCamera().isCenter);
     }
 
@@ -90,10 +89,10 @@ public class DefaultGUI extends CustomScreenAbstract {
 
     @Override
     public void resize(int width, int height) {
-        label.setY(guiViewport.getWorldHeight() - label.getHeight()*2);
-        label1.setY(label.getY() - (label.getHeight())*2 - 4);
-        label2.setY(label1.getY() - (label.getHeight())*2 - 4);
-        label3.setY(label2.getY() - (label.getHeight())*2 - 4);
+        label.setY(guiViewport.getWorldHeight() - label.getHeight() * 2);
+        label1.setY(label.getY() - (label.getHeight()) * 2 - 4);
+        label2.setY(label1.getY() - (label.getHeight()) * 2 - 4);
+        label3.setY(label2.getY() - (label.getHeight()) * 2 - 4);
     }
 
     @Override

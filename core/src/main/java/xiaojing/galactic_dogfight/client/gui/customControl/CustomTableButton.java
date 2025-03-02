@@ -14,16 +14,16 @@ import java.util.Optional;
  * @apiNote 自定义文本按钮
  */
 public class CustomTableButton extends CustomButton {
-    private Label label;
     // 默认字体
     private final BitmapFont bitmapFont = xiaojing.galactic_dogfight.Main.defaultFont;
-
     private final LabelStyle labelStyleDefault = new LabelStyle(bitmapFont, Color.WHITE);
     private final LabelStyle labelStyleOver = new LabelStyle(bitmapFont, Color.GREEN);
     private final LabelStyle labelStyleDisabled = new LabelStyle(bitmapFont, Color.RED);
     private final LabelStyle labelStylePressed = new LabelStyle(bitmapFont, Color.ROYAL);
+    private Label label;
 
     // region 构造函数
+
     /**
      * 构造带有文本的按钮
      */
@@ -66,7 +66,7 @@ public class CustomTableButton extends CustomButton {
     /**
      * 构造带有文本的按钮
      *
-     * @param skin  皮肤对象
+     * @param skin 皮肤对象
      */
     public CustomTableButton(Skin skin) {
         this("", skin);
@@ -75,8 +75,8 @@ public class CustomTableButton extends CustomButton {
     /**
      * 构造带有文本的按钮
      *
-     * @param text  按钮显示的文本
-     * @param skin  皮肤对象
+     * @param text 按钮显示的文本
+     * @param skin 皮肤对象
      */
     public CustomTableButton(CharSequence text, Skin skin) {
         this(text, skin, 1);
@@ -115,12 +115,13 @@ public class CustomTableButton extends CustomButton {
     // endregion
 
     // region 修改样式
+
     /**
      * 修改文本
      *
      * @param text 文本
      */
-    public void setText(CharSequence text){
+    public void setText(CharSequence text) {
         getChildLabel().setText(text);
     }
 
@@ -129,17 +130,17 @@ public class CustomTableButton extends CustomButton {
      *
      * @param scale 缩放比例
      */
-    public void setTextScale(float scale){
+    public void setTextScale(float scale) {
         getChildLabel().setFontScale(scale);
     }
 
     /**
      * 修改文本样式
      *
-     * @param text 文本
+     * @param text  文本
      * @param scale 缩放比例
      */
-    public void setTextStyle(CharSequence text, float scale){
+    public void setTextStyle(CharSequence text, float scale) {
         setText(text);
         setTextScale(scale);
     }
@@ -157,8 +158,8 @@ public class CustomTableButton extends CustomButton {
     /**
      * 修改指定状态的样式
      *
-     * @param state     状态
-     * @param settings  样式
+     * @param state    状态
+     * @param settings 样式
      */
     public void setFontStyle(State state, LabelStyle settings) {
         getLabelStyle(state).ifPresent(style -> {
@@ -171,7 +172,7 @@ public class CustomTableButton extends CustomButton {
     /**
      * 修改所有状态的字体样式
      *
-     * @param settings  样式
+     * @param settings 样式
      */
     public void setAllFontStyle(LabelStyle settings) {
         labelStyleDefault.font = settings.font;
@@ -230,6 +231,7 @@ public class CustomTableButton extends CustomButton {
     // endregion
 
     // region 状态切换
+
     /**
      * 切换到默认状态
      */
@@ -264,6 +266,7 @@ public class CustomTableButton extends CustomButton {
     // endregion
 
     // region 获取函数
+
     /**
      * 获取子控件（Label）
      *
@@ -290,18 +293,24 @@ public class CustomTableButton extends CustomButton {
     // endregion
 
     // region 私有函数
-    /** 设置标签样式 */
+
+    /**
+     * 设置标签样式
+     */
     private void setLabelStyle(LabelStyle style0, LabelStyle style1) {
         style0.fontColor = style1.fontColor;
         style0.font = style1.font;
         style0.background = style1.background;
     }
+
     private void setLabelStyle(LabelStyle style, Color fontColor) {
         style.fontColor = fontColor;
     }
+
     private void setLabelStyle(LabelStyle style, BitmapFont font) {
         style.font = font;
     }
+
     private void setLabelStyle(LabelStyle style, Drawable background) {
         style.background = background;
     }

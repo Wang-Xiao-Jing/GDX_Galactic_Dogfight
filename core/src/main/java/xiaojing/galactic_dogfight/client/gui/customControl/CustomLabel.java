@@ -86,17 +86,17 @@ public class CustomLabel extends Label {
      *
      * @param scale 缩放比例
      */
-    public void setTextScale(float scale){
+    public void setTextScale(float scale) {
         setFontScale(scale);
     }
 
     /**
      * 修改文本样式
      *
-     * @param text 文本
+     * @param text  文本
      * @param scale 缩放比例
      */
-    public void setTextStyle(CharSequence text, float scale){
+    public void setTextStyle(CharSequence text, float scale) {
         setText(text);
         setTextScale(scale);
     }

@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 import xiaojing.galactic_dogfight.server.MainGameScreen;
@@ -26,8 +28,9 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
     Image progressBar;              // 进度条
     Image background;               // 背景
     Skin style;                     // 皮肤
+    float time = 0;
 
-    public EnterLoadingScreen(Main game){
+    public EnterLoadingScreen(Main game) {
         this.game = game;
         main_stage = new Stage(guiViewport);
         style = assetManager.get("texture/gui/loading/loading.json", Skin.class);
@@ -46,7 +49,7 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         main_stage.addActor(labelContainer);
         main_stage.addAction(action);
         progressBar.setHeight(5);
-        labelContainer.moveBy(5,5);
+        labelContainer.moveBy(5, 5);
         labelContainer.defaults().height(describeLabel.getPrefHeight());
         labelContainer.add(describeLabel).width(52).left();
         labelContainer.setHeight(labelContainer.defaults().getPrefHeight());
@@ -60,13 +63,12 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         gameAssetManager.load("texture/gui/game/panel.json", Skin.class);
         gameAssetManager.load("texture/gui/game/player_detailed_panel.json", Skin.class);
         gameAssetManager.load("texture/sprite/player/template_player.png", Texture.class);
-        ((AlphaAction)action).setAlpha(0);
+        ((AlphaAction) action).setAlpha(0);
         action.setDuration(duration);
         action.setReverse(true);
 //        main_stage.setDebugAll(true);
     }
 
-    float time = 0;
     @Override
     public void render(float delta) {
         guiViewport.apply();   // 应用视口
@@ -75,21 +77,21 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         progressBar.setWidth(progressBar.getPrefWidth() +
             (progressBarBackground.getWidth() - progressBar.getPrefWidth()) * gameAssetManager.getProgress());
         action.act(delta);
-        time +=delta;
+        time += delta;
         if (time >= 3) {
             describeLabel.setText(PlayPrompt());
             describeLabel.setFontScale(1);
             describeLabel.setWidth(describeLabel.getPrefWidth());
             time = 0;
         }
-        if(((AlphaAction)action).getColor().a >= 1){
-            if(gameAssetManager.update()){
+        if (((AlphaAction) action).getColor().a >= 1) {
+            if (gameAssetManager.update()) {
                 action.restart();
                 action.setReverse(false);
                 game.setScreen(new MainGameScreen(game));
             }
-        }else {
-            if (((AlphaAction)action).getColor().a <= 0) isExit = true;
+        } else {
+            if (((AlphaAction) action).getColor().a <= 0) isExit = true;
             complete();
         }
     }
@@ -102,7 +104,7 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         );
         if (labelContainer.getWidth() >= 200) labelContainer.setWidth(200);
         progressBarBackground.setWidth(guiViewport.getWorldWidth() * 0.5f);
-        if(progressBarBackground.getWidth() >= 300) progressBarBackground.setWidth(300);
+        if (progressBarBackground.getWidth() >= 300) progressBarBackground.setWidth(300);
         progressBarBackground.setPosition(
             guiViewport.getWorldWidth() / 2 - progressBarBackground.getWidth() / 2,
             guiViewport.getWorldHeight() * 0.2f - progressBarBackground.getHeight() / 2
@@ -112,9 +114,9 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
 
     // 加载完成后调用
     @Override
-    public void complete(){
+    public void complete() {
         if (!isExit) return;
-        game.loading = false;
+        game.setIsLoading(false);
         game.disposeLoadingScreen();
     }
 
@@ -123,10 +125,12 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         main_stage.dispose();
     }
 
-    /**  提示轮播 */
+    /**
+     * 提示轮播
+     */
     public String PlayPrompt() {
         Random random = new Random();
-        String[] txt ={
+        String[] txt = {
             "你知道吗: 人的脸皮在生理角度来讲，也是会随着年龄的增长而加厚。",
             "你知道吗: 人类对ccb的开发不足1%。",
             "你知道吗: 肾上腺素风暴（Adrenergic storm）是儿茶酚胺肾上腺素和去甲肾上腺素的血清水平突然而剧烈增加。",

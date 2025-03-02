@@ -4,7 +4,7 @@ package xiaojing.galactic_dogfight.runtimeException;
  * @author 尽
  * @apiNote
  */
-public class CustomRuntimeException extends RuntimeException{
+public class CustomRuntimeException extends RuntimeException {
     public CustomRuntimeException(String message) {
         super(message);
     }

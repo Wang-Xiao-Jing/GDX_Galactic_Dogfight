@@ -8,13 +8,13 @@ import java.util.Optional;
  * @author 尽
  * @apiNote 自定义按钮
  */
-public class CustomButton extends CustomStateButton{
+public class CustomButton extends CustomStateButton {
     private final ButtonStyle styleDefault = new ButtonStyle(); // 默认样式
     private final ButtonStyle styleOver = new ButtonStyle();    // 触摸样式
     private final ButtonStyle styleDisabled = new ButtonStyle();  // 禁用样式
     private final ButtonStyle stylePressed = new ButtonStyle(); // 按下样式\
 
-    public CustomButton(){
+    public CustomButton() {
         setStyle(styleDefault);
     }
 
@@ -53,29 +53,31 @@ public class CustomButton extends CustomStateButton{
     }
     // endregion
 
-    /** 样式状态切换 */
+    /**
+     * 样式状态切换
+     */
     @Override
-    public void replaceStyle(){
+    public void replaceStyle() {
         replaceState();
-        if (disabledState){
+        if (disabledState) {
             disabledState();
             return;
-        }else {
-            if(overState){
-                if (pressedState){
+        } else {
+            if (overState) {
+                if (pressedState) {
                     pressedState();
-                }
-                else{
+                } else {
                     overState();
                 }
                 return;
             }
         }
         defaultState();
-    };
+    }
 
     /**
      * 获取按钮子控件。
+     *
      * @return 按钮子控件。
      */
     @Override
@@ -86,8 +88,8 @@ public class CustomButton extends CustomStateButton{
     /**
      * 设置指定状态的样式。
      *
-     * @param state       样式状态
-     * @param settings    样式设置
+     * @param state    样式状态
+     * @param settings 样式设置
      */
     @Override
     public void setFontStyle(State state, ButtonStyle settings) {
@@ -112,7 +114,9 @@ public class CustomButton extends CustomStateButton{
         });
     }
 
-    /** 获取指定状态的样式。 */
+    /**
+     * 获取指定状态的样式。
+     */
     @Override
     protected Optional<ButtonStyle> getStyle(State state) {
         return switch (state) {
