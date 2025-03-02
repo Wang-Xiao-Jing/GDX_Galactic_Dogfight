@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import space.earlygrey.shapedrawer.ShapeDrawer;
+import xiaojing.galactic_dogfight.core.entity.Entity;
 import xiaojing.galactic_dogfight.server.inputProcessor.KeyProcessor;
 import xiaojing.galactic_dogfight.server.player.Player;
-import xiaojing.galactic_dogfight.core.entity.Entity;
 
 import static xiaojing.galactic_dogfight.Main.*;
 import static xiaojing.galactic_dogfight.server.InputConfiguration.*;

@@ -5,6 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import xiaojing.galactic_dogfight.api.IDisposeable;
 
+/**
+ * LivingEntity 是 Entity 的演绎者，LivingEntity 通常不唯一，但具备指向 Entity 的能力。<br>
+ * TODO - LivingEntity 由 World 管理。
+ *
+ * @see Entity
+ */
 public class LivingEntity implements IDisposeable {
     public final Entity entity;
     public final Vector2 position;
@@ -41,6 +47,6 @@ public class LivingEntity implements IDisposeable {
 
     @Override
     public void dispose() {
-        this.entity.dispose();
+        // TODO
     }
 }

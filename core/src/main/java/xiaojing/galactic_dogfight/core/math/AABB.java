@@ -1,7 +1,6 @@
 package xiaojing.galactic_dogfight.core.math;
 
 import com.badlogic.gdx.math.Vector2;
-import xiaojing.galactic_dogfight.core.entity.Entity;
 import xiaojing.galactic_dogfight.core.entity.LivingEntity;
 
 public class AABB {
