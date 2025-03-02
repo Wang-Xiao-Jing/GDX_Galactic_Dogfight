@@ -30,7 +30,7 @@ public class MainMenuScreen extends CustomScreenAbstract {
     public MainMenuScreen(Main game) {
         this.game = game;
         this.MAIN_STAGE = new Stage(guiViewport);
-        Gdx.input.setInputProcessor(MAIN_STAGE);
+        multiplexer.addProcessor(MAIN_STAGE);
         BACKGROUND_CONTAINER = new Container<>(new Image(assetManager.get("texture/gui/homepage/background.jpg", Texture.class)));
         GUI_CONTAINER = new Container<>();
         // 初始基本部分
@@ -49,7 +49,7 @@ public class MainMenuScreen extends CustomScreenAbstract {
      */
     @Override
     public void render(float delta) {
-        guiSpriteBatch.setProjectionMatrix(guiViewport.getCamera().combined); // 设置投影矩阵
+//        guiSpriteBatch.setProjectionMatrix(guiViewport.getCamera().combined); // 设置投影矩阵
         guiViewport.apply();   // 应用视口
         MAIN_STAGE.draw();
         MAIN_STAGE.act(delta);

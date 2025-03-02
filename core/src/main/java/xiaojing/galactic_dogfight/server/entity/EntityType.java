@@ -1,8 +1,8 @@
-package xiaojing.galactic_dogfight.server.unit;
+package xiaojing.galactic_dogfight.server.entity;
 
-/** 单位类型 */
+/** 实体类型 */
 //TODO
-public enum UnitType {
+public enum EntityType {
     /** 空 */
     EMPTY      ("empty"),
     /** 物体 */
@@ -16,7 +16,7 @@ public enum UnitType {
 
     final String typeName;
 
-    UnitType(String typeName) {
+    EntityType(String typeName) {
         this.typeName = typeName;
     }
 

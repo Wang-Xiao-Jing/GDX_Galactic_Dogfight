@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" source="nts.tsx"/>
- <layer id="1" name="acg" width="30" height="30">
+ <layer id="1" name="acg" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJztzaERACAQA8G0AShAPfTfH6kigzixepukHjZs2grbvLy8vLy8vLy8vLy8H75lJ+zaA9XMd4k=
+   eJzt0TEBhEAQALGzwVPBV4B/fywupkgRBdnWWj8S9nGMk4S/jxQfLT5afLT4aPHR4qPFR4uPFh8tPlp8tPho8dHio8VHi48WHy0+Wny0+Gjx0eKjxUeLjxYfLT5afLT4aPHR4qPFR4uPFh8tPlp8tPho8dHio8VHi48WHy0+Wny0+Gjx0eKjxUeLjxYfLT5afLT4aPHR4qPFR4uPFh8tPlp8tPho8dHio8VHi48WHy0+Wny0+Gjx0eKjxUeLjxYfLT5afLT4aPHR4qPFR4uPFh8tPlp8tPho8dHio8VHi48WHy0+Wny0+Gjx0eKjxUeLj5bv4xo3Cc94AWUiMGw=
   </data>
  </layer>
 </map>

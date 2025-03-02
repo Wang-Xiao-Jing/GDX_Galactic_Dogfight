@@ -19,15 +19,28 @@ public class NewId {
     /** 默认单位ID */
     public static String newUnitIdName(){
         return ID + ":" + UNIT;
+    /** 默认实体ID */
+    public static String newEntityIdName(){
+        return ID + ":" + ENTITY;
     }
 
     /**
-     * 创建 unitId
+     * 创建entityId
      * <br/>
      * 判断名称是否符合规则
      */
     public static String newUnitIdName(String unitName){
         return stringRules(unitName) ? ID + ":" + unitName : newUnitIdName();
+    public static String newEntityIdName(String entityName){
+        if (stringRules(entityName)){
+            return ID + ":" + entityName;
+        }
+        return newEntityIdName();
+    }
+
+    /** 判断字符串 */
+    private static boolean stringRules(String string) {
+        return Pattern.matches(ALLOW_CHARACTERS, string);
     }
 
     /**

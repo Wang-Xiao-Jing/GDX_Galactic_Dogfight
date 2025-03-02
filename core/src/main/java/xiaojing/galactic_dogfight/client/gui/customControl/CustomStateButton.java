@@ -64,7 +64,7 @@ public abstract class CustomStateButton extends Button {
      * 获取按钮子控件。
      * @return 按钮子控件。
      */
-    public abstract Actor getSon();
+    public abstract Actor getChild();
 
     /**
      * 设置指定状态的样式。

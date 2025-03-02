@@ -79,7 +79,7 @@ public class CustomButton extends CustomStateButton{
      * @return 按钮子控件。
      */
     @Override
-    public Actor getSon() {
+    public Actor getChild() {
         return getChildren().first();
     }
 

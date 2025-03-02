@@ -16,25 +16,23 @@ public class Lwjgl3Launcher {
         createApplication();
     }
 
+    // 创建应用程序
     private static Lwjgl3Application createApplication() {
         return new Lwjgl3Application(new Main(), getDefaultConfiguration());
     }
 
+    // 获取默认配置
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {
         Lwjgl3ApplicationConfiguration configuration = new Lwjgl3ApplicationConfiguration();
+        // 设置标题
         configuration.setTitle("Galactic Dogfight");
-        //// Vsync将每秒帧数限制在硬件可以显示的范围内，并有助于消除
-        //// 屏幕撕裂。此设置在Linux上并不总是有效，因此后面的行是一种保护措施。
-//        configuration.useVsync(true);
-        //// 将FPS限制为当前活动监视器的刷新率，加1以尝试匹配分数
-        /// 刷新率。上述Vsync设置应限制实际FPS以匹配监视器。
+        // 设置帧率 (`Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1` 为垂直同步)
         configuration.setForegroundFPS(Lwjgl3ApplicationConfiguration.getDisplayMode().refreshRate + 1);
-        //// 如果你删除上面的行并将Vsync设置为false，你可以获得无限的FPS，这可以是
-        //// 对于测试性能很有用，但对某些硬件来说也可能非常有压力。
-        //// 您可能还需要配置GPU驱动程序以完全禁用Vsync；这可能会导致屏幕撕裂。
+        // 设置窗口大小
         configuration.setWindowedMode(960, 540);
+        // 设置窗口大小限制
         configuration.setWindowSizeLimits(960, 540,-1,-1);
-        //// 您可以更改这些文件；它们位于lwjgl3/src/main/resources/中。
+        // 设置窗口图标
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
         return configuration;
     }
