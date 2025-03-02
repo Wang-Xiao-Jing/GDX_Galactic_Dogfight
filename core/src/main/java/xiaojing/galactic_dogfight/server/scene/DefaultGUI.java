@@ -3,8 +3,8 @@ package xiaojing.galactic_dogfight.server.scene;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import xiaojing.galactic_dogfight.api.StaticClass;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
-import xiaojing.galactic_dogfight.client.gui.customControl.CustomScreenAbstract;
 
 import static xiaojing.galactic_dogfight.Main.*;
 
@@ -69,17 +69,17 @@ public class DefaultGUI extends CustomScreenAbstract {
     public void guiSpriteBatchBegin(float delta) {
         if (isCenterPoint) {
             guiSpriteBatch.draw(
-                pixelTexture, guiViewport.getWorldWidth() / 2 - centerPointSize / 2,
+                StaticClass.pixelTexture, guiViewport.getWorldWidth() / 2 - centerPointSize / 2,
                 guiViewport.getWorldHeight() / 2 - centerPointSize / 2,
                 centerPointSize,
                 centerPointSize
             );
         }
         GUI_MAIN_STAGE.draw();
-        label.setText("玩家速度：" + (String.format("%.2f", scene.getPlayerVehicle().getCurrentSpeed())));
-        label1.setText("相机速度：" + (String.format("%.2f", scene.getCamera().getCurrentSpeed())));
-        label2.setText("瞄准模式：" + scene.getPlayerVehicle().isAim);
-        label3.setText("是否居中：" + scene.getCamera().isCenter);
+//        label.setText("玩家速度：" + (String.format("%.2f", scene.getPlayerVehicle().getCurrentSpeed())));
+//        label1.setText("相机速度：" + (String.format("%.2f", scene.getCamera().getCurrentSpeed())));
+//        label2.setText("瞄准模式：" + scene.getPlayerVehicle().isAim);
+//        label3.setText("是否居中：" + scene.getCamera().isCenter);
     }
 
     @Override

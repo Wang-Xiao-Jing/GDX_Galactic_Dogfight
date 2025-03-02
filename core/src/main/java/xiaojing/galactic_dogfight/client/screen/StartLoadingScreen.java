@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
+import xiaojing.galactic_dogfight.client.gui.customControl.CustomLoadingScreen;
 
 import static xiaojing.galactic_dogfight.Main.*;
 

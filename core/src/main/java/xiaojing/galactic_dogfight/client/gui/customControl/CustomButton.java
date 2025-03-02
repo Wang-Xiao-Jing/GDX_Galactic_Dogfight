@@ -1,6 +1,7 @@
 package xiaojing.galactic_dogfight.client.gui.customControl;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.Optional;
 
@@ -8,11 +9,11 @@ import java.util.Optional;
  * @author 尽
  * @apiNote 自定义按钮
  */
-public class CustomButton extends CustomStateButton {
+public class CustomButton extends CustomStateButton{
     private final ButtonStyle styleDefault = new ButtonStyle(); // 默认样式
     private final ButtonStyle styleOver = new ButtonStyle();    // 触摸样式
     private final ButtonStyle styleDisabled = new ButtonStyle();  // 禁用样式
-    private final ButtonStyle stylePressed = new ButtonStyle(); // 按下样式\
+    private final ButtonStyle stylePressed = new ButtonStyle(); // 按下样式
 
     public CustomButton() {
         setStyle(styleDefault);

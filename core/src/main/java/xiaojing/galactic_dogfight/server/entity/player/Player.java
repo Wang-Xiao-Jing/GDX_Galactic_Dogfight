@@ -13,7 +13,7 @@ public class Player {
     private final Array<DiseaseTemplate> disease; // 疾病
     private float vitality = 100;       // 生命值
     private float maxVitality = 100;    // 最大生命值
-    private final float health = 1F;          // 健康百分百比
+    private final float health = 1F;    // 健康百分百比
     private float energy = 100;         // 饥饿值
     private float maxEnergy = 100;      // 最大饥饿值
     private float oxygen = 100;         // 氧气值

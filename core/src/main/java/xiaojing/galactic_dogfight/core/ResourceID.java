@@ -4,8 +4,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
+ * 创建标识符
  * @author 尽
- * @apiNote  创建单位ID类
+ * @apiNote
  */
 public class ResourceID {
     public static final String ID = "galactic_dogfight";

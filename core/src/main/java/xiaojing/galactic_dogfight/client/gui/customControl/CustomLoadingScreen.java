@@ -19,7 +19,7 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract {
     public TemporalAction exitAction;        // 退出动作
     public boolean isExit;                   // 退出动作是否完成
     public TemporalAction action;            // 动作
-    protected Main game;                     // 游戏实例
+    Main game;                               // 游戏实例
 
     public CustomLoadingScreen() {
         this(0, 0);
@@ -35,6 +35,7 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract {
      */
     @Override
     public void render(float delta) {
+        super.render(delta);
         enter(delta);
         exit(delta);
     }

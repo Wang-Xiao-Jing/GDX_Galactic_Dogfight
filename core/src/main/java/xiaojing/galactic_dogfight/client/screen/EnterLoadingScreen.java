@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import xiaojing.galactic_dogfight.Main;
+import xiaojing.galactic_dogfight.api.StaticClass;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
+import xiaojing.galactic_dogfight.client.gui.customControl.CustomLoadingScreen;
 import xiaojing.galactic_dogfight.server.MainGameScreen;
 
 import java.util.Random;
@@ -36,7 +38,7 @@ public class EnterLoadingScreen extends CustomLoadingScreen {
         style = assetManager.get("texture/gui/loading/loading.json", Skin.class);
         progressBarBackground = new Image(style.getPatch("progressBar-background-horizontal"));
         progressBar = new Image(style.getPatch("progressBar-default-horizontal"));
-        background = new Image(Main.pixelTexture);
+        background = new Image(StaticClass.pixelTexture);
         action = new AlphaAction();
         labelContainer = new Table();
         describeLabel = new CustomLabel(PlayPrompt(), defaultFont, 1f);

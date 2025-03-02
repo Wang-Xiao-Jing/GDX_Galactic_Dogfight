@@ -13,7 +13,9 @@ public abstract class CustomScreenAbstract extends ScreenAdapter {
      * 渲染
      */
     @Override
-    public abstract void render(float delta);
+    public void render(float delta) {
+
+    }
 
     /**
      * 改变大小窗口大小时执行
@@ -59,7 +61,9 @@ public abstract class CustomScreenAbstract extends ScreenAdapter {
      * 释放资源
      */
     @Override
-    public abstract void dispose();
+    public void dispose() {
+
+    }
 
 
     /**

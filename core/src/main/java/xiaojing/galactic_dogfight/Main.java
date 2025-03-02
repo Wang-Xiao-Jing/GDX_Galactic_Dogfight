@@ -98,7 +98,6 @@ public class Main extends Game {
      * 资源载入
      */
     private void initializeAssetManager() {
-        emptyTexture = new Texture("texture/empty_texture.png");
         assetManager = new AssetManager();
         gameAssetManager = new AssetManager();
         // 添加新的加载器
@@ -113,7 +112,6 @@ public class Main extends Game {
         assetManager.load("texture/gui/homepage/background.jpg", Texture.class);     // 主页背景
         assetManager.load("fonts/silver/silver.fnt", BitmapFont.class);              // 默认字体
 //        assetManager.load("fonts/silver/silver.ttf", BitmapFont.class, mySmallFont);
-        assetManager.load("texture/gui/pixel.png", Texture.class);                   // 通用像素染色白图
         assetManager.load("texture/gui/homepage/title.png", Texture.class);          // 主页标题
         assetManager.load("texture/gui/test/test.json", Skin.class);                 // 测试gui皮肤
         assetManager.load("texture/gui/loading/loading.json", Skin.class);           // 加载界面皮肤
@@ -135,31 +133,19 @@ public class Main extends Game {
         delta = Gdx.graphics.getDeltaTime();
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
         ScreenUtils.clear(Color.BLACK); // 清屏
+
         // 加载完成
         if (assetManager.update()) {
             // 初始化
             if (loadingTime >= 1f) {
-                disposeLoadingScreen();             // 释放加载界面
-                loadingTime = 0;                    // 重置时间
-                isLoading = false;                    // 允许交互
-                mainMenuScreen.listener();          // 监听器
+                disposeLoadingScreen();
+                loadingTime = 0;
+                isLoading = false;
+                mainMenuScreen.listener();
             }
             // 初始化资源
             if (!isResourcesLoaded) {
-                // 使用 BitmapFont
-                defaultFont = assetManager.get("fonts/silver/silver.fnt", BitmapFont.class);
-                defaultFont.setUseIntegerPositions(true);
-                defaultFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
-                // 使用 FreeType
-//                customFont = assetManager.get("fonts/silver/silver.ttf", BitmapFont.class);
-//                customFont.setUseIntegerPositions(true);
-//                customFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
-
-                pixelTexture = assetManager.get("texture/gui/pixel.png", Texture.class); // 赋值通用像素染色白图
-
-                mainMenuScreen = new MainMenuScreen(this);  // 创建菜单
-                this.setScreen(mainMenuScreen);                   // 设置菜单为当前屏幕
-                isResourcesLoaded = true;                        // 资源加载完成
+                resourcesLoaded();
             }
             if (isLoading && loadingScreen != null && !loadingScreen.isExit) {
                 loadingScreen.render(delta);
@@ -191,6 +177,18 @@ public class Main extends Game {
         }
     }
 
+    private void resourcesLoaded() {
+        defaultFont = assetManager.get("fonts/silver/silver.fnt", BitmapFont.class);
+        defaultFont.setUseIntegerPositions(true);
+        defaultFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
+//                customFont = assetManager.get("fonts/silver/silver.ttf", BitmapFont.class);
+//                customFont.setUseIntegerPositions(true);
+//                customFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
+        mainMenuScreen = new MainMenuScreen(this); // 创建菜单
+        this.setScreen(mainMenuScreen); // 设置菜单为当前屏幕
+        isResourcesLoaded = true; // 资源加载完成
+    }
+
     /**
      * 获取加载界面
      */
@@ -218,7 +216,7 @@ public class Main extends Game {
      */
     @Override
     public void dispose() {
-        emptyTexture.dispose();
+        StaticClass.dispose();
         defaultFont.dispose();
         assetManager.dispose();
         gameAssetManager.dispose();

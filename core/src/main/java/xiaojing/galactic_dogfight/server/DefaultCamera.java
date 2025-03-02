@@ -46,7 +46,7 @@ public class DefaultCamera implements KeyProcessor {
 
     /** 初始化 */
     public void initialize(){
-        shapeDrawer = new ShapeDrawer(gameSpriteBatch, new TextureRegion(pixelTexture));
+        shapeDrawer = new ShapeDrawer(gameSpriteBatch, new TextureRegion(StaticClass.pixelTexture));
         previousPosition = new Vector2();
         addInputProcessor();
     }
@@ -181,12 +181,12 @@ public class DefaultCamera implements KeyProcessor {
         shapeDrawer.line(new Vector2(getX(), getY()), targetPosition);
     }
 
-    private float temporarySpeed;           // 临时速度存储
-    private boolean isTimeElapsed;          // 是否延迟
-    private Vector2 previousPosition;       // 上次位置
-    private Vector2 currentPosition;        // 当前位置
-    private int frameCount;                 // 帧计数
-    private float accumulatedSpeedChange;   // 累积的速度变化
+//    private float temporarySpeed;           // 临时速度存储
+//    private boolean isTimeElapsed;          // 是否延迟
+//    private Vector2 previousPosition;       // 上次位置
+//    private Vector2 currentPosition;        // 当前位置
+//    private int frameCount;                 // 帧计数
+//    private float accumulatedSpeedChange;   // 累积的速度变化
 
     /**
      * 移动摄像机到目标实体的位置。
@@ -197,7 +197,7 @@ public class DefaultCamera implements KeyProcessor {
      * @param delta 时间间隔（秒），用于平滑处理移动
      * @param entity 目标实体，摄像机将移动到该实体的位置
      */
-    public void moveTarget(float delta, Entity entity) {
+    /*public void moveTarget(float delta, Entity entity) {
         float entitySpeed = entity.getSpeed()*500;
         // 更新摄像机的速度
         updateSpeed();
@@ -253,7 +253,7 @@ public class DefaultCamera implements KeyProcessor {
         // 如果目标实体不是玩家，摄像机缓慢地向目标位置移动
         translate(direction.scl(0.5F));
 
-    }
+    }*/
 
     /**
      * 获取移动向量。
@@ -264,7 +264,7 @@ public class DefaultCamera implements KeyProcessor {
      * @param entity 实体，用于获取其旋转角度
      * @return 返回一个二维向量，表示摄像机的移动方向和距离
      */
-    private Vector2 getMoveVector(float speed, Entity entity) {
+    /*private Vector2 getMoveVector(float speed, Entity entity) {
         // 创建一个初始方向向量，默认指向右侧 (1, 0)
         Vector2 direction = new Vector2(1, 0);
 
@@ -273,10 +273,10 @@ public class DefaultCamera implements KeyProcessor {
 
         // 将方向向量缩放至指定的速度
         return new Vector2(direction).scl(speed);
-    }
+    }*/
 
     /** 检查是否是时间流逝的开始，用于初始化速度计算 */
-    private void updateSpeed() {
+    /*private void updateSpeed() {
         Vector2 currentPosition = getPosition();
         float speedChange = currentPosition.dst(previousPosition);
 
@@ -302,15 +302,15 @@ public class DefaultCamera implements KeyProcessor {
         }
 
         previousPosition = currentPosition;
-    }
+    }*/
 
     /** 获取当前移动速度 */
     public float getCurrentSpeed(){
         return currentSpeed;
     }
 
-    public void update(float delta, Entity entity) {
-        moveTarget(delta, entity);
+    public void update(float delta) {
+//        moveTarget(delta, entity);
         scale();
         camera.update();
     }

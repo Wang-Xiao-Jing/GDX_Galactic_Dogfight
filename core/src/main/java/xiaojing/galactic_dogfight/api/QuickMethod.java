@@ -1,29 +1,31 @@
-package xiaojing.galactic_dogfight.client.screen;
+package xiaojing.galactic_dogfight.api;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import xiaojing.galactic_dogfight.Main;
 
 /**
+ * 便捷函数类
  * @author 尽
- * @apiNote 便捷函数类
+ * @apiNote
  */
 public class QuickMethod {
-    private final Viewport viewport;
+    private final Viewport guiViewport = Main.guiViewport;
 
-    public QuickMethod(Viewport viewport) {
-        this.viewport = viewport;
-    }
-
-    public String getPixel() {
-        return "texture/screen/pixel.png";
+    public static Drawable converted(Texture texture){
+        return new TextureRegionDrawable(new TextureRegion(texture));
     }
 
     /**
      * 居中
      */
     public void center(Actor actor) {
-        actor.setPosition(viewport.getWorldWidth() / 2 - actor.getWidth() / 2, viewport.getWorldHeight() / 2 - actor.getHeight() / 2);
+        actor.setPosition(guiViewport.getWorldWidth() / 2 - actor.getWidth() / 2, guiViewport.getWorldHeight() / 2 - actor.getHeight() / 2);
     }
 
     /**

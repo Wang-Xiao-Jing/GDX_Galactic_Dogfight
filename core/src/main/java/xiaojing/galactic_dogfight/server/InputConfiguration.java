@@ -15,8 +15,8 @@ public class InputConfiguration {
     public static int playerAimSwitchKey = Input.Keys.Q; // 向后移动按键
 
     // 相机操作
-    public static int zoomInKey = Input.Keys.EQUALS; // 放大按键
-    public static int zoomOutKey = Input.Keys.MINUS; // 缩小按键
+    public static int zoomInKey = Input.Keys.MINUS; // 放大按键
+    public static int zoomOutKey = Input.Keys.EQUALS; // 缩小按键
     public static int resetZoomKey = Input.Keys.DEL; // 重置缩放按键
     public static int centerZoomKey = Input.Keys.E; // 重置缩放按键
 }
