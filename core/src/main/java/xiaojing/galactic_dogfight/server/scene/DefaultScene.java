@@ -29,7 +29,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     private final Box2DDebugRenderer debugRenderer;       // Box2D调试渲染器
     private final PlayerVehicle playerVehicle;            // 玩家
     protected TiledMap map;                               // 地图
-    protected DefaultGUI GUI;                           // GUI
+    protected DefaultGUI GUI;                               // GUI
     protected float resistance;                           // 空气阻力
 
 //    public float cameraZoomRatio = 1;

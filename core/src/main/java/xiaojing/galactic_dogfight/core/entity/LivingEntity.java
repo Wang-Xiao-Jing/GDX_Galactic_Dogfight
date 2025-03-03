@@ -3,15 +3,16 @@ package xiaojing.galactic_dogfight.core.entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import xiaojing.galactic_dogfight.api.IDisposeable;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * LivingEntity 是 Entity 的演绎者，LivingEntity 通常不唯一，但具备指向 Entity 的能力。<br>
+ * LivingEntity 是可释放的，通常在死亡时结束。
  * TODO - LivingEntity 由 World 管理。
  *
  * @see Entity
  */
-public class LivingEntity implements IDisposeable {
+public final class LivingEntity implements Disposable {
     public final Entity entity;
     public final Vector2 position;
     public String displayName = "";
@@ -22,7 +23,7 @@ public class LivingEntity implements IDisposeable {
     }
 
     public String displayName() {
-        return this.displayName.isEmpty() ? this.entity.getDisplayName() : displayName;
+        return this.displayName.isEmpty() ? this.entity.getDisplayName(this) : displayName;
     }
 
     public Vector2 getPos() {
@@ -38,7 +39,7 @@ public class LivingEntity implements IDisposeable {
     }
 
     public Texture getTexture() {
-        return entity.getTexture();
+        return entity.getTexture(this);
     }
 
     public void render(Batch batch) {

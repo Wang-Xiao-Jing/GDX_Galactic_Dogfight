@@ -1,4 +1,4 @@
-package xiaojing.galactic_dogfight.server;
+package xiaojing.galactic_dogfight.core;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

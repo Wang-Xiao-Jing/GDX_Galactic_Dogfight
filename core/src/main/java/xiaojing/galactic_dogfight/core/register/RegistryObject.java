@@ -1,12 +1,12 @@
 package xiaojing.galactic_dogfight.core.register;
 
-import xiaojing.galactic_dogfight.server.ResourceID;
+import com.badlogic.gdx.utils.Disposable;
+import xiaojing.galactic_dogfight.core.ResourceID;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public record RegistryObject<T>(ResourceID registerName, Supplier<T> holder) {
-
+public record RegistryObject<T extends Disposable>(ResourceID registerName, Supplier<T> holder) implements Disposable, Supplier<T> {
     public T get() {
         return this.holder.get();
     }
@@ -34,5 +34,10 @@ public record RegistryObject<T>(ResourceID registerName, Supplier<T> holder) {
     @Override
     public int hashCode() {
         return Objects.hash(registerName, holder);
+    }
+
+    @Override
+    public void dispose() {
+        this.holder.get().dispose();
     }
 }

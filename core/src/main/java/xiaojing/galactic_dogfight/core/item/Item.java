@@ -1,4 +1,10 @@
 package xiaojing.galactic_dogfight.core.item;
 
-public class Item {
+import com.badlogic.gdx.utils.Disposable;
+
+public class Item implements Disposable {
+    @Override
+    public void dispose() {
+
+    }
 }

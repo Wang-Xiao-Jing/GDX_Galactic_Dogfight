@@ -20,10 +20,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.kotcrab.vis.ui.VisUI;
 import xiaojing.galactic_dogfight.client.screen.CustomLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.MainMenuScreen;
 import xiaojing.galactic_dogfight.client.screen.StartLoadingScreen;
+import xiaojing.galactic_dogfight.core.register.Registries;
 import xiaojing.galactic_dogfight.i18n.I18N;
 
 /**
@@ -31,14 +31,14 @@ import xiaojing.galactic_dogfight.i18n.I18N;
  * @apiNote 游戏主类，负责游戏的初始化、资源加载、渲染和资源释放
  */
 public class Main extends Game {
+    // TODO - 部分数据应该移动到 Setting.
     // 公共静态资源
     public static Texture emptyTexture;                        // 空纹理
-    public static SpriteBatch guiSpriteBatch;                  // 渲染器
     public static SpriteBatch gameSpriteBatch;                 // 渲染器
     public static ScreenViewport guiViewport;                  // UI窗口适配器
     public static ExtendViewport gameViewport;                 // 游戏场景窗口适配器
     public static BitmapFont defaultFont;                      // 默认字体
-    //    public static BitmapFont customFont;                     // 自定义字体
+
     public static Texture pixelTexture;                        // 通用像素染色白图
     public static float globalScaleFactor = 0.3f;              // 缩放比例
     public static AssetManager assetManager;                   // 资源管理器
@@ -80,17 +80,18 @@ public class Main extends Game {
         INSTANCES = this;
 
         this.language = new I18N("en_us");
+        Registries.init();
 
-        guiSpriteBatch = new SpriteBatch();
         gameSpriteBatch = new SpriteBatch();
         guiViewport = new ScreenViewport();
         guiViewport.setUnitsPerPixel(globalScaleFactor);
         gameViewport = new ExtendViewport(gameViewportWidth * globalScaleFactor * cameraZoomRatio, gameViewportHeight * globalScaleFactor * cameraZoomRatio);
         initializeAssetManager();
-        VisUI.load();
         isLoading = true;
         multiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(multiplexer);
+
+        Registries.frozen();
     }
 
     /**
@@ -219,7 +220,6 @@ public class Main extends Game {
     public void dispose() {
         emptyTexture.dispose();
         defaultFont.dispose();
-        VisUI.dispose();
         assetManager.dispose();
         gameAssetManager.dispose();
         screen.dispose();

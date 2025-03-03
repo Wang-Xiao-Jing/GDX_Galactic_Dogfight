@@ -3,6 +3,9 @@ package xiaojing.galactic_dogfight.core.math;
 import com.badlogic.gdx.math.Vector2;
 import xiaojing.galactic_dogfight.core.entity.LivingEntity;
 
+/**
+ * AABB（Axis-Aligned Bounding Box，体积箱）用于作为扫描范围或物件碰撞箱。
+ */
 public class AABB {
     private final Vector2 startPoint;
     private final Vector2 endPoint;

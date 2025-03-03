@@ -1,7 +1,5 @@
 package xiaojing.galactic_dogfight.core.register;
 
-public class EntityRegister {
-
-
-
+public final class EntityRegister {
+    public static void init() {}
 }
