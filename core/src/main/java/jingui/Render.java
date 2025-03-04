@@ -1,4 +1,4 @@
-package jinGUI;
+package jingui;
 
 import com.badlogic.gdx.utils.Disposable;
 

@@ -1,4 +1,4 @@
-package jinGUI.gui;
+package jingui.gui;
 
 public class AssetsUtil {
 }

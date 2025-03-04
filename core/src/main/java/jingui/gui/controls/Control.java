@@ -1,6 +1,6 @@
-package jinGUI.gui.controls;
+package jingui.gui.controls;
 
-import jinGUI.Render;
+import jingui.Render;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +26,18 @@ public abstract class Control implements Render {
         childControl = new ArrayList<>();
         name = "BasicControl";
         adjustment();
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public void setAngle(float angle) {
+        if (this.angle + angle > 360) {
+            this.angle = this.angle + angle - 360;
+            return;
+        }
+        this.angle = angle;
     }
 
     /**

@@ -1,4 +1,4 @@
-package jinGUI;
+package jingui;
 
 public class Main {
 }

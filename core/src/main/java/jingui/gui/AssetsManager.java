@@ -1,9 +1,6 @@
-package jinGUI.gui;
+package jingui.gui;
 
-import com.badlogic.gdx.utils.Disposable;
-import jinGUI.Render;
-
-import java.util.ArrayList;
+import jingui.Render;
 
 /** GUI管理 */
 public class AssetsManager implements Render {
