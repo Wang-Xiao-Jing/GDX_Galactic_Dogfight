@@ -9,17 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import xiaojing.galactic_dogfight.Main;
-import xiaojing.galactic_dogfight.api.StaticClass;
+import xiaojing.galactic_dogfight.StaticClass;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLoadingScreen;
 import xiaojing.galactic_dogfight.server.MainGameScreen;
 
 import java.util.Random;
 
-import static xiaojing.galactic_dogfight.Main.*;
+import static xiaojing.galactic_dogfight.StaticClass.*;
 
 /**
- * @author 尽
  * @apiNote 进入游戏加载界面
  */
 public class EnterLoadingScreen extends CustomLoadingScreen {

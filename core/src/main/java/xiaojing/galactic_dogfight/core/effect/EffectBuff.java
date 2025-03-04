@@ -1,10 +1,7 @@
 package xiaojing.galactic_dogfight.core.effect;
 
-import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.utils.Disposable;
 import xiaojing.galactic_dogfight.core.ResourceID;
-
-import java.util.Objects;
 
 public abstract class EffectBuff implements Disposable {
     abstract public ResourceID getName();

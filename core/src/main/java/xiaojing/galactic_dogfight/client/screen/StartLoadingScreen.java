@@ -12,10 +12,9 @@ import xiaojing.galactic_dogfight.Main;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLoadingScreen;
 
-import static xiaojing.galactic_dogfight.Main.*;
+import static xiaojing.galactic_dogfight.StaticClass.*;
 
 /**
- * @author 尽
  * @apiNote 加载画面界面
  */
 public class StartLoadingScreen extends CustomLoadingScreen {

@@ -5,7 +5,6 @@ import xiaojing.galactic_dogfight.server.scene.DefaultScene;
 
 /**
  * 主游戏画面（场景）
- * @author 尽
  * @apiNote
  */
 public class MainGameScreen extends DefaultScene {

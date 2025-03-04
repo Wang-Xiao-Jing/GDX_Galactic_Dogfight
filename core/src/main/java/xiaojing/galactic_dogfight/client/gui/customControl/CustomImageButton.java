@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import java.util.Optional;
 
 /**
- * @author 尽
  * @apiNote 自定义图片按钮
  */
 public class CustomImageButton extends CustomButton {

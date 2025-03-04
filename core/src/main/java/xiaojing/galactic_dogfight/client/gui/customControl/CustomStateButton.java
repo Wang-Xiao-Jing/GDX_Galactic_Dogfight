@@ -3,24 +3,28 @@ package xiaojing.galactic_dogfight.client.gui.customControl;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
-import java.util.Optional;
-
 /**
- * @author 尽
- * @apiNote 自定义按钮抽象类
+ * 自定义抽象按钮类
+ * @apiNote
  */
 public abstract class CustomStateButton extends Button {
-    private final ButtonStyle styleDefault = new ButtonStyle(); // 默认样式
-    private final ButtonStyle styleOver = new ButtonStyle();    // 触摸样式
-    private final ButtonStyle styleDisabled = new ButtonStyle();  // 禁用样式
-    private final ButtonStyle stylePressed = new ButtonStyle(); // 按下样式
+    public final CustomStatusDrawable drawable = new CustomStatusDrawable();
     boolean defaultState = true; // 默认状态
     boolean overState;           // 触摸状态
     boolean disabledState;       // 禁用状态
     boolean pressedState;        // 按下状态
 
     public CustomStateButton() {
-        setStyle(styleDefault);
+        super();
+        setSkin(drawable);
+    }
+
+    public CustomStateButton(CustomStatusDrawable drawable) {
+//        super(skin);
+    }
+
+    public void setSkin(CustomStatusDrawable drawable) {
+        setStyle(drawable.newButtonStyle(drawable));
     }
 
     // region 状态切换
@@ -28,35 +32,63 @@ public abstract class CustomStateButton extends Button {
     /**
      * 切换到默认状态
      */
-    public abstract void defaultState();
+    public void defaultState() {
+
+    }
 
     /**
      * 切换到悬停状态
      */
-    public abstract void overState();
+    public void overState() {
+
+    }
 
     /**
      * 切换到禁用状态
      */
-    public abstract void disabledState();
+    public void disabledState() {
+
+    }
 
     /**
      * 切换到按下状态
      */
-    public abstract void pressedState();
+    public void pressedState() {
+
+    }
     // endregion
 
     /**
      * 样式状态切换
      */
-    public abstract void replaceStyle();
+    public void replaceStyle() {
+        replaceState();
+        if (disabledState) {
+            disabledState();
+            return;
+        } else {
+            if (overState) {
+                if (pressedState) {
+                    pressedState();
+                } else {
+                    overState();
+                }
+                return;
+            }
+        }
+        defaultState();
+    }
 
     /**
      * 获取按钮子控件。
      *
      * @return 按钮子控件。
      */
-    public abstract Actor getChild();
+    public Actor getChild() {
+        return getChildren().first();
+    }
+
+    ;
 
     /**
      * 设置指定状态的样式。
@@ -64,12 +96,8 @@ public abstract class CustomStateButton extends Button {
      * @param state    样式状态
      * @param settings 样式设置
      */
-    public abstract void setFontStyle(State state, ButtonStyle settings);
-
-    /**
-     * 获取指定状态的样式。
-     */
-    protected abstract Optional<ButtonStyle> getStyle(State state);
+    public void setFontStyle(State state, ButtonStyle settings) {
+    }
 
     /**
      * 按钮状态切换

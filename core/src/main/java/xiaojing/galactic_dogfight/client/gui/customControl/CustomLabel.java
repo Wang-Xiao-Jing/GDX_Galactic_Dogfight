@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import static xiaojing.galactic_dogfight.StaticClass.defaultFont;
+
 /**
- * @author 尽
  * @apiNote 自定义标签
  */
 public class CustomLabel extends Label {
@@ -72,7 +73,7 @@ public class CustomLabel extends Label {
     }
 
     public CustomLabel(CharSequence text, Color color, float scale) {
-        this(text, new LabelStyle(xiaojing.galactic_dogfight.Main.defaultFont, color), scale);
+        this(text, new LabelStyle(defaultFont, color), scale);
     }
 
     private CustomLabel(CharSequence text, LabelStyle style) {

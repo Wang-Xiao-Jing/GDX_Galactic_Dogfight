@@ -6,8 +6,6 @@ import xiaojing.galactic_dogfight.Main;
 
 /**
  * 自定义加载画面
- *
- * @author 尽
  * @apiNote
  */
 public abstract class CustomLoadingScreen extends CustomScreenAbstract {
@@ -19,7 +17,7 @@ public abstract class CustomLoadingScreen extends CustomScreenAbstract {
     public TemporalAction exitAction;        // 退出动作
     public boolean isExit;                   // 退出动作是否完成
     public TemporalAction action;            // 动作
-    Main game;                               // 游戏实例
+    public Main game;                        // 游戏实例
 
     public CustomLoadingScreen() {
         this(0, 0);

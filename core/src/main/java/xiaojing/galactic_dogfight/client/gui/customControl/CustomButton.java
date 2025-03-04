@@ -1,62 +1,52 @@
 package xiaojing.galactic_dogfight.client.gui.customControl;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Disposable;
-
-import java.util.Optional;
-
 /**
- * @author 尽
  * @apiNote 自定义按钮
  */
-public class CustomButton extends CustomStateButton{
-    private final ButtonStyle styleDefault = new ButtonStyle(); // 默认样式
-    private final ButtonStyle styleOver = new ButtonStyle();    // 触摸样式
-    private final ButtonStyle styleDisabled = new ButtonStyle();  // 禁用样式
-    private final ButtonStyle stylePressed = new ButtonStyle(); // 按下样式
+public class CustomButton extends CustomStateButton {
+    CustomStatusDrawable drawable = new CustomStatusDrawable();
 
     public CustomButton() {
-        setStyle(styleDefault);
     }
 
-    // region 状态切换
+    /*    // region 状态切换
 
-    /**
+     *//**
      * 切换到默认状态
-     */
+     *//*
     @Override
     public void defaultState() {
         setStyle(styleDefault);
     }
 
-    /**
+    *//**
      * 切换到悬停状态
-     */
+     *//*
     @Override
     public void overState() {
         setStyle(styleDefault);
     }
 
-    /**
+    *//**
      * 切换到禁用状态
-     */
+     *//*
     @Override
     public void disabledState() {
         setStyle(styleDefault);
     }
 
-    /**
+    *//**
      * 切换到按下状态
-     */
+     *//*
     @Override
     public void pressedState() {
         setStyle(styleDefault);
     }
-    // endregion
+    // endregion*/
 
-    /**
+    /*    *//**
      * 样式状态切换
-     */
+     *//*
     @Override
     public void replaceStyle() {
         replaceState();
@@ -74,24 +64,24 @@ public class CustomButton extends CustomStateButton{
             }
         }
         defaultState();
-    }
+    }*/
 
-    /**
+    /*    *//**
      * 获取按钮子控件。
      *
      * @return 按钮子控件。
-     */
+     *//*
     @Override
     public Actor getChild() {
-        return getChildren().first();
-    }
+        return super.getChild();
+    }*/
 
-    /**
+    /*    *//**
      * 设置指定状态的样式。
      *
      * @param state    样式状态
      * @param settings 样式设置
-     */
+     *//*
     @Override
     public void setFontStyle(State state, ButtonStyle settings) {
         getStyle(state).ifPresent(style -> {
@@ -115,9 +105,9 @@ public class CustomButton extends CustomStateButton{
         });
     }
 
-    /**
+    *//**
      * 获取指定状态的样式。
-     */
+     *//*
     @Override
     protected Optional<ButtonStyle> getStyle(State state) {
         return switch (state) {
@@ -126,5 +116,5 @@ public class CustomButton extends CustomStateButton{
             case DISABLED -> Optional.ofNullable(styleDisabled);
             case PRESSED -> Optional.ofNullable(stylePressed);
         };
-    }
+    }*/
 }

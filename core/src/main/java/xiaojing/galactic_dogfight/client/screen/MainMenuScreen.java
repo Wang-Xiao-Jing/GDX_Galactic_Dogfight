@@ -6,13 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import xiaojing.galactic_dogfight.Main;
+import xiaojing.galactic_dogfight.client.gui.customControl.CustomGroup;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomScreenAbstract;
 
-import static xiaojing.galactic_dogfight.Main.*;
+import static xiaojing.galactic_dogfight.StaticClass.*;
 
 
 /**
- * @author 尽
  * @apiNote 主菜单屏幕
  */
 public class MainMenuScreen extends CustomScreenAbstract {

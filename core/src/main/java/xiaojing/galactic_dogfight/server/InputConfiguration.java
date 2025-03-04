@@ -3,7 +3,6 @@ package xiaojing.galactic_dogfight.server;
 import com.badlogic.gdx.Input;
 
 /**
- * @author 尽
  * @apiNote 输入配置类
  */
 public class InputConfiguration {

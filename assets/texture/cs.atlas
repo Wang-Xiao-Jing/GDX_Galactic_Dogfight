@@ -1,0 +1,29 @@
+cs.png
+size: 256,256
+a
+  xy: 0,0
+  size: 16,16
+a2
+  xy: 16,0
+  size: 16,16
+a3
+  xy: 32,0
+  size: 16,16
+a4
+  xy: 48,0
+  size: 16,16
+a5
+  xy: 64,0
+  size: 16,16
+a6
+  xy: 0,16
+  size: 16,16
+a7
+  xy: 16,16
+  size: 16,16
+a8
+  xy: 32,16
+  size: 16,16
+a9
+  xy: 48,16
+  size: 16,16

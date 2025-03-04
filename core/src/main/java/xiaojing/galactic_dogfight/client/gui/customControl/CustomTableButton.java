@@ -9,13 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import java.util.Optional;
 
+import static xiaojing.galactic_dogfight.StaticClass.defaultFont;
+
 /**
- * @author 尽
  * @apiNote 自定义文本按钮
  */
 public class CustomTableButton extends CustomButton {
     // 默认字体
-    private final BitmapFont bitmapFont = xiaojing.galactic_dogfight.Main.defaultFont;
+    private final BitmapFont bitmapFont = defaultFont;
     private final LabelStyle labelStyleDefault = new LabelStyle(bitmapFont, Color.WHITE);
     private final LabelStyle labelStyleOver = new LabelStyle(bitmapFont, Color.GREEN);
     private final LabelStyle labelStyleDisabled = new LabelStyle(bitmapFont, Color.RED);

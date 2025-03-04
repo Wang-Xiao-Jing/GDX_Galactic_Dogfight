@@ -7,7 +7,9 @@ import xiaojing.galactic_dogfight.Main;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
-/** Launches the desktop (LWJGL3) application. */
+/**
+ * Launches the desktop (LWJGL3) application.
+ */
 public class Lwjgl3Launcher {
     public static void main(String[] args) {
         // 设置控制台输出编码为 UTF-8
@@ -31,7 +33,7 @@ public class Lwjgl3Launcher {
         // 设置窗口大小
         configuration.setWindowedMode(960, 540);
         // 设置窗口大小限制
-        configuration.setWindowSizeLimits(960, 540,-1,-1);
+        configuration.setWindowSizeLimits(960, 540, -1, -1);
         // 设置窗口图标
         configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
         return configuration;

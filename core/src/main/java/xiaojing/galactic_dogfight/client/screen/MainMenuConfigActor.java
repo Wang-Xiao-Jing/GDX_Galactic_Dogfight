@@ -9,16 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import xiaojing.galactic_dogfight.client.gui.customControl.CustomGroup;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomImageButton;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
 
-import static xiaojing.galactic_dogfight.Main.assetManager;
+import static xiaojing.galactic_dogfight.StaticClass.assetManager;
 import static xiaojing.galactic_dogfight.client.gui.customControl.CustomStateButton.State.OVER;
 import static xiaojing.galactic_dogfight.client.gui.customControl.CustomStateButton.State.PRESSED;
 
 /**
- * @Author: 尽
- * @Description: 菜单配置界面
+ * 菜单配置界面
  */
 public class MainMenuConfigActor extends CustomGroup {
     CustomLabel title;                   // 标题

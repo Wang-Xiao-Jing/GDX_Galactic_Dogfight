@@ -3,11 +3,10 @@ package xiaojing.galactic_dogfight.server.inputProcessor;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 
-import static xiaojing.galactic_dogfight.Main.multiplexer;
+import static xiaojing.galactic_dogfight.StaticClass.multiplexer;
 
 /**
  * 键盘控制接口
- * @author xiaojing
  * @apiNote
  */
 public interface KeyProcessor extends InputProcessor {

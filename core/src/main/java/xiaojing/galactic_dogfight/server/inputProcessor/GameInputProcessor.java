@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 
 /**
  * 事件处理器
- * @author 尽
  * @apiNote
  */
 public class GameInputProcessor extends InputAdapter implements InputProcessor {

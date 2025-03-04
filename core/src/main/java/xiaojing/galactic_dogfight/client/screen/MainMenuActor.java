@@ -3,22 +3,25 @@ package xiaojing.galactic_dogfight.client.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import xiaojing.galactic_dogfight.client.gui.customControl.CustomGroup;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomTableButton;
 
-import static xiaojing.galactic_dogfight.Main.assetManager;
+import static xiaojing.galactic_dogfight.StaticClass.assetManager;
 
 /**
- * @author 尽
  * @apiNote 主菜单界面
  */
 public class MainMenuActor extends CustomGroup {
-    CustomTableButton startButton;      // 开始游戏按钮
-    CustomTableButton configButton;     // 设置按钮
-    CustomTableButton aboutButton;      // 关于按钮
-    CustomTableButton exitButton;       // 退出按钮
+    private CustomTableButton startButton;      // 开始游戏按钮
+    private CustomTableButton configButton;     // 设置按钮
+    private CustomTableButton aboutButton;      // 关于按钮
+    private CustomTableButton exitButton;       // 退出按钮
+    private Button button;
     private Table menu;                 // 菜单
     private Image titleImage;           // 标题图片
     private String startTxt, configTxt, aboutTxt, exitTxt;
@@ -32,6 +35,7 @@ public class MainMenuActor extends CustomGroup {
         title();                        // 标题
         addActor(menu);                 // 添加菜单
         addActor(titleImage);           // 添加标题
+        addActor(button);
     }
 
     @Override
@@ -65,6 +69,14 @@ public class MainMenuActor extends CustomGroup {
         configButton = new CustomTableButton(configTxt, optionRatio);
         aboutButton = new CustomTableButton(aboutTxt, optionRatio);
         exitButton = new CustomTableButton(exitTxt, optionRatio);
+        Button.ButtonStyle buttonStyle = new Button.ButtonStyle();
+        Skin skin = new Skin(Gdx.files.internal("texture/cs.json"));
+        buttonStyle = skin.get("default", Button.ButtonStyle.class);
+//        buttonStyle.up = skin
+//        buttonStyle.down = skin
+//        buttonStyle.over = skin
+//        buttonStyle.disabled = skin
+        button = new Button(buttonStyle);
         startButton.left();
         configButton.left();
         aboutButton.left();

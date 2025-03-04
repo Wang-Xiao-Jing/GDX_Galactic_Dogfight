@@ -1,12 +1,10 @@
 package xiaojing.galactic_dogfight.server.entity.disease;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import xiaojing.galactic_dogfight.server.ResourceID;
+import xiaojing.galactic_dogfight.core.ResourceID;
 
 /**
  * 疾病模板
- *
- * @author xiaojing
  * @apiNote 等级、命名ID、持续时间
  */
 public abstract class DiseaseTemplate {

@@ -20,44 +20,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import xiaojing.galactic_dogfight.client.screen.CustomLoadingScreen;
+import xiaojing.galactic_dogfight.client.gui.customControl.CustomLoadingScreen;
 import xiaojing.galactic_dogfight.client.screen.MainMenuScreen;
 import xiaojing.galactic_dogfight.client.screen.StartLoadingScreen;
 import xiaojing.galactic_dogfight.core.register.Registries;
 import xiaojing.galactic_dogfight.i18n.I18N;
 
+import static xiaojing.galactic_dogfight.StaticClass.*;
+
 /**
- * @author 尽
  * @apiNote 游戏主类，负责游戏的初始化、资源加载、渲染和资源释放
  */
 public class Main extends Game {
-    // TODO - 部分数据应该移动到 Setting.
-    // 公共静态资源
-    public static Texture emptyTexture;                        // 空纹理
-    public static SpriteBatch gameSpriteBatch;                 // 渲染器
-    public static ScreenViewport guiViewport;                  // UI窗口适配器
-    public static ExtendViewport gameViewport;                 // 游戏场景窗口适配器
-    public static BitmapFont defaultFont;                      // 默认字体
-
-    public static Texture pixelTexture;                        // 通用像素染色白图
-    public static float globalScaleFactor = 0.3f;              // 缩放比例
-    public static AssetManager assetManager;                   // 资源管理器
-    public static AssetManager gameAssetManager;               // 资源管理器
-    public static float delta = 0;
-    public static float cameraZoomRatio = 1f;                  // 相机缩放倍率
-    public static float gameViewportWidth = 1920f;             // 相机缩放倍率
-    public static float gameViewportHeight = 1080f;            // 相机缩放倍率
-
-    // 边距
-    public static float guiTopMargin = 20f;
-    public static float guiBottomMargin = 20f;
-    public static float guiLeftMargin = 20f;
-    public static float guiRightMargin = 20f;
-
-    public static InputMultiplexer multiplexer;                 // 输入处理器
-    public static Main INSTANCES;
     public I18N language;
-
     private boolean isLoading;                                  // 是否加载
     private boolean isResourcesLoaded = false;                  // 资源是否已加载完成
     private float loadingTime = 0;                              // 加载的时间计数
@@ -77,15 +52,15 @@ public class Main extends Game {
      * 初始化
      */
     public void create() {
-        INSTANCES = this;
-
         this.language = new I18N("en_us");
         Registries.init();
 
         gameSpriteBatch = new SpriteBatch();
         guiViewport = new ScreenViewport();
         guiViewport.setUnitsPerPixel(globalScaleFactor);
-        gameViewport = new ExtendViewport(gameViewportWidth * globalScaleFactor * cameraZoomRatio, gameViewportHeight * globalScaleFactor * cameraZoomRatio);
+        gameViewport = new ExtendViewport(
+            GAME_VIEWPORT_WIDTH * globalScaleFactor * BASICS_CAMERA_ZOOM_RATIO,
+            GAME_VIEWPORT_HEIGHT * globalScaleFactor * BASICS_CAMERA_ZOOM_RATIO);
         initializeAssetManager();
         isLoading = true;
         multiplexer = new InputMultiplexer();
@@ -131,8 +106,9 @@ public class Main extends Game {
     @Override
     public void render() {
         delta = Gdx.graphics.getDeltaTime();
+        // 清屏
         Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
-        ScreenUtils.clear(Color.BLACK); // 清屏
+        ScreenUtils.clear(Color.BLACK);
 
         // 加载完成
         if (assetManager.update()) {
@@ -160,6 +136,7 @@ public class Main extends Game {
         super.render();
 
         // 渲染加载界面
+        // 放在着用于覆盖界面
         if (assetManager.isLoaded("fonts/loading/loading.fnt") && isLoading) {
             // 初始化加载界面
             if (!isInitializationLoadingScreenDone) {
@@ -181,6 +158,7 @@ public class Main extends Game {
         defaultFont = assetManager.get("fonts/silver/silver.fnt", BitmapFont.class);
         defaultFont.setUseIntegerPositions(true);
         defaultFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
+//        仅存档
 //                customFont = assetManager.get("fonts/silver/silver.ttf", BitmapFont.class);
 //                customFont.setUseIntegerPositions(true);
 //                customFont.getData().setScale(guiViewport.getWorldHeight() / Gdx.graphics.getHeight());
@@ -216,13 +194,10 @@ public class Main extends Game {
      */
     @Override
     public void dispose() {
+//        customFont.dispose();
+//        screen.dispose();
         StaticClass.dispose();
-        defaultFont.dispose();
-        assetManager.dispose();
-        gameAssetManager.dispose();
-        screen.dispose();
-        guiSpriteBatch.dispose();
-        gameSpriteBatch.dispose();
         if (loadingScreen != null) disposeLoadingScreen();
+        System.out.println("[Game] complete");
     }
 }

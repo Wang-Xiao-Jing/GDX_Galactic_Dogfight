@@ -2,11 +2,10 @@ package xiaojing.galactic_dogfight.client.gui.customControl;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import xiaojing.galactic_dogfight.client.screen.MainMenuScreen;
 
 /**
  * 自定义Group
- *
- * @author 尽
  * @apiNote
  */
 public abstract class CustomGroup extends Group {

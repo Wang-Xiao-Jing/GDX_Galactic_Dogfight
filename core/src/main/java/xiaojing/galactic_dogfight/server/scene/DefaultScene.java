@@ -6,17 +6,13 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import xiaojing.galactic_dogfight.Main;
-import xiaojing.galactic_dogfight.client.screen.CustomScreenAbstract;
-import xiaojing.galactic_dogfight.core.entity.Entity;
+import xiaojing.galactic_dogfight.client.gui.customControl.CustomScreenAbstract;
 import xiaojing.galactic_dogfight.server.DefaultCamera;
-import xiaojing.galactic_dogfight.server.entity.EntityBuilder;
-import xiaojing.galactic_dogfight.server.entity.player.PlayerVehicle;
 
 import static com.badlogic.gdx.math.Vector2.Zero;
-import static xiaojing.galactic_dogfight.Main.*;
+import static xiaojing.galactic_dogfight.StaticClass.*;
 
 /**
- * @author 尽
  * @apiNote 默认场景
  */
 public abstract class DefaultScene extends CustomScreenAbstract {
@@ -27,7 +23,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
     private final float MAXI_MAP_X, MAXI_MAP_Y;           // 地图最大坐标
     private final World world;                            // 世界
     private final Box2DDebugRenderer debugRenderer;       // Box2D调试渲染器
-    private final PlayerVehicle playerVehicle;            // 玩家
+//    private final PlayerVehicle playerVehicle;            // 玩家
     protected TiledMap map;                               // 地图
     protected DefaultGUI GUI;                               // GUI
     protected float resistance;                           // 空气阻力
@@ -44,32 +40,32 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         CAMERA = new DefaultCamera(gameViewport.getCamera());
         gameSpriteBatch.setProjectionMatrix(CAMERA.camera.combined);
         STAGE = new Stage(gameViewport, gameSpriteBatch);
-        playerVehicle = new PlayerVehicle();
+//        playerVehicle = new PlayerVehicle();
         world = new World(Zero, true);
 //        Body world = new Body();
         debugRenderer = new Box2DDebugRenderer();
 
-        CAMERA.camera.position.set(playerVehicle.getOriginX(), playerVehicle.getOriginY(), 0);
-        STAGE.addActor(playerVehicle);
-        STAGE.addActor(new Entity(new EntityBuilder("a").width(16).height(16).position(50, 50).build()));
+//        CAMERA.camera.position.set(playerVehicle.getOriginX(), playerVehicle.getOriginY(), 0);
+//        STAGE.addActor(playerVehicle);
+//        STAGE.addActor(new Entity(new EntityBuilder("a").width(16).height(16).position(50, 50).build()));
 
-        // 添加实体到世界
-        for (int i = 0; i < STAGE.getActors().size; i++) {
-            if (STAGE.getActors().get(i) instanceof Entity entity) {
-                entity.addToWorldDefault(world);
-//                world.createBody(entity.getBodyDef());
-            }
-        }
+//        // 添加实体到世界
+//        for (int i = 0; i < STAGE.getActors().size; i++) {
+//            if (STAGE.getActors().get(i) instanceof Entity entity) {
+//                entity.addToWorldDefault(world);
+////                world.createBody(entity.getBodyDef());
+//            }
+//        }
 
         GUI = new DefaultGUI(this);
     }
 
-    /**
-     * 获取玩家
-     */
-    public PlayerVehicle getPlayerVehicle() {
-        return playerVehicle;
-    }
+//    /**
+//     * 获取玩家
+//     */
+//    public PlayerVehicle getPlayerVehicle() {
+//        return playerVehicle;
+//    }
 
     @Override
     public void show() {
@@ -82,7 +78,7 @@ public abstract class DefaultScene extends CustomScreenAbstract {
 
         // 渲染相机/地图
         CAMERA.scale();
-        CAMERA.update(delta, playerVehicle);
+//        CAMERA.update(delta, playerVehicle);
         RENDERER.setView(CAMERA.camera);
         RENDERER.render();
         gameSpriteBatch.setProjectionMatrix(CAMERA.camera.combined); // 设置投影矩阵
@@ -92,12 +88,12 @@ public abstract class DefaultScene extends CustomScreenAbstract {
         STAGE.act(delta);
         // 模拟世界
         world.step(1.0f / 60.0f, 6, 2);
-        getPlayerVehicle().playerMove(delta, CAMERA);
-        for (int i = 0; i < STAGE.getActors().size; i++) {
-            if (STAGE.getActors().get(i) instanceof Entity entity) {
-                entity.synchro();
-            }
-        }
+//        getPlayerVehicle().playerMove(delta, CAMERA);
+//        for (int i = 0; i < STAGE.getActors().size; i++) {
+//            if (STAGE.getActors().get(i) instanceof Entity entity) {
+//                entity.synchro();
+//            }
+//        }
         gameSpriteBatch.begin();
         gameSpriteBatchBegin(delta);
         debugRenderer.render(world, CAMERA.camera.combined);

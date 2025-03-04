@@ -1,0 +1,15 @@
+{
+  ButtonStyle: {
+    default: {
+      up: a, // 默认 (关)
+      down: a2, // 按下 (关)
+      over: a3, // 悬浮 (关)
+      focused: a4, // 键盘选中 (关)
+      disabled: a5, // 禁用
+      checked: a6, // 默认 (开)
+      checkedOver: a7, // 悬浮  (开)
+      checkedDown: a8, // 按下 (开)
+      checkedFocused: a9 // 键盘选中  (开)
+    }
+  }
+}

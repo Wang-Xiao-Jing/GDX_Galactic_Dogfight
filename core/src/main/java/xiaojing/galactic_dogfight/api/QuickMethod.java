@@ -7,24 +7,34 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import xiaojing.galactic_dogfight.Main;
+import org.jetbrains.annotations.NotNull;
+import xiaojing.galactic_dogfight.StaticClass;
 
 /**
  * 便捷函数类
- * @author 尽
- * @apiNote
+ * @apiNote 为各种Actor的位置处理、及转换
  */
 public class QuickMethod {
-    private final Viewport guiViewport = Main.guiViewport;
+    private final Viewport guiViewport = StaticClass.guiViewport;
 
-    public static Drawable converted(Texture texture){
+    /**
+     * Texture转换为Drawable
+     */
+    public static Drawable textureConvertToDrawable(Texture texture) {
         return new TextureRegionDrawable(new TextureRegion(texture));
+    }
+
+    /**
+     * TextureRegionDrawable转换为Texture
+     */
+    public static Texture textureRegionDrawableConvertToTexture(TextureRegionDrawable drawable) {
+        return drawable.getRegion().getTexture();
     }
 
     /**
      * 居中
      */
-    public void center(Actor actor) {
+    public void center(@NotNull Actor actor) {
         actor.setPosition(guiViewport.getWorldWidth() / 2 - actor.getWidth() / 2, guiViewport.getWorldHeight() / 2 - actor.getHeight() / 2);
     }
 
@@ -190,5 +200,4 @@ public class QuickMethod {
     public void originCenter(Dialog actor) {
         actor.setOrigin(actor.getPrefWidth() / 2, actor.getPrefHeight() / 2);
     }
-
 }

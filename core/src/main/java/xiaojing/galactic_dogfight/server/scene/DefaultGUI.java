@@ -3,26 +3,25 @@ package xiaojing.galactic_dogfight.server.scene;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import xiaojing.galactic_dogfight.api.StaticClass;
+import xiaojing.galactic_dogfight.StaticClass;
 import xiaojing.galactic_dogfight.client.gui.customControl.CustomLabel;
+import xiaojing.galactic_dogfight.client.gui.customControl.CustomScreenAbstract;
 
-import static xiaojing.galactic_dogfight.Main.*;
+import static xiaojing.galactic_dogfight.StaticClass.*;
 
 /**
  * 默认的GUI
- *
- * @author xiaojing
  */
 public class DefaultGUI extends CustomScreenAbstract {
     protected final Stage GUI_MAIN_STAGE;                 // GUI总舞台
     protected final Container<Actor> GUI_CONTAINER;       // GUI容器
     private final DefaultScene scene;
-    protected float centerPointSize = 5;                     // 显示中心点大小
-    protected boolean isCenterPoint;                    // 是否显示屏幕中心点
     private final CustomLabel label;
     private final CustomLabel label1;
     private final CustomLabel label2;
     private final CustomLabel label3;
+    protected float centerPointSize = 5;                     // 显示中心点大小
+    protected boolean isCenterPoint;                    // 是否显示屏幕中心点
 
     public DefaultGUI(DefaultScene scene) {
         this.scene = scene;

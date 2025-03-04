@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 /**
  * 创建标识符
- * @author 尽
  * @apiNote
  */
 public class ResourceID {

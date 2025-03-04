@@ -1,22 +1,16 @@
 package xiaojing.galactic_dogfight.server;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import space.earlygrey.shapedrawer.ShapeDrawer;
-import xiaojing.galactic_dogfight.core.entity.Entity;
 import xiaojing.galactic_dogfight.server.inputProcessor.KeyProcessor;
-import xiaojing.galactic_dogfight.server.player.Player;
 
-import static xiaojing.galactic_dogfight.Main.*;
+import static xiaojing.galactic_dogfight.StaticClass.BASICS_CAMERA_ZOOM_RATIO;
+import static xiaojing.galactic_dogfight.StaticClass.cameraZoomRatio;
 import static xiaojing.galactic_dogfight.server.InputConfiguration.*;
 
 /**
- * @author 尽
  * @apiNote 默认相机
  */
 public class DefaultCamera implements KeyProcessor {
@@ -29,36 +23,39 @@ public class DefaultCamera implements KeyProcessor {
     private boolean resetZoom;
     public boolean isCenter; // 是否居中
 
-    public DefaultCamera(final Camera camera){
+    public DefaultCamera(final Camera camera) {
         this.camera = (OrthographicCamera) camera;
         initialize();
     }
 
-    public DefaultCamera(){
+    public DefaultCamera() {
         this.camera = new OrthographicCamera();
         initialize();
     }
 
-    public DefaultCamera(Viewport viewport){
+    public DefaultCamera(Viewport viewport) {
         this.camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
         initialize();
     }
 
-    /** 初始化 */
-    public void initialize(){
-        shapeDrawer = new ShapeDrawer(gameSpriteBatch, new TextureRegion(StaticClass.pixelTexture));
-        previousPosition = new Vector2();
+    /**
+     * 初始化
+     */
+    public void initialize() {
+//        previousPosition = new Vector2();
         addInputProcessor();
     }
 
     @Override
     public void keyDownOverride(int keycode) {
-        if (keycode == centerZoomKey){
+        if (keycode == centerZoomKey) {
             isCenter = !isCenter;
         }
     }
 
-    /** 更新按键状态 */
+    /**
+     * 更新按键状态
+     */
     @Override
     public void updateKeyState(int keycode, boolean state) {
         if (keycode == zoomInKey) {
@@ -72,67 +69,91 @@ public class DefaultCamera implements KeyProcessor {
         }
     }
 
-    /** 获取相机位置X轴 */
-    public float getX(){
+    /**
+     * 获取相机位置X轴
+     */
+    public float getX() {
         return camera.position.x;
     }
 
-    /** 设置相机位置X轴 */
-    public void setX(float x){
+    /**
+     * 设置相机位置X轴
+     */
+    public void setX(float x) {
         camera.position.x = x;
     }
 
-    /** 移动相机位置X轴 */
-    public void translateX(float x){
+    /**
+     * 移动相机位置X轴
+     */
+    public void translateX(float x) {
         camera.translate(x, 0);
     }
 
-    /** 获取相机位置Y轴 */
-    public float getY(){
+    /**
+     * 获取相机位置Y轴
+     */
+    public float getY() {
         return camera.position.y;
     }
 
-    /** 设置相机位置Y轴 */
-    public void setY(float y){
+    /**
+     * 设置相机位置Y轴
+     */
+    public void setY(float y) {
         camera.position.y = y;
     }
 
-    /** 移动相机位置Y轴 */
+    /**
+     * 移动相机位置Y轴
+     */
     public void translateY(float y) {
         camera.translate(0, y);
     }
 
-    /** 获取相机位置 */
-    public Vector2 getPosition(){
+    /**
+     * 获取相机位置
+     */
+    public Vector2 getPosition() {
         final Vector2 position = new Vector2();
         position.x = camera.position.x;
         position.y = camera.position.y;
         return position;
     }
 
-    /** 设置相机位置 */
-    public void setPosition(float x, float y){
-        camera.position.x = x;
-        camera.position.y = y;
-    }
-
-    /** 移动相机位置 */
-    public void translate(float x, float y){
-        camera.translate(x, y);
-    }
-
-    /** 移动相机位置 */
-    public void translate(Vector2 vector2){
-        camera.translate(vector2);
-    }
-
-    /** 设置相机位置 */
-    public void setPosition(Vector2 position){
+    /**
+     * 设置相机位置
+     */
+    public void setPosition(Vector2 position) {
         camera.position.x = position.x;
         camera.position.y = position.y;
     }
 
-    /** 相机缩放 */
+    /**
+     * 设置相机位置
+     */
+    public void setPosition(float x, float y) {
+        camera.position.x = x;
+        camera.position.y = y;
+    }
+
+    /**
+     * 移动相机位置
+     */
+    public void translate(float x, float y) {
+        camera.translate(x, y);
+    }
+
+    /**
+     * 移动相机位置
+     */
+    public void translate(Vector2 vector2) {
+        camera.translate(vector2);
+    }
+
+    /**
+     * 相机缩放
+     */
     public void scale() {
         float zoomRatio = 0.01f;
         if (zoomOut) {
@@ -145,40 +166,35 @@ public class DefaultCamera implements KeyProcessor {
             resetZoomLevel();
         }
 
-        if (cameraZoomRatio >= 2){
-            cameraZoomRatio = 2;
+        if (cameraZoomRatio >= 1) {
+            cameraZoomRatio = 1;
         }
-        if (cameraZoomRatio <= 1){
-            cameraZoomRatio = 1f;
+        if (cameraZoomRatio <= 0.5F) {
+            cameraZoomRatio = 0.5F;
         }
 
-        camera.zoom = cameraZoomRatio;
+        camera.zoom = cameraZoomRatio + BASICS_CAMERA_ZOOM_RATIO;
     }
 
-    /** 重置相机缩放 */
+    /**
+     * 重置相机缩放
+     */
     public void resetZoomLevel() {
-        cameraZoomRatio = 1;
+        cameraZoomRatio = 0;
     }
 
-    /** 缩小相机 */
+    /**
+     * 缩小相机
+     */
     public void reduceZoom(float ratio) {
         cameraZoomRatio -= ratio;
     }
 
-    /** 放大相机 */
+    /**
+     * 放大相机
+     */
     public void amplifyZoom(float ratio) {
         cameraZoomRatio += ratio;
-    }
-
-    protected transient ShapeDrawer shapeDrawer;         // 绘制器
-    protected transient Color BoundsColor = Color.WHITE; // 矩形框颜色
-    protected transient boolean bugBox = true;                  // 是否显示矩形框
-
-    protected void drawDebugBounds(float extremeDistance, Vector2 targetPosition) {
-        if (!bugBox) return;
-        shapeDrawer.circle(getX(), getY(), extremeDistance);
-        shapeDrawer.circle(targetPosition.x, targetPosition.y, 10);
-        shapeDrawer.line(new Vector2(getX(), getY()), targetPosition);
     }
 
 //    private float temporarySpeed;           // 临时速度存储
