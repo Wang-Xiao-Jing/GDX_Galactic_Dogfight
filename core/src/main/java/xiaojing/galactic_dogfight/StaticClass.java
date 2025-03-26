@@ -8,11 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/** 静态资源 */
 public class StaticClass {
     // 空纹理
-    public final static Texture emptyTexture = new Texture("texture/empty_texture.png");
+    public final static Texture EMPTY_TEXTURE = new Texture("texture/empty_texture.png");
     // 通用像素染色白图
-    public final static Texture pixelTexture = new Texture("texture/gui/pixel.png"); // 赋值通用像素染色白图
+    public final static Texture PIXEL_TEXTURE = new Texture("texture/gui/pixel.png"); // 赋值通用像素染色白图
 
     public static SpriteBatch guiSpriteBatch;                  // 渲染器
     public static SpriteBatch gameSpriteBatch;                 // 渲染器
@@ -43,8 +44,8 @@ public class StaticClass {
         gameAssetManager.dispose();
         guiSpriteBatch.dispose();
         gameSpriteBatch.dispose();
-        emptyTexture.dispose();
-        pixelTexture.dispose();
+        EMPTY_TEXTURE.dispose();
+        PIXEL_TEXTURE.dispose();
         System.out.println("[StaticClass] complete");
     }
 }

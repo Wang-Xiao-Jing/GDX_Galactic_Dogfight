@@ -68,7 +68,7 @@ public class DefaultGUI extends CustomScreenAbstract {
     public void guiSpriteBatchBegin(float delta) {
         if (isCenterPoint) {
             guiSpriteBatch.draw(
-                StaticClass.pixelTexture, guiViewport.getWorldWidth() / 2 - centerPointSize / 2,
+                StaticClass.PIXEL_TEXTURE, guiViewport.getWorldWidth() / 2 - centerPointSize / 2,
                 guiViewport.getWorldHeight() / 2 - centerPointSize / 2,
                 centerPointSize,
                 centerPointSize

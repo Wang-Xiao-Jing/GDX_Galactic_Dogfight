@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import xiaojing.galactic_dogfight.StaticClass;
 
 import static xiaojing.galactic_dogfight.api.QuickMethod.textureConvertToDrawable;
-import static xiaojing.galactic_dogfight.StaticClass.emptyTexture;
-import static xiaojing.galactic_dogfight.StaticClass.pixelTexture;
+import static xiaojing.galactic_dogfight.StaticClass.EMPTY_TEXTURE;
+import static xiaojing.galactic_dogfight.StaticClass.PIXEL_TEXTURE;
 
 /**
  * 多状态聚合Drawable贴图
@@ -30,13 +30,13 @@ public class CustomStatusDrawable {
 
     /** 默认构造函数
      * <p>
-     * 默认为黑紫贴图 有空白需求请用 {@linkplain StaticClass#pixelTexture} */
+     * 默认为黑紫贴图 有空白需求请用 {@linkplain StaticClass#PIXEL_TEXTURE} */
     public CustomStatusDrawable() {
-        this(textureConvertToDrawable(pixelTexture));
+        this(textureConvertToDrawable(PIXEL_TEXTURE));
     }
 
     public CustomStatusDrawable(Drawable texture) {
-        if (texture == null) texture = textureConvertToDrawable(emptyTexture);
+        if (texture == null) texture = textureConvertToDrawable(EMPTY_TEXTURE);
         this.up = texture;
         this.over = texture;
         this.down = texture;
@@ -166,17 +166,17 @@ public class CustomStatusDrawable {
     }
 
     public static class Builder {
-        private Drawable defaultTexture = textureConvertToDrawable(emptyTexture);
-        private Drawable overTexture = textureConvertToDrawable(emptyTexture);
-        private Drawable pressedTexture = textureConvertToDrawable(emptyTexture);
-        private Drawable keyboardSelectionTexture = textureConvertToDrawable(emptyTexture);
+        private Drawable defaultTexture = textureConvertToDrawable(EMPTY_TEXTURE);
+        private Drawable overTexture = textureConvertToDrawable(EMPTY_TEXTURE);
+        private Drawable pressedTexture = textureConvertToDrawable(EMPTY_TEXTURE);
+        private Drawable keyboardSelectionTexture = textureConvertToDrawable(EMPTY_TEXTURE);
 
-        private Drawable defaultTextureOn = textureConvertToDrawable(emptyTexture);
-        private Drawable overTextureOn = textureConvertToDrawable(emptyTexture);
-        private Drawable pressedTextureOn = textureConvertToDrawable(emptyTexture);
-        private Drawable keyboardSelectionTextureOn = textureConvertToDrawable(emptyTexture);
+        private Drawable defaultTextureOn = textureConvertToDrawable(EMPTY_TEXTURE);
+        private Drawable overTextureOn = textureConvertToDrawable(EMPTY_TEXTURE);
+        private Drawable pressedTextureOn = textureConvertToDrawable(EMPTY_TEXTURE);
+        private Drawable keyboardSelectionTextureOn = textureConvertToDrawable(EMPTY_TEXTURE);
 
-        private Drawable disabledTexture = textureConvertToDrawable(emptyTexture);
+        private Drawable disabledTexture = textureConvertToDrawable(EMPTY_TEXTURE);
 
         public Builder allTexture(Drawable texture) {
             this.defaultTexture = texture;
@@ -258,15 +258,15 @@ public class CustomStatusDrawable {
         }
 
         public CustomStatusDrawable build() {
-            if (defaultTexture == null) defaultTexture = textureConvertToDrawable(emptyTexture);
-            if (overTexture == null) overTexture = textureConvertToDrawable(emptyTexture);
-            if (disabledTexture == null) disabledTexture = textureConvertToDrawable(emptyTexture);
-            if (pressedTexture == null) pressedTexture = textureConvertToDrawable(emptyTexture);
-            if (keyboardSelectionTexture == null) keyboardSelectionTexture = textureConvertToDrawable(emptyTexture);
-            if (defaultTextureOn == null) defaultTextureOn = textureConvertToDrawable(emptyTexture);
-            if (overTextureOn == null) overTextureOn = textureConvertToDrawable(emptyTexture);
-            if (pressedTextureOn == null) pressedTextureOn = textureConvertToDrawable(emptyTexture);
-            if (keyboardSelectionTextureOn == null) keyboardSelectionTextureOn = textureConvertToDrawable(emptyTexture);
+            if (defaultTexture == null) defaultTexture = textureConvertToDrawable(EMPTY_TEXTURE);
+            if (overTexture == null) overTexture = textureConvertToDrawable(EMPTY_TEXTURE);
+            if (disabledTexture == null) disabledTexture = textureConvertToDrawable(EMPTY_TEXTURE);
+            if (pressedTexture == null) pressedTexture = textureConvertToDrawable(EMPTY_TEXTURE);
+            if (keyboardSelectionTexture == null) keyboardSelectionTexture = textureConvertToDrawable(EMPTY_TEXTURE);
+            if (defaultTextureOn == null) defaultTextureOn = textureConvertToDrawable(EMPTY_TEXTURE);
+            if (overTextureOn == null) overTextureOn = textureConvertToDrawable(EMPTY_TEXTURE);
+            if (pressedTextureOn == null) pressedTextureOn = textureConvertToDrawable(EMPTY_TEXTURE);
+            if (keyboardSelectionTextureOn == null) keyboardSelectionTextureOn = textureConvertToDrawable(EMPTY_TEXTURE);
             return new CustomStatusDrawable(this);
         }
     }
